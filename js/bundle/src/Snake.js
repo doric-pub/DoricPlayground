@@ -342,3 +342,4 @@ SnakePanel = __decorate([
     Entry
 ], SnakePanel);
 //# sourceMappingURL=Snake.js.map
+//# sourceMappingURL=Snake.js.map

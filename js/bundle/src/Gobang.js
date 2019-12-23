@@ -14,6 +14,7 @@ const colors = [
     "#686de0",
     "#30336b",
 ].map(e => doric.Color.parse(e));
+//# sourceMappingURL=utils.js.map
 
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -665,4 +666,5 @@ let Gobang = class Gobang extends doric.VMPanel {
 Gobang = __decorate([
     Entry
 ], Gobang);
+//# sourceMappingURL=Gobang.js.map
 //# sourceMappingURL=Gobang.js.map
