@@ -42,7 +42,7 @@ export default allFiles
             input: `build/${bundle}.js`,
             output: {
                 format: "cjs",
-                file: `bundle/${bundle}.js`,
+                file: `../dist/${bundle}.js`,
                 sourcemap: true,
             },
             plugins: [
