@@ -1,1 +1,5 @@
-export default ['src/DoricPlayground']
+export default [
+    'src/DoricPlayground',
+    'src/Gobang',
+    'src/Snake',
+]

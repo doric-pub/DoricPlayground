@@ -1,5 +1,5 @@
 {
-    "name": "DoricPlayground",
+    "name": "doric-playground",
     "version": "0.1.0",
     "main": "index.js",
     "scripts": {
@@ -10,7 +10,7 @@
     },
     "license": "Apache-2.0",
     "dependencies": {
-        "doric": "0.1.1",
+        "doric": "^0.2.0",
         "reflect-metadata": "^0.1.13",
         "rollup": "^1.17.0",
         "rollup-plugin-commonjs": "^10.0.1",

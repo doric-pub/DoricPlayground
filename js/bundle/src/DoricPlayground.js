@@ -28,13 +28,13 @@ let DoricPlayground = class DoricPlayground extends doric.Panel {
                 onClick: () => {
                     number.text = `${++count}`;
                 },
-                layoutConfig: doric.layoutConfig().exactly(),
+                layoutConfig: doric.layoutConfig().just(),
                 width: 200,
                 height: 50,
             }),
         ])
             .apply({
-            layoutConfig: doric.layoutConfig().exactly().a(doric.Gravity.Center),
+            layoutConfig: doric.layoutConfig().just().configAligmnet(doric.Gravity.Center),
             width: 200,
             height: 200,
             space: 20,
