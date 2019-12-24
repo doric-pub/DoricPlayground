@@ -8,6 +8,14 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+const colors = {
+    bgColor: doric.Color.parse('#FFB7BFAC'),
+    snakeColor: doric.Color.BLACK,
+    foodColor: doric.Color.BLACK,
+};
+function scoreFormat(score) {
+    return `${Math.floor((score % 1000) / 100)}${Math.floor((score % 100) / 10)}${Math.floor(score % 10)}`;
+}
 var Direction;
 (function (Direction) {
     Direction[Direction["left"] = 0] = "left";
@@ -98,7 +106,6 @@ class SnakeModel {
         }
         if (this.crashAtSelf()) {
             //If crash at self
-            doric.loge('crash at self');
             this.state = State.fail;
         }
     }
@@ -122,115 +129,155 @@ class SnakeModel {
     }
 }
 class SnakeView extends doric.ViewHolder {
-    build(root) {
-        root.backgroundColor = doric.Color.parse('#000000');
-        doric.vlayout([
+    titleZone() {
+        return doric.hlayout([
             doric.text({
-                text: "Snake",
+                text: "点击下方Start开始游戏",
                 textSize: 20,
-                textColor: doric.Color.parse("#ffffff"),
-                layoutConfig: {
-                    alignment: new doric.Gravity().centerX(),
-                    margin: {
-                        top: 20
-                    },
-                    widthSpec: doric.LayoutSpec.FIT,
-                    heightSpec: doric.LayoutSpec.FIT,
-                },
             }),
-            (new doric.Stack).also(panel => {
-                panel.backgroundColor = doric.Color.parse('#00ff00');
-                this.panel = panel;
+        ]).apply({
+            layoutConfig: doric.layoutConfig().just().configWidth(doric.LayoutSpec.MOST),
+            height: 50,
+            gravity: doric.Gravity.Center,
+        });
+    }
+    panelZone() {
+        return doric.vlayout([
+            doric.stack([
+                this.panel = doric.stack([]).apply({
+                    layoutConfig: doric.layoutConfig().just(),
+                }),
+            ]).apply({
+                padding: {
+                    left: 2,
+                    right: 2,
+                    top: 2,
+                    bottom: 2,
+                },
+                border: {
+                    width: 1,
+                    color: doric.Color.BLACK,
+                },
+                layoutConfig: doric.layoutConfig().fit().configAlignmnet(doric.Gravity.Center),
             }),
             doric.hlayout([
                 doric.text({
-                    text: "Start",
+                    text: "SCORE",
+                    textSize: 20,
+                }),
+                this.score = doric.text({
+                    text: "000",
+                    textSize: 20,
+                }),
+            ]).apply({
+                layoutConfig: doric.layoutConfig().fit().configAlignmnet(doric.Gravity.Left).configMargin({ left: 40 }),
+                space: 10,
+            }),
+        ]).apply({
+            layoutConfig: doric.layoutConfig().fit().configWidth(doric.LayoutSpec.MOST),
+            backgroundColor: colors.bgColor,
+            padding: {
+                top: 20,
+                bottom: 20,
+            }
+        });
+    }
+    controlZone() {
+        return doric.vlayout([
+            doric.hlayout([
+                doric.text({
+                    width: 50,
+                    height: 50,
+                    text: "↑",
                     textSize: 30,
-                    textColor: doric.Color.parse("#ffffff"),
+                    textAlignment: new doric.Gravity().center(),
+                    backgroundColor: doric.Color.parse('#ffff00'),
                     layoutConfig: {
-                        widthSpec: doric.LayoutSpec.FIT,
-                        heightSpec: doric.LayoutSpec.FIT,
+                        widthSpec: doric.LayoutSpec.JUST,
+                        heightSpec: doric.LayoutSpec.JUST,
                     },
-                }).also(it => this.start = it),
+                }).also(it => this.up = it)
             ]).also(it => {
                 it.layoutConfig = {
                     widthSpec: doric.LayoutSpec.FIT,
                     heightSpec: doric.LayoutSpec.FIT,
                 };
             }),
-            doric.vlayout([
-                doric.hlayout([
-                    doric.text({
-                        width: 50,
-                        height: 50,
-                        text: "↑",
-                        textSize: 30,
-                        textAlignment: new doric.Gravity().center(),
-                        backgroundColor: doric.Color.parse('#ffff00'),
-                        layoutConfig: {
-                            widthSpec: doric.LayoutSpec.JUST,
-                            heightSpec: doric.LayoutSpec.JUST,
-                        },
-                    }).also(it => this.up = it)
-                ]).also(it => {
-                    it.layoutConfig = {
-                        widthSpec: doric.LayoutSpec.FIT,
-                        heightSpec: doric.LayoutSpec.FIT,
-                    };
-                }),
-                doric.hlayout([
-                    doric.text({
-                        width: 50,
-                        height: 50,
-                        text: "←",
-                        textSize: 30,
-                        textAlignment: new doric.Gravity().center(),
-                        backgroundColor: doric.Color.parse('#ffff00'),
-                        layoutConfig: {
-                            widthSpec: doric.LayoutSpec.JUST,
-                            heightSpec: doric.LayoutSpec.JUST,
-                        },
-                    }).also(it => this.left = it),
-                    doric.text({
-                        width: 50,
-                        height: 50,
-                        text: "↓",
-                        textSize: 30,
-                        textAlignment: new doric.Gravity().center(),
-                        backgroundColor: doric.Color.parse('#ffff00'),
-                        layoutConfig: {
-                            widthSpec: doric.LayoutSpec.JUST,
-                            heightSpec: doric.LayoutSpec.JUST,
-                        },
-                    }).also(it => this.down = it),
-                    doric.text({
-                        width: 50,
-                        height: 50,
-                        text: "→",
-                        textSize: 30,
-                        textAlignment: new doric.Gravity().center(),
-                        backgroundColor: doric.Color.parse('#ffff00'),
-                        layoutConfig: {
-                            widthSpec: doric.LayoutSpec.JUST,
-                            heightSpec: doric.LayoutSpec.JUST,
-                        },
-                    }).also(it => this.right = it),
-                ]).also(it => {
-                    it.layoutConfig = {
-                        widthSpec: doric.LayoutSpec.FIT,
-                        heightSpec: doric.LayoutSpec.FIT,
-                    };
-                    it.space = 10;
-                }),
-            ]).also(controlArea => {
-                controlArea.gravity = new doric.Gravity().centerX();
-                controlArea.space = 10;
-                controlArea.layoutConfig = {
-                    alignment: new doric.Gravity().centerX(),
+            doric.hlayout([
+                doric.text({
+                    width: 50,
+                    height: 50,
+                    text: "←",
+                    textSize: 30,
+                    textAlignment: new doric.Gravity().center(),
+                    backgroundColor: doric.Color.parse('#ffff00'),
+                    layoutConfig: {
+                        widthSpec: doric.LayoutSpec.JUST,
+                        heightSpec: doric.LayoutSpec.JUST,
+                    },
+                }).also(it => this.left = it),
+                doric.text({
+                    width: 50,
+                    height: 50,
+                    text: "↓",
+                    textSize: 30,
+                    textAlignment: new doric.Gravity().center(),
+                    backgroundColor: doric.Color.parse('#ffff00'),
+                    layoutConfig: {
+                        widthSpec: doric.LayoutSpec.JUST,
+                        heightSpec: doric.LayoutSpec.JUST,
+                    },
+                }).also(it => this.down = it),
+                doric.text({
+                    width: 50,
+                    height: 50,
+                    text: "→",
+                    textSize: 30,
+                    textAlignment: new doric.Gravity().center(),
+                    backgroundColor: doric.Color.parse('#ffff00'),
+                    layoutConfig: {
+                        widthSpec: doric.LayoutSpec.JUST,
+                        heightSpec: doric.LayoutSpec.JUST,
+                    },
+                }).also(it => this.right = it),
+            ]).also(it => {
+                it.layoutConfig = {
                     widthSpec: doric.LayoutSpec.FIT,
                     heightSpec: doric.LayoutSpec.FIT,
                 };
+                it.space = 10;
             }),
+        ]).also(controlArea => {
+            controlArea.gravity = new doric.Gravity().centerX();
+            controlArea.space = 10;
+            controlArea.layoutConfig = {
+                alignment: new doric.Gravity().centerX(),
+                widthSpec: doric.LayoutSpec.FIT,
+                heightSpec: doric.LayoutSpec.FIT,
+            };
+        });
+    }
+    build(root) {
+        root.backgroundColor = doric.Color.WHITE;
+        doric.vlayout([
+            this.titleZone(),
+            this.panelZone(),
+            doric.hlayout([
+                this.start = doric.text({
+                    text: "Start",
+                    textSize: 30,
+                    layoutConfig: {
+                        widthSpec: doric.LayoutSpec.FIT,
+                        heightSpec: doric.LayoutSpec.FIT,
+                    },
+                }),
+            ]).apply({
+                layoutConfig: {
+                    widthSpec: doric.LayoutSpec.FIT,
+                    heightSpec: doric.LayoutSpec.FIT,
+                }
+            }),
+            this.controlZone(),
         ]).also(it => {
             it.space = 20;
             it.layoutConfig = {
@@ -242,9 +289,6 @@ class SnakeView extends doric.ViewHolder {
         }).in(root);
     }
     bind(state) {
-        doric.log('build', state);
-        this.panel.width = state.width * 10;
-        this.panel.height = state.height * 10;
         let node = state.head;
         let nodes = [];
         while (node != undefined) {
@@ -255,30 +299,33 @@ class SnakeView extends doric.ViewHolder {
         nodes.forEach((e, index) => {
             let item = this.panel.children[index];
             if (item === undefined) {
-                item = new doric.Stack;
-                item.width = item.height = 10;
-                item.corners = 5;
-                item.shadow = {
-                    color: doric.Color.GRAY,
-                    opacity: 1,
-                    radius: 3,
-                    offsetX: 3,
-                    offsetY: 3,
-                };
-                this.panel.addChild(item);
+                item = doric.stack([
+                    doric.stack([]).apply({
+                        layoutConfig: doric.layoutConfig().just().configAlignmnet(doric.Gravity.Center),
+                        width: 9,
+                        height: 9,
+                    })
+                ]).apply({
+                    layoutConfig: doric.layoutConfig().just(),
+                    width: 10,
+                    height: 10,
+                }).in(this.panel);
             }
-            if (index === nodes.length - 1) {
-                item.backgroundColor = doric.Color.parse('#ffff00');
-            }
-            else {
-                item.backgroundColor = doric.Color.parse('#ff0000');
-            }
+            doric.takeNonNull(item.children[0])(v => {
+                if (index === nodes.length - 1) {
+                    v.backgroundColor = colors.foodColor;
+                }
+                else {
+                    v.backgroundColor = colors.snakeColor;
+                }
+            });
             item.x = e.x * 10;
             item.y = e.y * 10;
         });
         if (nodes.length < this.panel.children.length) {
             this.panel.children.length = nodes.length;
         }
+        this.score.text = `${scoreFormat(state.score)}`;
     }
 }
 class SnakeVM extends doric.ViewModel {
@@ -322,6 +369,10 @@ class SnakeVM extends doric.ViewModel {
         doric.takeNonNull(v.right)(it => it.onClick = this.right);
         doric.takeNonNull(v.up)(it => it.onClick = this.up);
         doric.takeNonNull(v.down)(it => it.onClick = this.down);
+        v.panel.apply({
+            width: state.width * 10,
+            height: state.height * 10,
+        });
     }
     onBind(state, v) {
         v.bind(state);
@@ -332,13 +383,13 @@ let SnakePanel = class SnakePanel extends doric.VMPanel {
         return SnakeVM;
     }
     getState() {
-        return new SnakeModel(35, 35);
+        return new SnakeModel(30, 30);
     }
     getViewHolderClass() {
         return SnakeView;
     }
     onShow() {
-        doric.navbar(context).setHidden(true);
+        doric.navbar(context).setTitle("贪吃蛇");
     }
 };
 SnakePanel = __decorate([

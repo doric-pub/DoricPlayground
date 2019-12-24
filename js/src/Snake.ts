@@ -1,4 +1,14 @@
-import { text, loge, log, ViewHolder, Stack, ViewModel, Gravity, Text, Color, HLayout, VLayout, Group, VMPanel, LayoutSpec, vlayout, hlayout, takeNonNull, stack, navigator, navbar } from "doric";
+import { text, loge, log, ViewHolder, Stack, ViewModel, Gravity, Text, Color, HLayout, VLayout, Group, VMPanel, LayoutSpec, vlayout, hlayout, takeNonNull, stack, navigator, navbar, layoutConfig, IHLayout } from "doric";
+
+const colors = {
+    bgColor: Color.parse('#FFB7BFAC'),
+    snakeColor: Color.BLACK,
+    foodColor: Color.BLACK,
+}
+
+function scoreFormat(score: number) {
+    return `${Math.floor((score % 1000) / 100)}${Math.floor((score % 100) / 10)}${Math.floor(score % 10)}`
+}
 
 type SnakeNode = {
     x: number
@@ -77,8 +87,6 @@ class SnakeModel {
                 break;
         }
     }
-
-
     step() {
         if (this.state !== State.run) {
             return
@@ -108,7 +116,6 @@ class SnakeModel {
         }
         if (this.crashAtSelf()) {
             //If crash at self
-            loge('crash at self')
             this.state = State.fail
         }
     }
@@ -142,117 +149,158 @@ class SnakeView extends ViewHolder {
     down?: Text
     left?: Text
     right?: Text
+    score!: Text
 
-    build(root: Group): void {
-        root.backgroundColor = Color.parse('#000000')
-        vlayout([
+    titleZone() {
+        return hlayout([
             text({
-                text: "Snake",
+                text: "点击下方Start开始游戏",
                 textSize: 20,
-                textColor: Color.parse("#ffffff"),
-                layoutConfig: {
-                    alignment: new Gravity().centerX(),
-                    margin: {
-                        top: 20
-                    },
-                    widthSpec: LayoutSpec.FIT,
-                    heightSpec: LayoutSpec.FIT,
-                },
             }),
-            (new Stack).also(panel => {
-                panel.backgroundColor = Color.parse('#00ff00')
-                this.panel = panel
+        ]).apply({
+            layoutConfig: layoutConfig().just().configWidth(LayoutSpec.MOST),
+            height: 50,
+            gravity: Gravity.Center,
+        } as IHLayout)
+    }
+
+    panelZone() {
+        return vlayout([
+            stack([
+                this.panel = stack([]).apply({
+                    layoutConfig: layoutConfig().just(),
+                }),
+            ]).apply({
+                padding: {
+                    left: 2,
+                    right: 2,
+                    top: 2,
+                    bottom: 2,
+                },
+                border: {
+                    width: 1,
+                    color: Color.BLACK,
+                },
+                layoutConfig: layoutConfig().fit().configAlignmnet(Gravity.Center),
             }),
             hlayout([
                 text({
-                    text: "Start",
+                    text: "SCORE",
+                    textSize: 20,
+                }),
+                this.score = text({
+                    text: "000",
+                    textSize: 20,
+                }),
+            ]).apply({
+                layoutConfig: layoutConfig().fit().configAlignmnet(Gravity.Left).configMargin({ left: 40 }),
+                space: 10,
+            } as IHLayout),
+        ]).apply({
+            layoutConfig: layoutConfig().fit().configWidth(LayoutSpec.MOST),
+            backgroundColor: colors.bgColor,
+            padding: {
+                top: 20,
+                bottom: 20,
+            }
+        })
+    }
+    controlZone() {
+        return vlayout([
+            hlayout([
+                text({
+                    width: 50,
+                    height: 50,
+                    text: "↑",
                     textSize: 30,
-                    textColor: Color.parse("#ffffff"),
+                    textAlignment: new Gravity().center(),
+                    backgroundColor: Color.parse('#ffff00'),
                     layoutConfig: {
-                        widthSpec: LayoutSpec.FIT,
-                        heightSpec: LayoutSpec.FIT,
+                        widthSpec: LayoutSpec.JUST,
+                        heightSpec: LayoutSpec.JUST,
                     },
-                }).also(it => this.start = it),
+                }).also(it => this.up = it)
             ]).also(it => {
                 it.layoutConfig = {
                     widthSpec: LayoutSpec.FIT,
                     heightSpec: LayoutSpec.FIT,
                 }
             }),
-
-            vlayout([
-                hlayout([
-                    text({
-                        width: 50,
-                        height: 50,
-                        text: "↑",
-                        textSize: 30,
-                        textAlignment: new Gravity().center(),
-                        backgroundColor: Color.parse('#ffff00'),
-                        layoutConfig: {
-                            widthSpec: LayoutSpec.JUST,
-                            heightSpec: LayoutSpec.JUST,
-                        },
-                    }).also(it => this.up = it)
-                ]).also(it => {
-                    it.layoutConfig = {
+            hlayout([
+                text({
+                    width: 50,
+                    height: 50,
+                    text: "←",
+                    textSize: 30,
+                    textAlignment: new Gravity().center(),
+                    backgroundColor: Color.parse('#ffff00'),
+                    layoutConfig: {
+                        widthSpec: LayoutSpec.JUST,
+                        heightSpec: LayoutSpec.JUST,
+                    },
+                }).also(it => this.left = it),
+                text({
+                    width: 50,
+                    height: 50,
+                    text: "↓",
+                    textSize: 30,
+                    textAlignment: new Gravity().center(),
+                    backgroundColor: Color.parse('#ffff00'),
+                    layoutConfig: {
+                        widthSpec: LayoutSpec.JUST,
+                        heightSpec: LayoutSpec.JUST,
+                    },
+                }).also(it => this.down = it),
+                text({
+                    width: 50,
+                    height: 50,
+                    text: "→",
+                    textSize: 30,
+                    textAlignment: new Gravity().center(),
+                    backgroundColor: Color.parse('#ffff00'),
+                    layoutConfig: {
+                        widthSpec: LayoutSpec.JUST,
+                        heightSpec: LayoutSpec.JUST,
+                    },
+                }).also(it => this.right = it),
+            ]).also(it => {
+                it.layoutConfig = {
+                    widthSpec: LayoutSpec.FIT,
+                    heightSpec: LayoutSpec.FIT,
+                }
+                it.space = 10
+            }),
+        ]).also(controlArea => {
+            controlArea.gravity = new Gravity().centerX()
+            controlArea.space = 10
+            controlArea.layoutConfig = {
+                alignment: new Gravity().centerX(),
+                widthSpec: LayoutSpec.FIT,
+                heightSpec: LayoutSpec.FIT,
+            }
+        })
+    }
+    build(root: Group): void {
+        root.backgroundColor = Color.WHITE
+        vlayout([
+            this.titleZone(),
+            this.panelZone(),
+            hlayout([
+                this.start = text({
+                    text: "Start",
+                    textSize: 30,
+                    layoutConfig: {
                         widthSpec: LayoutSpec.FIT,
                         heightSpec: LayoutSpec.FIT,
-                    }
+                    },
                 }),
-                hlayout([
-                    text({
-                        width: 50,
-                        height: 50,
-                        text: "←",
-                        textSize: 30,
-                        textAlignment: new Gravity().center(),
-                        backgroundColor: Color.parse('#ffff00'),
-                        layoutConfig: {
-                            widthSpec: LayoutSpec.JUST,
-                            heightSpec: LayoutSpec.JUST,
-                        },
-                    }).also(it => this.left = it),
-                    text({
-                        width: 50,
-                        height: 50,
-                        text: "↓",
-                        textSize: 30,
-                        textAlignment: new Gravity().center(),
-                        backgroundColor: Color.parse('#ffff00'),
-                        layoutConfig: {
-                            widthSpec: LayoutSpec.JUST,
-                            heightSpec: LayoutSpec.JUST,
-                        },
-                    }).also(it => this.down = it),
-                    text({
-                        width: 50,
-                        height: 50,
-                        text: "→",
-                        textSize: 30,
-                        textAlignment: new Gravity().center(),
-                        backgroundColor: Color.parse('#ffff00'),
-                        layoutConfig: {
-                            widthSpec: LayoutSpec.JUST,
-                            heightSpec: LayoutSpec.JUST,
-                        },
-                    }).also(it => this.right = it),
-                ]).also(it => {
-                    it.layoutConfig = {
-                        widthSpec: LayoutSpec.FIT,
-                        heightSpec: LayoutSpec.FIT,
-                    }
-                    it.space = 10
-                }),
-            ]).also(controlArea => {
-                controlArea.gravity = new Gravity().centerX()
-                controlArea.space = 10
-                controlArea.layoutConfig = {
-                    alignment: new Gravity().centerX(),
+            ]).apply({
+                layoutConfig: {
                     widthSpec: LayoutSpec.FIT,
                     heightSpec: LayoutSpec.FIT,
                 }
             }),
+            this.controlZone(),
         ]).also(it => {
             it.space = 20
             it.layoutConfig = {
@@ -265,9 +313,6 @@ class SnakeView extends ViewHolder {
     }
 
     bind(state: SnakeModel): void {
-        log('build', state)
-        this.panel.width = state.width * 10
-        this.panel.height = state.height * 10
         let node: SnakeNode | undefined = state.head
         let nodes: SnakeNode[] = []
         while (node != undefined) {
@@ -276,26 +321,28 @@ class SnakeView extends ViewHolder {
         }
         nodes.push(state.food)
         nodes.forEach((e, index) => {
-
             let item = this.panel.children[index]
             if (item === undefined) {
-                item = new Stack
-                item.width = item.height = 10
-                item.corners = 5
-                item.shadow = {
-                    color: Color.GRAY,
-                    opacity: 1,
-                    radius: 3,
-                    offsetX: 3,
-                    offsetY: 3,
+                item = stack([
+                    stack([]).apply({
+                        layoutConfig: layoutConfig().just().configAlignmnet(Gravity.Center),
+                        width: 9,
+                        height: 9,
+                    })
+
+                ]).apply({
+                    layoutConfig: layoutConfig().just(),
+                    width: 10,
+                    height: 10,
+                }).in(this.panel)
+            }
+            takeNonNull((item as Stack).children[0])(v => {
+                if (index === nodes.length - 1) {
+                    v.backgroundColor = colors.foodColor
+                } else {
+                    v.backgroundColor = colors.snakeColor
                 }
-                this.panel.addChild(item)
-            }
-            if (index === nodes.length - 1) {
-                item.backgroundColor = Color.parse('#ffff00')
-            } else {
-                item.backgroundColor = Color.parse('#ff0000')
-            }
+            })
             item.x = e.x * 10
             item.y = e.y * 10
         })
@@ -303,6 +350,7 @@ class SnakeView extends ViewHolder {
         if (nodes.length < this.panel.children.length) {
             this.panel.children.length = nodes.length
         }
+        this.score.text = `${scoreFormat(state.score)}`
     }
 }
 
@@ -352,6 +400,10 @@ class SnakeVM extends ViewModel<SnakeModel, SnakeView>{
         takeNonNull(v.right)(it => it.onClick = this.right)
         takeNonNull(v.up)(it => it.onClick = this.up)
         takeNonNull(v.down)(it => it.onClick = this.down)
+        v.panel.apply({
+            width: state.width * 10,
+            height: state.height * 10,
+        })
     }
     onBind(state: SnakeModel, v: SnakeView) {
         v.bind(state)
@@ -363,12 +415,12 @@ class SnakePanel extends VMPanel<SnakeModel, SnakeView>{
         return SnakeVM
     }
     getState(): SnakeModel {
-        return new SnakeModel(35, 35)
+        return new SnakeModel(30, 30)
     }
     getViewHolderClass() {
         return SnakeView
     }
     onShow() {
-        navbar(context).setHidden(true)
+        navbar(context).setTitle("贪吃蛇")
     }
 }

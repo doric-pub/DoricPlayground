@@ -1,4 +1,4 @@
-import { Panel, Group, vlayout, layoutConfig, Gravity, IVLayout, text, Text, Color, navbar, navigator, scroller, LayoutSpec, hlayout, gravity, image, Stack } from "doric";
+import { Panel, Group, vlayout, layoutConfig, Gravity, IVLayout, text, Text, Color, navbar, navigator, scroller, LayoutSpec, hlayout, gravity, image, Stack, ScaleType } from "doric";
 import { title, colors } from "./utils";
 
 const files = [
@@ -19,13 +19,12 @@ const files = [
 @Entry
 class DoricPlayground extends Panel {
     onShow() {
-        navbar(context).setHidden(true)
+        navbar(context).setTitle("Doric Playground")
     }
     build(rootView: Group): void {
         scroller(
             vlayout(
                 [
-                    title("Doric Playground"),
                     hlayout([
                         text({
                             text: "小游戏",
@@ -47,6 +46,10 @@ class DoricPlayground extends Panel {
                             hlayout([
                                 image({
                                     imageBase64: e.icon,
+                                    layoutConfig: layoutConfig().just(),
+                                    width: 50,
+                                    height: 50,
+                                    scaleType: ScaleType.ScaleAspectFit,
                                 }),
                                 text({
                                     text: e.name,

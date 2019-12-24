@@ -675,6 +675,6 @@ class Gobang extends VMPanel<GoBangState, GoBangVH> {
         return GoBangVH
     }
     onShow() {
-        navbar(context).setHidden(true)
+        navbar(context).setTitle("五子棋")
     }
 }

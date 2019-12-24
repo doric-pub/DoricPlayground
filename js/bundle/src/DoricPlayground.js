@@ -14,18 +14,6 @@ const colors = [
     "#686de0",
     "#30336b",
 ].map(e => doric.Color.parse(e));
-function title(str) {
-    return doric.text({
-        text: str,
-        layoutConfig: doric.layoutConfig().configWidth(doric.LayoutSpec.MOST),
-        textSize: 30,
-        textColor: doric.Color.WHITE,
-        backgroundColor: colors[1],
-        textAlignment: doric.gravity().center(),
-        height: 50,
-    });
-}
-//# sourceMappingURL=utils.js.map
 
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -49,11 +37,10 @@ const files = [
 ];
 let DoricPlayground = class DoricPlayground extends doric.Panel {
     onShow() {
-        doric.navbar(context).setHidden(true);
+        doric.navbar(context).setTitle("Doric Playground");
     }
     build(rootView) {
         doric.scroller(doric.vlayout([
-            title("Doric Playground"),
             doric.hlayout([
                 doric.text({
                     text: "小游戏",
@@ -74,6 +61,10 @@ let DoricPlayground = class DoricPlayground extends doric.Panel {
                 doric.hlayout([
                     doric.image({
                         imageBase64: e.icon,
+                        layoutConfig: doric.layoutConfig().just(),
+                        width: 50,
+                        height: 50,
+                        scaleType: doric.ScaleType.ScaleAspectFit,
                     }),
                     doric.text({
                         text: e.name,
