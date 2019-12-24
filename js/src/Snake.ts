@@ -1,10 +1,12 @@
-import { text, loge, log, ViewHolder, Stack, ViewModel, Gravity, Text, Color, HLayout, VLayout, Group, VMPanel, LayoutSpec, vlayout, hlayout, takeNonNull, stack, navigator, navbar, layoutConfig, IHLayout } from "doric";
+import { text, loge, log, ViewHolder, Stack, ViewModel, Gravity, Text, Color, HLayout, VLayout, Group, VMPanel, LayoutSpec, vlayout, hlayout, takeNonNull, stack, navigator, navbar, layoutConfig, IHLayout, popover, IVLayout, storage } from "doric";
 
 const colors = {
     bgColor: Color.parse('#FFB7BFAC'),
     snakeColor: Color.BLACK,
     foodColor: Color.BLACK,
 }
+
+const hignScoreKey = "SnakeHignScore"
 
 function scoreFormat(score: number) {
     return `${Math.floor((score % 1000) / 100)}${Math.floor((score % 100) / 10)}${Math.floor(score % 10)}`
@@ -34,7 +36,7 @@ enum State {
 class SnakeModel {
     state = State.idel
     direction = Direction.right
-
+    highScore = 0
     width: number
     height: number
 
@@ -101,18 +103,17 @@ class SnakeModel {
         if (this.head.x < 0 || this.head.x >= this.width
             || this.head.y < 0 || this.head.y >= this.height) {
             //If out of bound
-            loge('out of bound')
             this.state = State.fail
         } else if (this.head.x == this.food.x && this.head.y == this.food.y) {
             //If eat food
-
             let head: SnakeNode = { x: this.food.x, y: this.food.y }
-            log('eat food', head)
             this.forward(head)
             this.head.prev = head
             head.next = this.head
             this.head = head
             this.refreshFood()
+            this.highScore = Math.max(this.highScore, this.score)
+            storage(context).setItem(hignScoreKey, `${this.highScore}`)
         }
         if (this.crashAtSelf()) {
             //If crash at self
@@ -150,11 +151,11 @@ class SnakeView extends ViewHolder {
     left?: Text
     right?: Text
     score!: Text
-
+    high !: Text
     titleZone() {
         return hlayout([
             text({
-                text: "点击下方Start开始游戏",
+                text: "点击下方开始游戏",
                 textSize: 20,
             }),
         ]).apply({
@@ -192,8 +193,21 @@ class SnakeView extends ViewHolder {
                     text: "000",
                     textSize: 20,
                 }),
+                (new Stack()).apply({
+                    layoutConfig: layoutConfig().just().configWeight(1),
+                }),
+                text({
+                    text: "HIGH",
+                    textSize: 20,
+                }),
+                this.high = text({
+                    text: "000",
+                    textSize: 20,
+                }),
             ]).apply({
-                layoutConfig: layoutConfig().fit().configAlignmnet(Gravity.Left).configMargin({ left: 40 }),
+                layoutConfig: layoutConfig().fit()
+                    .configWidth(LayoutSpec.MOST)
+                    .configAlignmnet(Gravity.Left).configMargin({ left: 40, right: 40 }),
                 space: 10,
             } as IHLayout),
         ]).apply({
@@ -287,7 +301,7 @@ class SnakeView extends ViewHolder {
             this.panelZone(),
             hlayout([
                 this.start = text({
-                    text: "Start",
+                    text: "开始",
                     textSize: 30,
                     layoutConfig: {
                         widthSpec: LayoutSpec.FIT,
@@ -302,12 +316,7 @@ class SnakeView extends ViewHolder {
             }),
             this.controlZone(),
         ]).also(it => {
-            it.space = 20
-            it.layoutConfig = {
-                alignment: new Gravity().centerX().top(),
-                widthSpec: LayoutSpec.MOST,
-                heightSpec: LayoutSpec.MOST,
-            }
+            it.layoutConfig = layoutConfig().most()
             it.gravity = new Gravity().centerX()
         }).in(root)
     }
@@ -351,6 +360,7 @@ class SnakeView extends ViewHolder {
             this.panel.children.length = nodes.length
         }
         this.score.text = `${scoreFormat(state.score)}`
+        this.high.text = `${scoreFormat(state.highScore)}`
     }
 }
 
@@ -365,7 +375,6 @@ class SnakeVM extends ViewModel<SnakeModel, SnakeView>{
         this.timerId = setInterval(() => {
             this.updateState(it => it.step())
             if (this.getState().state === State.fail) {
-                loge('Game Over')
                 this.stop()
             }
         }, 500)
@@ -404,9 +413,84 @@ class SnakeVM extends ViewModel<SnakeModel, SnakeView>{
             width: state.width * 10,
             height: state.height * 10,
         })
+
+        storage(context).getItem(hignScoreKey).then(r => {
+            this.updateState(s => {
+                if (r) {
+                    s.highScore = parseInt(r)
+                } else {
+                    s.highScore = 0
+                }
+            })
+        })
     }
     onBind(state: SnakeModel, v: SnakeView) {
         v.bind(state)
+        if (state.state === State.fail) {
+            popover(context).show(
+                vlayout([
+                    text({
+                        text: "游戏结束",
+                        textSize: 40,
+                    }),
+                    hlayout([
+                        text({
+                            text: "继续",
+                            textSize: 30,
+                            padding: {
+                                left: 20,
+                                right: 20,
+                                top: 10,
+                                bottom: 10,
+                            },
+                            border: {
+                                width: 1,
+                                color: Color.BLACK,
+                            },
+                            onClick: () => {
+                                popover(context).dismiss()
+                                this.start()
+                            },
+                        }),
+                        text({
+                            text: "退出",
+                            textSize: 30,
+                            padding: {
+                                left: 20,
+                                right: 20,
+                                top: 10,
+                                bottom: 10,
+                            },
+                            border: {
+                                width: 1,
+                                color: Color.BLACK,
+                            },
+                            onClick: () => {
+                                popover(context).dismiss()
+                                navigator(context).pop()
+                            },
+                        }),
+                    ]).apply({
+                        space: 100,
+                        layoutConfig: layoutConfig().fit().configMargin({
+                            bottom: 20
+                        }),
+                    } as IHLayout),
+                ]).apply({
+                    layoutConfig: layoutConfig().fit().configWidth(LayoutSpec.MOST).configMargin({
+                        top: 300,
+                        left: 20,
+                        right: 20,
+                    }),
+                    border: {
+                        width: 1,
+                        color: Color.BLACK,
+                    },
+                    backgroundColor: colors.bgColor,
+                    gravity: Gravity.Center,
+                } as IVLayout)
+            )
+        }
     }
 }
 @Entry

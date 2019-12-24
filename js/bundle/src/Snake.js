@@ -13,6 +13,7 @@ const colors = {
     snakeColor: doric.Color.BLACK,
     foodColor: doric.Color.BLACK,
 };
+const hignScoreKey = "SnakeHignScore";
 function scoreFormat(score) {
     return `${Math.floor((score % 1000) / 100)}${Math.floor((score % 100) / 10)}${Math.floor(score % 10)}`;
 }
@@ -33,6 +34,7 @@ class SnakeModel {
     constructor(w, h) {
         this.state = State.idel;
         this.direction = Direction.right;
+        this.highScore = 0;
         this.food = { x: -1, y: -1 };
         this.head = {
             x: 0,
@@ -91,18 +93,18 @@ class SnakeModel {
         if (this.head.x < 0 || this.head.x >= this.width
             || this.head.y < 0 || this.head.y >= this.height) {
             //If out of bound
-            doric.loge('out of bound');
             this.state = State.fail;
         }
         else if (this.head.x == this.food.x && this.head.y == this.food.y) {
             //If eat food
             let head = { x: this.food.x, y: this.food.y };
-            doric.log('eat food', head);
             this.forward(head);
             this.head.prev = head;
             head.next = this.head;
             this.head = head;
             this.refreshFood();
+            this.highScore = Math.max(this.highScore, this.score);
+            doric.storage(context).setItem(hignScoreKey, `${this.highScore}`);
         }
         if (this.crashAtSelf()) {
             //If crash at self
@@ -132,7 +134,7 @@ class SnakeView extends doric.ViewHolder {
     titleZone() {
         return doric.hlayout([
             doric.text({
-                text: "点击下方Start开始游戏",
+                text: "点击下方开始游戏",
                 textSize: 20,
             }),
         ]).apply({
@@ -169,8 +171,21 @@ class SnakeView extends doric.ViewHolder {
                     text: "000",
                     textSize: 20,
                 }),
+                (new doric.Stack()).apply({
+                    layoutConfig: doric.layoutConfig().just().configWeight(1),
+                }),
+                doric.text({
+                    text: "HIGH",
+                    textSize: 20,
+                }),
+                this.high = doric.text({
+                    text: "000",
+                    textSize: 20,
+                }),
             ]).apply({
-                layoutConfig: doric.layoutConfig().fit().configAlignmnet(doric.Gravity.Left).configMargin({ left: 40 }),
+                layoutConfig: doric.layoutConfig().fit()
+                    .configWidth(doric.LayoutSpec.MOST)
+                    .configAlignmnet(doric.Gravity.Left).configMargin({ left: 40, right: 40 }),
                 space: 10,
             }),
         ]).apply({
@@ -264,7 +279,7 @@ class SnakeView extends doric.ViewHolder {
             this.panelZone(),
             doric.hlayout([
                 this.start = doric.text({
-                    text: "Start",
+                    text: "开始",
                     textSize: 30,
                     layoutConfig: {
                         widthSpec: doric.LayoutSpec.FIT,
@@ -279,12 +294,7 @@ class SnakeView extends doric.ViewHolder {
             }),
             this.controlZone(),
         ]).also(it => {
-            it.space = 20;
-            it.layoutConfig = {
-                alignment: new doric.Gravity().centerX().top(),
-                widthSpec: doric.LayoutSpec.MOST,
-                heightSpec: doric.LayoutSpec.MOST,
-            };
+            it.layoutConfig = doric.layoutConfig().most();
             it.gravity = new doric.Gravity().centerX();
         }).in(root);
     }
@@ -326,6 +336,7 @@ class SnakeView extends doric.ViewHolder {
             this.panel.children.length = nodes.length;
         }
         this.score.text = `${scoreFormat(state.score)}`;
+        this.high.text = `${scoreFormat(state.highScore)}`;
     }
 }
 class SnakeVM extends doric.ViewModel {
@@ -339,7 +350,6 @@ class SnakeVM extends doric.ViewModel {
             this.timerId = setInterval(() => {
                 this.updateState(it => it.step());
                 if (this.getState().state === State.fail) {
-                    doric.loge('Game Over');
                     this.stop();
                 }
             }, 500);
@@ -373,9 +383,82 @@ class SnakeVM extends doric.ViewModel {
             width: state.width * 10,
             height: state.height * 10,
         });
+        doric.storage(context).getItem(hignScoreKey).then(r => {
+            this.updateState(s => {
+                if (r) {
+                    s.highScore = parseInt(r);
+                }
+                else {
+                    s.highScore = 0;
+                }
+            });
+        });
     }
     onBind(state, v) {
         v.bind(state);
+        if (state.state === State.fail) {
+            doric.popover(context).show(doric.vlayout([
+                doric.text({
+                    text: "游戏结束",
+                    textSize: 40,
+                }),
+                doric.hlayout([
+                    doric.text({
+                        text: "继续",
+                        textSize: 30,
+                        padding: {
+                            left: 20,
+                            right: 20,
+                            top: 10,
+                            bottom: 10,
+                        },
+                        border: {
+                            width: 1,
+                            color: doric.Color.BLACK,
+                        },
+                        onClick: () => {
+                            doric.popover(context).dismiss();
+                            this.start();
+                        },
+                    }),
+                    doric.text({
+                        text: "退出",
+                        textSize: 30,
+                        padding: {
+                            left: 20,
+                            right: 20,
+                            top: 10,
+                            bottom: 10,
+                        },
+                        border: {
+                            width: 1,
+                            color: doric.Color.BLACK,
+                        },
+                        onClick: () => {
+                            doric.popover(context).dismiss();
+                            doric.navigator(context).pop();
+                        },
+                    }),
+                ]).apply({
+                    space: 100,
+                    layoutConfig: doric.layoutConfig().fit().configMargin({
+                        bottom: 20
+                    }),
+                }),
+            ]).apply({
+                layoutConfig: doric.layoutConfig().fit().configWidth(doric.LayoutSpec.MOST).configMargin({
+                    top: 300,
+                    left: 20,
+                    right: 20,
+                }),
+                border: {
+                    width: 1,
+                    color: doric.Color.BLACK,
+                },
+                backgroundColor: colors.bgColor,
+                gravity: doric.Gravity.Center,
+            }));
+        }
     }
 }
 let SnakePanel = class SnakePanel extends doric.VMPanel {
