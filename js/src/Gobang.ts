@@ -1,4 +1,4 @@
-import { Stack, hlayout, Group, Color, stack, layoutConfig, LayoutSpec, vlayout, IVLayout, Text, ViewHolder, ViewModel, VMPanel, scroller, modal, text, gravity, Gravity, IHLayout, takeNonNull, View, log, popover } from "doric";
+import { Stack, hlayout, Group, Color, stack, layoutConfig, LayoutSpec, vlayout, IVLayout, Text, ViewHolder, ViewModel, VMPanel, scroller, modal, text, gravity, Gravity, IHLayout, takeNonNull, View, log, popover, navbar } from "doric";
 import { colors } from "./utils";
 
 enum State {
@@ -673,5 +673,8 @@ class Gobang extends VMPanel<GoBangState, GoBangVH> {
     }
     getViewHolderClass() {
         return GoBangVH
+    }
+    onShow() {
+        navbar(context).setHidden(true)
     }
 }

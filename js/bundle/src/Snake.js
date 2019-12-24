@@ -337,9 +337,11 @@ let SnakePanel = class SnakePanel extends doric.VMPanel {
     getViewHolderClass() {
         return SnakeView;
     }
+    onShow() {
+        doric.navbar(context).setHidden(true);
+    }
 };
 SnakePanel = __decorate([
     Entry
 ], SnakePanel);
-//# sourceMappingURL=Snake.js.map
 //# sourceMappingURL=Snake.js.map

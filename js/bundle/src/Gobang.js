@@ -662,9 +662,11 @@ let Gobang = class Gobang extends doric.VMPanel {
     getViewHolderClass() {
         return GoBangVH;
     }
+    onShow() {
+        doric.navbar(context).setHidden(true);
+    }
 };
 Gobang = __decorate([
     Entry
 ], Gobang);
-//# sourceMappingURL=Gobang.js.map
 //# sourceMappingURL=Gobang.js.map

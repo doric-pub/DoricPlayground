@@ -3,22 +3,18 @@ package pub.doric.example;
 
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
+import pub.doric.devkit.DoricDev;
+import pub.doric.devkit.ui.DemoDebugActivity;
 
-import pub.doric.DoricFragment;
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends DemoDebugActivity {
     private final String BUNDLE_NAME = "DoricPlayground";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        String scheme = "assets://src/" + BUNDLE_NAME + ".js";
+        getIntent().putExtra("scheme", scheme);
+        getIntent().putExtra("alias", BUNDLE_NAME);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        if (savedInstanceState == null) {
-            String scheme = "assets://src/" + BUNDLE_NAME + ".js";
-            getIntent().putExtra("scheme", scheme);
-            getIntent().putExtra("alias", BUNDLE_NAME);
-            this.getSupportFragmentManager().beginTransaction().add(R.id.root, new DoricFragment()).commit();
-        }
+        DoricDev.connectDevKit("ws://192.168.11.24:7777");
     }
 }

@@ -1,4 +1,4 @@
-import { text, loge, log, ViewHolder, Stack, ViewModel, Gravity, Text, Color, HLayout, VLayout, Group, VMPanel, LayoutSpec, vlayout, hlayout, takeNonNull, stack } from "doric";
+import { text, loge, log, ViewHolder, Stack, ViewModel, Gravity, Text, Color, HLayout, VLayout, Group, VMPanel, LayoutSpec, vlayout, hlayout, takeNonNull, stack, navigator, navbar } from "doric";
 
 type SnakeNode = {
     x: number
@@ -367,5 +367,8 @@ class SnakePanel extends VMPanel<SnakeModel, SnakeView>{
     }
     getViewHolderClass() {
         return SnakeView
+    }
+    onShow() {
+        navbar(context).setHidden(true)
     }
 }
