@@ -135,18 +135,6 @@ class SnakeModel {
     }
 }
 class SnakeView extends doric.ViewHolder {
-    titleZone() {
-        return doric.hlayout([
-            doric.text({
-                text: "点击下方开始游戏",
-                textSize: 20,
-            }),
-        ]).apply({
-            layoutConfig: doric.layoutConfig().just().configWidth(doric.LayoutSpec.MOST),
-            height: 50,
-            gravity: doric.Gravity.Center,
-        });
-    }
     panelZone() {
         return doric.vlayout([
             doric.stack([
@@ -257,12 +245,12 @@ class SnakeView extends doric.ViewHolder {
     build(root) {
         root.backgroundColor = doric.Color.WHITE;
         doric.vlayout([
-            this.titleZone(),
             this.panelZone(),
             this.controlZone(),
         ]).also(it => {
             it.layoutConfig = doric.layoutConfig().most();
             it.gravity = new doric.Gravity().centerX();
+            it.space = 50;
         }).in(root);
     }
     bind(state) {

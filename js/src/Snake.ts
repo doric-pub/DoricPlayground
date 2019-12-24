@@ -159,18 +159,6 @@ class SnakeView extends ViewHolder {
     right?: View
     score!: Text
     high !: Text
-    titleZone() {
-        return hlayout([
-            text({
-                text: "点击下方开始游戏",
-                textSize: 20,
-            }),
-        ]).apply({
-            layoutConfig: layoutConfig().just().configWidth(LayoutSpec.MOST),
-            height: 50,
-            gravity: Gravity.Center,
-        } as IHLayout)
-    }
 
     panelZone() {
         return vlayout([
@@ -282,12 +270,12 @@ class SnakeView extends ViewHolder {
     build(root: Group): void {
         root.backgroundColor = Color.WHITE
         vlayout([
-            this.titleZone(),
             this.panelZone(),
             this.controlZone(),
         ]).also(it => {
             it.layoutConfig = layoutConfig().most()
             it.gravity = new Gravity().centerX()
+            it.space = 50
         }).in(root)
     }
 
