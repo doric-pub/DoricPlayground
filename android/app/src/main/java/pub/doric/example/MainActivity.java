@@ -3,7 +3,6 @@ package pub.doric.example;
 
 import android.os.Bundle;
 
-import pub.doric.devkit.DoricDev;
 import pub.doric.devkit.ui.DemoDebugActivity;
 
 public class MainActivity extends DemoDebugActivity {
@@ -15,6 +14,5 @@ public class MainActivity extends DemoDebugActivity {
         getIntent().putExtra("scheme", scheme);
         getIntent().putExtra("alias", BUNDLE_NAME);
         super.onCreate(savedInstanceState);
-        DoricDev.connectDevKit("ws://192.168.11.24:7777");
     }
 }
