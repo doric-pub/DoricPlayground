@@ -123,7 +123,7 @@ const LibManager = {
       }
 
       const moduleJSONURL = (name) => `https://ofcncog2cu-dsn.algolia.net/1/indexes/npm-search/${encodeURIComponent(name)}?attributes=types&x-algolia-agent=Algolia%20for%20vanilla%20JavaScript%20(lite)%203.27.1&x-algolia-application-id=OFCNCOG2CU&x-algolia-api-key=f54e21fa3a2a0160595bb058179bfb1e`
-      const unpkgURL = (name, path) => `https://www.unpkg.com/${encodeURIComponent(name)}/${encodeURIComponent(path)}`
+      const unpkgURL = (name, path) => `https://www.unpkg.com/${encodeURIComponent(name)}@next/${encodeURIComponent(path)}`
       const packageJSONURL = (name) => unpkgURL(name, "package.json")
       const errorMsg = (msg, response) => { console.error(`${msg} - will not try again in this session`, response.status, response.statusText, response); debugger }
 
@@ -197,9 +197,7 @@ const LibManager = {
           const wrapped = `declare module "${path}" { ${content} }`
           addLibraryToRuntime(wrapped, path)
         } else {
-          const typelessModule = mod.split("@types/").slice(-1)
-          const wrapped = `declare module "${typelessModule}" { ${content} }`
-          addLibraryToRuntime(wrapped, `node_modules/${mod}/${path}`)
+          addLibraryToRuntime(content, `node_modules/${mod}/${path}`)
         }
       }
 
@@ -224,7 +222,7 @@ const LibManager = {
         if (!responseJSON) { return errorMsg(`Could not get Algolia JSON for the module '${packageName}'`, response) }
 
         if (!responseJSON.types) { return console.log(`There were no types for '${packageName}' - will not try again in this session`) }
-        if (!responseJSON.types.ts) { return console.log(`There were no types for '${packageName}' - will not try again in this session`) }
+        //if (!responseJSON.types.ts) { return console.log(`There were no types for '${packageName}' - will not try again in this session`) }
 
         this.acquireModuleMetadata[packageName] = responseJSON
 
@@ -256,7 +254,25 @@ const LibManager = {
         } else if (responseJSON.types.ts === "definitely-typed") {
           return { mod: responseJSON.types.definitelyTyped, path: "index.d.ts", packageJSON: responseJSON }
         } else {
-          throw "This shouldn't happen"
+          const modPackageURL = packageJSONURL(packageName)
+
+          const response = await fetch(modPackageURL)
+          if (!response.ok) { return errorMsg(`Could not get Package JSON for the module '${packageName}'`, response) }
+
+          const responseJSON = await response.json()
+          if (!responseJSON) { return errorMsg(`Could not get Package JSON for the module '${packageName}'`, response) }
+
+          // Get the path of the root d.ts file
+
+          // non-inferred route
+          let rootTypePath = responseJSON.typing || responseJSON.typings || responseJSON.types
+
+          // Final fallback, to have got here it must have passed in algolia
+          if (!rootTypePath) {
+            rootTypePath = "index.d.ts"
+          }
+
+          return { mod: packageName, path: rootTypePath, packageJSON: responseJSON }
         }
       }
 
@@ -394,12 +410,12 @@ async function main() {
     allowJs: trueInJS,
     declaration: true,
 
-    experimentalDecorators: false,
-    emitDecoratorMetadata: false,
+    experimentalDecorators: true,
+    emitDecoratorMetadata: true,
 
-    target: monaco.languages.typescript.ScriptTarget.ES2017,
+    target: monaco.languages.typescript.ScriptTarget.ES2015,
     jsx: monaco.languages.typescript.JsxEmit.None,
-    module: monaco.languages.typescript.ModuleKind.ESNext,
+    module: monaco.languages.typescript.ModuleKind.CommonJS,
   };
 
   const urlDefaults = Object.entries(defaultCompilerOptions).reduce(
@@ -505,7 +521,7 @@ async function main() {
     fetchTooltips: async function () {
       try {
         this.toggleSpinner(true);
-        const res = await fetch(`${window.CONFIG.siteRoot}/play/schema/tsconfig.json`);
+        const res = await fetch(`${window.CONFIG.siteRoot}/tsconfig.json`);
         if (!res.ok) return
 
         const json = await res.json();
