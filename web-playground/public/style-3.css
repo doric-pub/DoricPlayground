@@ -62,18 +62,20 @@ subheader a {
   display: flex;
   margin-left: 20px;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 #output {
-  flex: 1;
+  visibility: hidden;
 }
 
 #doric {
   width:411px;
   height:823px;
-  border-color: #3771EF;
-  border-width: 1px;
-  border-style: solid;
+  box-shadow: 0px 0px 5px #888888;
+  border-radius: 15px;
+  overflow: hidden;
 }
 
 #version {
