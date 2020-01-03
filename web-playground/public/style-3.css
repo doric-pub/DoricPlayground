@@ -50,16 +50,30 @@ subheader a {
   display: flex;
   flex: 1;
   margin-top: 10px;
+  flex-direction: row;
 }
 
 #input {
   flex: 1;
-  width: 50%;
+  width: 40%;
+}
+#right {
+  flex: 1;
+  display: flex;
+  margin-left: 20px;
+  flex-direction: row;
 }
 
 #output {
   flex: 1;
-  width: 50%;
+}
+
+#doric {
+  width:411px;
+  height:823px;
+  border-color: #3771EF;
+  border-width: 1px;
+  border-style: solid;
 }
 
 #version {

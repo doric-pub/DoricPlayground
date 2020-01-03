@@ -191,7 +191,7 @@ const LibManager = {
 
         // Now look and grab dependent modules where you need the
         //
-        await getTypeDependenciesForSourceCode(content, mod, path)
+        // await getTypeDependenciesForSourceCode(content, mod, path)
 
         if (isDeno) {
           const wrapped = `declare module "${path}" { ${content} }`
@@ -986,8 +986,14 @@ console.log(message);
     const isJS = window.CONFIG.useJavaScript
     const model = isJS ? State.inputModel : State.outputModel
     setTimeout(() => {
-      eval(model.getValue());
-      UI.showFlashMessage("Code ran. Check the console")
+      const doricNode = document.querySelector("#doric");
+      while (doricNode.lastElementChild) {
+        doricNode.removeChild(doricNode.lastElementChild)
+      }
+      const doricDivNode = new doric_web.DoricElement
+      doricNode.appendChild(doricDivNode)
+      doricDivNode.alias = "DoricPlayground"
+      doricDivNode.load(model.getValue())
     }, 0);
   }
 
