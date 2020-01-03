@@ -6,8 +6,8 @@ const globalishObj = typeof globalThis !== 'undefined' ? globalThis : window || 
 globalishObj.typeDefs = {}
 
 const languageType = ({ isJS }) => isJS ? "javascript" : "typescript"
-const monacoLanguageDefaults = ({isJS}) => isJS ? monaco.languages.typescript.javascriptDefaults : monaco.languages.typescript.typescriptDefaults
-const monacoLanguageWorker = ({isJS}) =>  isJS ? monaco.languages.typescript.getJavaScriptWorker : monaco.languages.typescript.getTypeScriptWorker
+const monacoLanguageDefaults = ({ isJS }) => isJS ? monaco.languages.typescript.javascriptDefaults : monaco.languages.typescript.typescriptDefaults
+const monacoLanguageWorker = ({ isJS }) => isJS ? monaco.languages.typescript.getJavaScriptWorker : monaco.languages.typescript.getTypeScriptWorker
 
 // Don't ever ship this un-commented
 /**  * @type import("monaco-editor")  */
@@ -39,18 +39,18 @@ const LibManager = {
     return parts[parts.length - 1];
   },
 
-  addLib: async function(path, ...args) {
+  addLib: async function (path, ...args) {
     if (path.indexOf("http") === 0) {
       return this._addRemoteLib(path, ...args);
     }
     return this._addCoreLib(path, ...args);
   },
 
-  _addCoreLib: async function(fileName, ...args) {
+  _addCoreLib: async function (fileName, ...args) {
     return this._addRemoteLib(`${this.coreLibPath}${fileName}`, ...args);
   },
 
-  _addRemoteLib: async function(url, stripNoDefaultLib = true, followReferences = true) {
+  _addRemoteLib: async function (url, stripNoDefaultLib = true, followReferences = true) {
     const fileName = this.basename(url);
 
     if (this.libs[fileName]) {
@@ -94,13 +94,13 @@ const LibManager = {
   /**
    * @param {string} sourceCode
    */
-  detectNewImportsToAcquireTypeFor: async function(sourceCode) {
+  detectNewImportsToAcquireTypeFor: async function (sourceCode) {
 
-   /**
-   * @param {string} sourceCode
-   * @param {string | undefined} mod
-   * @param {string | undefined} path
-   */
+    /**
+    * @param {string} sourceCode
+    * @param {string | undefined} mod
+    * @param {string | undefined} path
+    */
     const getTypeDependenciesForSourceCode = async (sourceCode, mod, path) => {
       // TODO: debounce
       //
@@ -178,7 +178,7 @@ const LibManager = {
        * @param {string} mod The module name
        * @param {string} path  The path to the root def type
        */
-      const addModuleToRuntime =  async (mod, path) => {
+      const addModuleToRuntime = async (mod, path) => {
         const isDeno = path && path.indexOf("https://") === 0
 
         const dtsFileURL = isDeno ? path : unpkgURL(mod, path)
@@ -205,26 +205,26 @@ const LibManager = {
 
 
 
-        /**
-         * Takes a module import, then uses both the algolia API and the the package.json to derive
-         * the root type def path.
-         *
-         * @param {string} packageName
-         * @returns {Promise<{ mod: string, path: string, packageJSON: any }>}
-         */
+      /**
+       * Takes a module import, then uses both the algolia API and the the package.json to derive
+       * the root type def path.
+       *
+       * @param {string} packageName
+       * @returns {Promise<{ mod: string, path: string, packageJSON: any }>}
+       */
       const getModuleAndRootDefTypePath = async (packageName) => {
 
         // For modules
         const url = moduleJSONURL(packageName)
 
         const response = await fetch(url)
-        if (!response.ok) { return errorMsg(`Could not get Algolia JSON for the module '${packageName}'`,  response) }
+        if (!response.ok) { return errorMsg(`Could not get Algolia JSON for the module '${packageName}'`, response) }
 
         const responseJSON = await response.json()
         if (!responseJSON) { return errorMsg(`Could not get Algolia JSON for the module '${packageName}'`, response) }
 
-        if (!responseJSON.types) { return console.log(`There were no types for '${packageName}' - will not try again in this session`)  }
-        if (!responseJSON.types.ts) { return console.log(`There were no types for '${packageName}' - will not try again in this session`)  }
+        if (!responseJSON.types) { return console.log(`There were no types for '${packageName}' - will not try again in this session`) }
+        if (!responseJSON.types.ts) { return console.log(`There were no types for '${packageName}' - will not try again in this session`) }
 
         this.acquireModuleMetadata[packageName] = responseJSON
 
@@ -253,7 +253,7 @@ const LibManager = {
           }
 
           return { mod: packageName, path: rootTypePath, packageJSON: responseJSON }
-        } else if(responseJSON.types.ts === "definitely-typed") {
+        } else if (responseJSON.types.ts === "definitely-typed") {
           return { mod: responseJSON.types.definitelyTyped, path: "index.d.ts", packageJSON: responseJSON }
         } else {
           throw "This shouldn't happen"
@@ -274,16 +274,16 @@ const LibManager = {
       const mapRelativePath = (outerModule, moduleDeclaration, currentPath) => {
         // https://stackoverflow.com/questions/14780350/convert-relative-path-to-absolute-using-javascript
         function absolute(base, relative) {
-          if(!base) return relative
+          if (!base) return relative
 
           const stack = base.split("/")
           const parts = relative.split("/");
           stack.pop(); // remove current file name (or empty string)
 
           for (var i = 0; i < parts.length; i++) {
-              if (parts[i] == ".") continue;
-              if (parts[i] == "..") stack.pop();
-              else stack.push(parts[i]);
+            if (parts[i] == ".") continue;
+            if (parts[i] == "..") stack.pop();
+            else stack.push(parts[i]);
           }
           return stack.join("/");
         }
@@ -299,19 +299,19 @@ const LibManager = {
         if (isPackageRootImport) {
           return moduleDeclaration
         } else {
-          return  `${outerModule}-${mapRelativePath(outerModule, moduleDeclaration, currentPath)}`
+          return `${outerModule}-${mapRelativePath(outerModule, moduleDeclaration, currentPath)}`
         }
       }
 
 
       /** @type {string[]} */
-      const filteredModulesToLookAt =  Array.from(foundModules)
+      const filteredModulesToLookAt = Array.from(foundModules)
 
       filteredModulesToLookAt.forEach(async name => {
         // Support grabbing the hard-coded node modules if needed
         const moduleToDownload = mapModuleNameToModule(name)
 
-        if (!mod && moduleToDownload.startsWith(".") ) {
+        if (!mod && moduleToDownload.startsWith(".")) {
           return console.log("Can't resolve local relative dependencies")
         }
 
@@ -452,17 +452,17 @@ async function main() {
     <span class="select-label">${title}</span>
   <select onchange="console.log(event.target.value); UI.updateCompileOptions('${compilerOption}', ${globalPath}[event.target.value]); event.stopPropagation();">
   ${Object.keys(obj)
-    .filter(key => isNaN(Number(key)))
-    .map(key => {
-      if (key === "Latest") {
-        // hide Latest
-        return "";
-      }
+        .filter(key => isNaN(Number(key)))
+        .map(key => {
+          if (key === "Latest") {
+            // hide Latest
+            return "";
+          }
 
-      const isSelected = obj[key] === compilerOptions[compilerOption];
+          const isSelected = obj[key] === compilerOptions[compilerOption];
 
-      return `<option ${isSelected ? "selected" : ""} value="${key}">${key}</option>`;
-    })}
+          return `<option ${isSelected ? "selected" : ""} value="${key}">${key}</option>`;
+        })}
   </select>
   </label>`;
   }
@@ -500,17 +500,13 @@ async function main() {
       if (location.hash.startsWith("#show-examples")) {
         document.getElementById("examples").parentElement.children[0].click()
       }
-
-      if (location.hash.startsWith("#show-whatisnew")) {
-        document.getElementById("whatisnew").parentElement.children[0].click()
-      }
     },
 
-    fetchTooltips: async function() {
+    fetchTooltips: async function () {
       try {
         this.toggleSpinner(true);
         const res = await fetch(`${window.CONFIG.siteRoot}/play/schema/tsconfig.json`);
-        if(!res.ok) return
+        if (!res.ok) return
 
         const json = await res.json();
         this.toggleSpinner(false);
@@ -523,33 +519,6 @@ async function main() {
         console.error(e);
         // not critical
       }
-    },
-
-    renderAvailableVersions() {
-      const node = document.querySelector("#versions");
-      const html = `
-
-    ${Object.keys(window.CONFIG.availableTSVersions)
-      .filter(v => v !== "Nightly" && !window.CONFIG.availableTSVersions[v].hide)
-      .sort()
-      .reverse()
-      .map(version => {
-        return `<li class="button" onclick="javascript:UI.selectVersion('${version}');"><a href="#">${version}</a></li>`;
-      })
-      .join("\n")}
-
-      <li role="separator" class="divider"></li>
-      <li class="button" onclick="javascript:UI.selectVersion('Nightly');"><a href="#">Nightly</a></li>
-    `;
-
-      node.innerHTML = html;
-    },
-
-    renderVersion() {
-      const childNode = document.querySelector("#active-version");
-      childNode.innerHTML = `v${window.CONFIG.TSVersion} <span class="caret"></span>`;
-
-      this.toggleSpinner(false);
     },
 
     toggleSpinner(shouldShow) {
@@ -607,14 +576,14 @@ async function main() {
     <p>Compiler options from the TS Config</p>
     <ul style="margin-top: 1em;">
     ${Object.entries(compilerOptions)
-      .filter(([_, value]) => typeof value === "boolean")
-      .map(([key, value]) => {
-        return `<li style="margin: 0; padding: 0; ${isJS ? "opacity: 0.5" : ""}" title="${UI.tooltips[key] ||
-          ""}"><label class="button" style="user-select: none; display: block;"><input class="pointer" onchange="javascript:UI.updateCompileOptions(event.target.name, event.target.checked);event.stopPropagation();" name="${key}" type="checkbox" ${
-          value ? "checked" : ""
-        }></input>${key}</label></li>`;
-      })
-      .join("\n")}
+          .filter(([_, value]) => typeof value === "boolean")
+          .map(([key, value]) => {
+            return `<li style="margin: 0; padding: 0; ${isJS ? "opacity: 0.5" : ""}" title="${UI.tooltips[key] ||
+              ""}"><label class="button" style="user-select: none; display: block;"><input class="pointer" onchange="javascript:UI.updateCompileOptions(event.target.name, event.target.checked);event.stopPropagation();" name="${key}" type="checkbox" ${
+              value ? "checked" : ""
+              }></input>${key}</label></li>`;
+          })
+          .join("\n")}
     </ul>
     <p style="margin-left: 0.5em; margin-top: 1em;">
       <a href="https://www.typescriptlang.org/docs/handbook/compiler-options.html" target="_blank">
@@ -625,7 +594,7 @@ async function main() {
 
       node.innerHTML = html;
 
-      if(nameToFocus) {
+      if (nameToFocus) {
         window.config.querySelector(`input[name=${nameToFocus}]`).focus()
       }
     },
@@ -652,238 +621,8 @@ async function main() {
       return false;
     },
 
-    downloadExamplesTOC: async function() {
-      const examplesTOCHref = `${window.CONFIG.siteRoot}/examplesTOC.json`
-      const res = await fetch(examplesTOCHref);
-      if (res.ok) {
-        const toc = await res.json()
-        const sections = toc.sections
-        const examples = toc.examples
-        const sortedSubSections = toc.sortedSubSections
+    setCodeFromHash: async function () {
 
-        // We've got the JSON representing the TOC
-        // so replace the "loading" html with
-        // a real menu.
-        const exampleMenu = document.getElementById("examples")
-        const whatIsNewMenu = document.getElementById("whatisnew")
-
-        // Set up two equivalent menu dropdowns
-
-        exampleMenu.removeChild(exampleMenu.children[0])
-        whatIsNewMenu.removeChild(whatIsNewMenu.children[0])
-
-        const examplesSectionOL = document.createElement("ol")
-        exampleMenu.appendChild(examplesSectionOL)
-
-        const whatisNewSectionOL = document.createElement("ol")
-        whatIsNewMenu.appendChild(whatisNewSectionOL)
-
-        sections.forEach((s, i) => {
-          const sectionUL = s.whatisnew ? whatisNewSectionOL : examplesSectionOL
-          const sectionBody = s.whatisnew ? whatIsNewMenu : exampleMenu
-
-          // Set up the TS/JS selection links at the top
-          const sectionHeader = document.createElement("li")
-          const sectionAnchor = document.createElement("button")
-          sectionAnchor.textContent = s.name
-          sectionAnchor.classList.add("section-name", "button")
-          sectionHeader.appendChild(sectionAnchor)
-          sectionUL.appendChild(sectionHeader)
-
-          // A wrapper div, which is used to show/hide
-          // the different sets of sections
-          const sectionContent = document.createElement("div")
-          sectionContent.id = s.name.toLowerCase()
-          sectionContent.classList.add("section-content")
-          sectionContent.style.display = i === 0 ? "flex" : "none"
-
-          // Handle clicking on a section title, moved
-          // further down so we can access the corresponding
-          // content section element.
-          sectionAnchor.onclick = (e) => {
-            // Visible selection
-            const allSectionTitles = sectionUL.querySelectorAll(".section-name")
-            for (const title of allSectionTitles) { title.classList.remove("selected") }
-            sectionAnchor.classList.add("selected")
-
-            const allSections = sectionBody.querySelectorAll(".section-content")
-            for (const section of allSections) {
-              section.style.display = "none"
-              section.classList.remove("selected")
-            }
-            sectionContent.style.display = "flex"
-            sectionContent.classList.add("selected")
-
-            if (e && e.stopPropagation) {
-              e.stopPropagation()
-            }
-          }
-
-          const sectionSubtitle = document.createElement("p")
-          sectionSubtitle.innerHTML = s.subtitle
-          sectionSubtitle.style.width = "100%"
-          sectionContent.appendChild(sectionSubtitle)
-
-          // Goes from a flat list of examples, to a
-          // set of keys based on the section with
-          // an array of corresponding examples
-          const sectionDict = {}
-          examples.forEach(e => {
-            // Allow switching a "-" to "." so that titles can have
-            // a dot for version numbers, this own works once.
-            if (e.path[0] !== s.name.replace(".", "-")) return;
-
-            if (sectionDict[e.path[1]]) {
-              sectionDict[e.path[1]].push(e)
-            } else {
-              sectionDict[e.path[1]] = [e]
-            }
-          })
-
-          // Grab the seen examples from your local storage
-          let seenExamples = {}
-          if (localStorage) {
-            const examplesFromLS = localStorage.getItem("examples-seen") || "{}"
-            seenExamples = JSON.parse(examplesFromLS)
-          }
-
-          // Looping through each section inside larger selection set, sorted by the index
-          // of the sortedSubSections array in the toc json
-          Object.keys(sectionDict)
-            .sort( (lhs, rhs) => sortedSubSections.indexOf(lhs) - sortedSubSections.indexOf(rhs))
-            .forEach(sectionName => {
-
-            const section = document.createElement("div")
-            section.classList.add("section-list")
-
-            const sectionTitle = document.createElement("h4")
-            sectionTitle.textContent = sectionName
-            section.appendChild(sectionTitle)
-
-            const sectionExamples = sectionDict[sectionName]
-            const sectionExampleContainer = document.createElement("ol")
-
-            sectionExamples.sort( (lhs, rhs) => lhs.sortIndex - rhs.sortIndex).forEach(e => {
-              const example = document.createElement("li")
-
-              const exampleName = document.createElement("a")
-              exampleName.textContent = e.title
-              exampleName.classList.add("example-link")
-
-              const isJS = e.name.indexOf(".js") !== -1
-              const prefix = isJS ? "useJavaScript=true" : ""
-
-              const hash = "example/" + e.id
-              // the e: rand(200) is so that each link has a unique querystring which will force a reload, unlike the hash
-              const params = Object.assign(e.compilerSettings || {}, { e: Math.round(Math.random() * 200) })
-              const query = prefix + objectToQueryParams(params)
-              const newLocation = `${document.location.protocol}//${document.location.host}${document.location.pathname}?${query}#${hash}`
-              exampleName.href = newLocation
-              exampleName.title = "Open the example " +  e.title
-
-              // To help people keep track of what they've seen,
-              // we keep track of what examples they've seen and
-              // what the SHA was at the time. This makes it feasible
-              // for someone to work their way through the whole set
-              const exampleSeen = document.createElement("div") // circle
-              exampleSeen.classList.add("example-indicator")
-              const seenHash = seenExamples[e.id]
-              if (seenHash) {
-                const isSame = seenHash === e.hash
-                exampleSeen.classList.add(isSame ? "done" : "changed")
-                exampleSeen.title = isSame ? "Seen example already" : "Seen example, but sample has changed since"
-              }
-
-              example.appendChild(exampleName)
-              example.appendChild(exampleSeen)
-
-              sectionExampleContainer.appendChild(example)
-            })
-
-            section.appendChild(sectionExampleContainer)
-            sectionContent.appendChild(section)
-            sectionBody.appendChild(sectionContent)
-          })
-        })
-
-      }
-      // set the first selection by default
-      const sections = document.getElementsByClassName("section-name")
-      if (!sections[0]) {
-        console.warn("In dev mode you need to save a file in the examples to get the changes into the dev folder")
-      } else {
-        const exampleMenu = document.getElementById("examples")
-        const whatIsNewMenu = document.getElementById("whatisnew")
-
-        exampleMenu.querySelector(".section-name").onclick()
-        whatIsNewMenu.querySelector(".section-name").onclick()
-      }
-    },
-
-    selectExample: async function(exampleName) {
-      try {
-        const examplesTOCHref = "/examplesTOC.json"
-        const res = await fetch(examplesTOCHref);
-        if (!res.ok) {
-          console.error("Could not fetch example TOC")
-          return
-        }
-
-        const toc = await res.json()
-        const example = toc.examples.find(e => e.id === exampleName)
-        if (!example) {
-          State.inputModel.setValue(`// Could not find example with id: ${exampleName} in\n// ${document.location.protocol}//${document.location.host}${examplesTOCHref}`);
-          return
-        }
-
-
-        const codeRes = await fetch(`/ex/en/${example.path.join("/")}/${encodeURIComponent(example.name)}`,);
-        let code = await codeRes.text();
-
-        // Handle removing the compiler settings stuff
-        if (code.startsWith("//// {")) {
-          code = code.split("\n").slice(1).join("\n");
-        }
-
-        // Update the localstorage showing that you've seen this page
-        if (localStorage) {
-          const seenText = localStorage.getItem("examples-seen") || "{}"
-          const seen = JSON.parse(seenText)
-          seen[example.id] = example.hash
-          localStorage.setItem("examples-seen", JSON.stringify(seen))
-        }
-
-        // Set the menu to be the same section as this current example
-        // this happens behind the scene and isn't visible till you hover
-        const sectionTitle = example.path[0]
-        const allSectionTitles = document.getElementsByClassName("section-name")
-        for (const title of allSectionTitles) {
-          if (title.textContent === sectionTitle)  { title.onclick({}) }
-        }
-
-        const allLinks = document.getElementsByClassName("example-link")
-        for (const link of allLinks) {
-          if (link.textContent === example.title) {
-            link.classList.add("highlight")
-          }
-        }
-
-        document.title = "TypeScript Playground - " + example.title
-
-        UI.shouldUpdateHash = false
-        State.inputModel.setValue(code.trim());
-        UI.shouldUpdateHash = true
-
-      } catch (e) {
-        console.log(e);
-      }
-    },
-
-    setCodeFromHash: async function() {
-      if (location.hash.startsWith("#example")) {
-        const exampleName = location.hash.replace("#example/", "").trim();
-        UI.selectExample(exampleName);
-      }
     },
 
     refreshOutput() {
@@ -969,7 +708,7 @@ async function main() {
       let inputCode = inputEditor.getValue();
       State.inputModel.dispose();
 
-      const language = languageType({ isJS:window.CONFIG.useJavaScript })
+      const language = languageType({ isJS: window.CONFIG.useJavaScript })
       State.inputModel = monaco.editor.createModel(inputCode, language, createFile(compilerOptions));
       inputEditor.setModel(State.inputModel);
 
@@ -1002,7 +741,7 @@ async function main() {
       }
 
       return `
-const message: string = 'hello world';
+const message: string = 'hello doric';
 console.log(message);
   `.trim();
     },
@@ -1069,24 +808,24 @@ console.log(message);
       copyButton.onclick = copy
 
       // Support hiding the modal via escape
-      document.onkeydown = function(evt) {
+      document.onkeydown = function (evt) {
         evt = evt || window.event;
         var isEscape = false;
         if ("key" in evt) {
-            isEscape = (evt.key === "Escape" || evt.key === "Esc");
+          isEscape = (evt.key === "Escape" || evt.key === "Esc");
         } else {
-            isEscape = (evt.keyCode === 27);
+          isEscape = (evt.keyCode === 27);
         }
         if (isEscape) {
-            close()
+          close()
         }
-    };
+      };
 
     }
   };
 
   window.MonacoEnvironment = {
-    getWorkerUrl: function(workerId, label) {
+    getWorkerUrl: function (workerId, label) {
       return `worker.js?version=${window.CONFIG.getMonacoVersion()}&editorModule=${window.CONFIG.getMonacoModule()}`;
     },
   };
@@ -1098,7 +837,7 @@ console.log(message);
   const defaults = monacoLanguageDefaults({ isJS: window.CONFIG.useJavaScript })
   defaults.setCompilerOptions(compilerOptions)
 
-  const language = languageType({ isJS:  window.CONFIG.useJavaScript })
+  const language = languageType({ isJS: window.CONFIG.useJavaScript })
   State.inputModel = monaco.editor.createModel(UI.getInitialCode(), language, createFile(compilerOptions));
 
   const outputDefault = window.CONFIG.useJavaScript ? "// Using JavaScript, no compilation needed." : ""
@@ -1117,14 +856,14 @@ console.log(message);
     {
       openerService: {
         registerOpener: () => { },
-        registerValidator: () => {},
+        registerValidator: () => { },
         // Override the custom http url opener to open in the current tab
         open: (resource, _options) => {
           const url = decodeURIComponent(resource.toString())
           const sameSite = url.includes(document.location.host)
           document.location = url
           if (sameSite) {
-             document.location.reload()
+            document.location.reload()
           }
         }
       }
@@ -1164,20 +903,18 @@ console.log(message);
     getWorkerProcess().then(worker => {
       worker(State.inputModel.uri).then((client, a) => {
         if (typeof window.client === "undefined") {
-          UI.renderVersion();
-
           // expose global
           window.client = client;
           UI.console();
         }
 
         const userInput = State.inputModel
-        const sourceCode =  userInput.getValue()
+        const sourceCode = userInput.getValue()
         LibManager.detectNewImportsToAcquireTypeFor(sourceCode)
 
-        if(!isJS || UI.allowJSDeclarations) {
+        if (!isJS || UI.allowJSDeclarations) {
           client.getEmitOutput(userInput.uri.toString()).then(result => {
-            const filename = isJS ? "input.d.ts": "input.js"
+            const filename = isJS ? "input.d.ts" : "input.js"
             const emitFile = result.outputFiles.find(f => f.name.includes(filename)) || result.outputFiles[0]
 
             let outputText = emitFile.text
@@ -1205,7 +942,6 @@ console.log(message);
     UI.renderSettings();
   });
 
-  UI.downloadExamplesTOC()
   UI.openDropdownsOnLaunchIfNeeded()
 
   updateOutput();
@@ -1213,8 +949,6 @@ console.log(message);
     updateOutput();
   });
   UI.shouldUpdateHash = true;
-
-  UI.renderAvailableVersions();
 
   // You already have these, it's just reaching into the require cache
   require(["vs/language/typescript/tsWorker"], () => {
@@ -1282,7 +1016,7 @@ console.log(message);
     inputEditor.getAction('editor.action.formatDocument').run()
   }
 
-  const exporter = () =>  {
+  const exporter = () => {
     function getScriptTargetText(option) {
       if (option === monaco.languages.typescript.ScriptTarget.None) { return undefined; }
       return monaco.languages.typescript.ScriptTarget[option];
@@ -1299,7 +1033,7 @@ console.log(message);
     }
 
     function getValidCompilerOptions(options) {
-      const {target: targetOption, jsx: jsxOption, module: moduleOption, ...restOptions} = options;
+      const { target: targetOption, jsx: jsxOption, module: moduleOption, ...restOptions } = options;
 
       const targetText = getScriptTargetText(targetOption);
       const jsxText = getJsxEmitText(jsxOption);
@@ -1307,14 +1041,14 @@ console.log(message);
 
       return {
         ...restOptions,
-        ...(targetText && {target: targetText}),
-        ...(jsxText && {jsx: jsxText}),
-        ...(moduleText && {module: moduleText}),
+        ...(targetText && { target: targetText }),
+        ...(jsxText && { jsx: jsxText }),
+        ...(moduleText && { module: moduleText }),
       };
     }
 
     // Based on https://github.com/stackblitz/core/blob/master/sdk/src/generate.ts
-    function createHiddenInput(name, value){
+    function createHiddenInput(name, value) {
       const input = document.createElement('input');
       input.type = 'hidden';
       input.name = name;
@@ -1322,7 +1056,7 @@ console.log(message);
       return input;
     }
 
-    function createProjectForm(project){
+    function createProjectForm(project) {
       const form = document.createElement('form');
 
       form.method = 'POST';
@@ -1332,17 +1066,17 @@ console.log(message);
       form.appendChild(createHiddenInput('project[description]', project.description));
       form.appendChild(createHiddenInput('project[template]', project.template));
 
-      if (project.tags){
+      if (project.tags) {
         project.tags.forEach(tag => {
           form.appendChild(createHiddenInput('project[tags][]', tag));
         });
       }
 
-      if (project.dependencies){
+      if (project.dependencies) {
         form.appendChild(createHiddenInput('project[dependencies]', JSON.stringify(project.dependencies)));
       }
 
-      if (project.settings){
+      if (project.settings) {
         form.appendChild(createHiddenInput('project[settings]', JSON.stringify(project.settings)));
       }
 
@@ -1354,10 +1088,10 @@ console.log(message);
     }
 
     const typescriptVersion = (window.ts && window.ts.version) || window.CONFIG.TSVersion
-    const stringifiedCompilerOptions = JSON.stringify({ compilerOptions: getValidCompilerOptions(compilerOptions)}, null, "  ");
+    const stringifiedCompilerOptions = JSON.stringify({ compilerOptions: getValidCompilerOptions(compilerOptions) }, null, "  ");
 
     // TODO: pull deps
-    function openProjectInStackBlitz(){
+    function openProjectInStackBlitz() {
       const project = {
         title: "Playground Export - ",
         description: "123",
@@ -1387,7 +1121,7 @@ console.log(message);
       document.location = `https://ts-ast-viewer.com/${hash}`
     }
 
-    function openProjectInCodeSandbox(){
+    function openProjectInCodeSandbox() {
       const files = {
         "package.json": {
           content: {
@@ -1496,8 +1230,8 @@ ${codify(stringifiedCompilerOptions, "json")}
     }
 
     function copyAsMarkdownIssue() {
-        const markdown = makeMarkdown();
-        UI.showModal(markdown)
+      const markdown = makeMarkdown();
+      UI.showModal(markdown)
     }
 
     function copyForChat() {
@@ -1583,8 +1317,8 @@ function setEditorTheme(theme) {
   const newTheme = theme
     ? theme
     : localStorage
-    ? localStorage.getItem("editor-theme") || "light"
-    : "light";
+      ? localStorage.getItem("editor-theme") || "light"
+      : "light";
   monaco.editor.setTheme(newTheme);
 
   document
