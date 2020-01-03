@@ -271,26 +271,7 @@
     window.CONFIG = {
       availableTSVersions: Object.assign(
         {
-          // https://unpkg.com/monaco-editor/
-          // The TS version is bundled inside monaco-editor, so this config file maps
-          // the version of TS to a specific build of monaco-editor which runs with
-          // that TS version embedded
-          //
-          // For builds which go to typescript-deploys/monaco-editor
-          // see https://github.com/orta/make-monaco-builds
-          //
-          "Nightly": { monaco: "next", module: "@typescript-deploys/monaco-editor" },
           "3.7.2": { monaco: "3.7.2", module: "@typescript-deploys/monaco-editor" },
-          // Don't break old links, but re-direct them to prod, but don't show this in the menus
-          "3.7-Beta": { monaco: "3.7.2", module: "@typescript-deploys/monaco-editor", hide: true },
-          "3.6.3": { monaco: "0.18.1", module: "monaco-editor" },
-          "3.5.1": { monaco: "0.17.1", module: "monaco-editor" },
-          "3.3.3": { monaco: "0.16.1", module: "monaco-editor" },
-          "3.1.6": { monaco: "0.15.6", module: "monaco-editor" },
-          "3.0.1": { monaco: "0.14.3", module: "monaco-editor" },
-          "2.8.1": { monaco: "0.13.1", module: "monaco-editor" },
-          "2.7.2": { monaco: "0.11.1", module: "monaco-editor" },
-          "2.4.1": { monaco: "0.10.0", module: "monaco-editor" },
         },
         {},
       ),
@@ -358,14 +339,6 @@
   <nav class="navbar navbar-sub" style="margin-top: 0px;">
     <div class="container-fluid">
       <ul class="nav navbar-nav">
-        <li class="dropdown version">
-          <a id="active-version" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-            aria-haspopup="true" aria-expanded="false">Version...</a>
-          <ul class="dropdown-menu" id="versions">
-            <li><a href="#">Loading...</a></li>
-          </ul>
-        </li>
-
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
             aria-expanded="false">Config <span class="caret"></span></a>
@@ -378,14 +351,6 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
             aria-expanded="false">Examples <span class="caret"></span></a>
           <ul class="dropdown-menu examples" id="examples">
-            <li><a href="#">Loading Examples...</a></li>
-          </ul>
-        </li>
-
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-            aria-expanded="false">What's new <span class="caret"></span></a>
-          <ul class="dropdown-menu examples" id="whatisnew">
             <li><a href="#">Loading Examples...</a></li>
           </ul>
         </li>
@@ -453,28 +418,7 @@
           <ul class="dropdown-menu">
             <div class="info">
               <p>
-                TypeScript is a typed superset of JavaScript that compiles to
-                plain JavaScript.
-              </p>
-
-              <p style="margin-top: 2em;">
-                Playground allows you to compile TypeScript and see JavaScript
-                output, as well as inspect how your code works in editors like VS Code
-              </p>
-
-              <p style="margin-top: 2em;">
-                This version contains a <em>beta version</em> of type acquisition powered by <a
-                  href="https://algolia.com">Algolia</a>,
-                which will try to download types used by <code>import</code>`s in your code. It's not 100%
-                comprehensive, but
-                it should cover most use cases.
-              </p>
-
-              <p style="margin-top: 2em;">
-                Adapted from <a href="https://github.com/agentcooper/typescript-play">agentcooper/typescript-play</a>
-                with
-                code viewable at <a
-                  href="https://github.com/orta/typescript-play/tree/old-site-integration">orta/typescript-play</a>.
+                Doric Playground.
               </p>
             </div>
           </ul>
