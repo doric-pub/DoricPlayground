@@ -451,7 +451,7 @@ async function main() {
     scrollBeyondLastLine: true,
     scrollBeyondLastColumn: 3,
     formatOnType: true,
-    wordWrap: "on",
+    wordWrap: "off",
     fontSize: 16
   };
 
@@ -639,8 +639,163 @@ async function main() {
       return false;
     },
 
-    setCodeFromHash: async function () {
+    downloadExamplesTOC: async function () {
+      const examplesTOCHref = `${window.CONFIG.siteRoot}/examples.json`
+      const res = await fetch(examplesTOCHref);
+      if (res.ok) {
+        const toc = await res.json()
+        const examples = toc.examples
+        // We've got the JSON representing the TOC
+        // so replace the "loading" html with
+        // a real menu.
+        const exampleMenu = document.getElementById("examples")
 
+        // Set up two equivalent menu dropdowns
+
+        exampleMenu.removeChild(exampleMenu.children[0])
+
+        const examplesSectionOL = document.createElement("ol")
+        exampleMenu.appendChild(examplesSectionOL)
+
+
+
+        const sectionUL = examplesSectionOL
+        const sectionBody = exampleMenu
+
+        // Set up the TS/JS selection links at the top
+        const sectionHeader = document.createElement("li")
+        const sectionAnchor = document.createElement("button")
+        sectionAnchor.textContent = "Doric files"
+        sectionAnchor.classList.add("section-name", "button")
+        sectionHeader.appendChild(sectionAnchor)
+        examplesSectionOL.appendChild(sectionHeader)
+
+        // A wrapper div, which is used to show/hide
+        // the different sets of sections
+        const sectionContent = document.createElement("div")
+        sectionContent.id = "doric_files"
+        sectionContent.classList.add("section-content")
+        sectionContent.style.display = "flex"
+
+        // Handle clicking on a section title, moved
+        // further down so we can access the corresponding
+        // content section element.
+        sectionAnchor.onclick = (e) => {
+          // Visible selection
+          const allSectionTitles = sectionUL.querySelectorAll(".section-name")
+          for (const title of allSectionTitles) { title.classList.remove("selected") }
+          sectionAnchor.classList.add("selected")
+
+          const allSections = sectionBody.querySelectorAll(".section-content")
+          for (const section of allSections) {
+            section.style.display = "none"
+            section.classList.remove("selected")
+          }
+          sectionContent.style.display = "flex"
+          sectionContent.classList.add("selected")
+
+          if (e && e.stopPropagation) {
+            e.stopPropagation()
+          }
+        }
+
+        const sectionSubtitle = document.createElement("p")
+        sectionSubtitle.innerHTML = "Examples of Doric"
+        sectionSubtitle.style.width = "100%"
+        sectionContent.appendChild(sectionSubtitle)
+
+        const section = document.createElement("div")
+        section.classList.add("section-list")
+
+        examples.forEach(e => {
+          const sectionExampleContainer = document.createElement("ol")
+          const example = document.createElement("li")
+
+          const exampleName = document.createElement("a")
+          exampleName.textContent = e.title
+          exampleName.classList.add("example-link")
+
+          const hash = "example/" + e.id
+          // the e: rand(200) is so that each link has a unique querystring which will force a reload, unlike the hash
+          const params = Object.assign(e.compilerSettings || {}, { e: Math.round(Math.random() * 200) })
+          const query = objectToQueryParams(params)
+          const newLocation = `${document.location.protocol}//${document.location.host}${document.location.pathname}?${query}#${hash}`
+          exampleName.href = newLocation
+          exampleName.title = "Open the example " + e.title
+          example.appendChild(exampleName)
+          sectionExampleContainer.appendChild(example)
+          section.appendChild(sectionExampleContainer)
+        })
+
+        sectionContent.appendChild(section)
+        sectionBody.appendChild(sectionContent)
+      }
+      // set the first selection by default
+      const sections = document.getElementsByClassName("section-name")
+      if (!sections[0]) {
+        console.warn("In dev mode you need to save a file in the examples to get the changes into the dev folder")
+      } else {
+        const exampleMenu = document.getElementById("examples")
+        exampleMenu.querySelector(".section-name").onclick()
+      }
+    },
+
+    selectExample: async function (exampleId) {
+      try {
+        const examplesTOCHref = `${window.CONFIG.siteRoot}/examples.json`
+        const res = await fetch(examplesTOCHref);
+        if (!res.ok) {
+          console.error("Could not fetch example TOC")
+          return
+        }
+
+        const toc = await res.json()
+        const example = toc.examples.find(e => e.id === exampleId)
+        if (!example) {
+          State.inputModel.setValue(`// Could not find example with id: ${exampleId} in\n// ${document.location.protocol}//${document.location.host}${examplesTOCHref}`);
+          return
+        }
+
+
+        const codeRes = await fetch(`/examples/${example.name}`);
+        let code = await codeRes.text();
+
+        // Handle removing the compiler settings stuff
+        if (code.startsWith("//// {")) {
+          code = code.split("\n").slice(1).join("\n");
+        }
+
+        // Set the menu to be the same section as this current example
+        // this happens behind the scene and isn't visible till you hover
+        const sectionTitle = example.name
+        const allSectionTitles = document.getElementsByClassName("section-name")
+        for (const title of allSectionTitles) {
+          if (title.textContent === sectionTitle) { title.onclick({}) }
+        }
+
+        const allLinks = document.getElementsByClassName("example-link")
+        for (const link of allLinks) {
+          if (link.textContent === example.title) {
+            link.classList.add("highlight")
+          }
+        }
+
+        document.title = "Doric Playground - " + example.title
+
+        UI.shouldUpdateHash = false
+        State.inputModel.setValue(code.trim());
+        UI.shouldUpdateHash = true
+
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    setCodeFromHash: async function () {
+      if (location.hash.startsWith("#example")) {
+        const exampleName = location.hash.replace("#example/", "").trim();
+        UI.selectExample(exampleName);
+      }
     },
 
     refreshOutput() {
@@ -993,7 +1148,7 @@ class HelloDoric extends Panel {
 
   UI.removeLoadingIndicator()
   UI.setCodeFromHash();
-
+  UI.downloadExamplesTOC()
   UI.openDropdownsOnLaunchIfNeeded()
 
   updateOutput();

@@ -54,8 +54,7 @@ subheader a {
 }
 
 #input {
-  flex: 1;
-  width: 40%;
+  width: 60%;
 }
 #right {
   flex: 1;
@@ -322,7 +321,6 @@ label {
 /* Block of sections */
 .examples > div .section-list {
   width: 240px;
-  margin-top: 2em;
 }
 
 .examples > div .section-list ol li {
