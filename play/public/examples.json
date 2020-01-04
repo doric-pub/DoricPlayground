@@ -14,6 +14,26 @@
             "title": "Gobang",
             "name": "Gobang.ts",
             "id": "3"
+        },
+        {
+            "title": "Image",
+            "name": "Image.ts",
+            "id": "4"
+        },
+        {
+            "title": "Modal",
+            "name": "Modal.ts",
+            "id": "5"
+        },
+        {
+            "title": "Storage",
+            "name": "Storage.ts",
+            "id": "6"
+        },
+        {
+            "title": "Popover",
+            "name": "Popover.ts",
+            "id": "7"
         }
     ]
 }
