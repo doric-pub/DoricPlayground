@@ -523,7 +523,7 @@ async function main() {
     fetchTooltips: async function () {
       try {
         this.toggleSpinner(true);
-        const res = await fetch(`${window.CONFIG.siteRoot}/tsconfig.json`);
+        const res = await fetch(`${window.CONFIG.baseUrl}tsconfig.json`);
         if (!res.ok) return
 
         const json = await res.json();
@@ -640,7 +640,7 @@ async function main() {
     },
 
     downloadExamplesTOC: async function () {
-      const examplesTOCHref = `${window.CONFIG.siteRoot}/examples.json`
+      const examplesTOCHref = `${window.CONFIG.baseUrl}examples.json`
       const res = await fetch(examplesTOCHref);
       if (res.ok) {
         const toc = await res.json()
@@ -742,7 +742,7 @@ async function main() {
 
     selectExample: async function (exampleId) {
       try {
-        const examplesTOCHref = `${window.CONFIG.siteRoot}/examples.json`
+        const examplesTOCHref = `${window.CONFIG.baseUrl}examples.json`
         const res = await fetch(examplesTOCHref);
         if (!res.ok) {
           console.error("Could not fetch example TOC")
