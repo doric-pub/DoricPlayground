@@ -932,7 +932,7 @@ class HelloDoric extends Panel {
                 backgroundColor: Color.parse('#70a1ff'),
                 textColor: Color.WHITE,
                 onClick: () => {
-                    number.text = \`${ ++count} \`
+                    number.text = \`\${ ++count} \`
                 },
                 layoutConfig: layoutConfig().just(),
                 width: 200,
