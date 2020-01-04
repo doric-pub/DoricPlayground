@@ -34,6 +34,12 @@
             "title": "Popover",
             "name": "Popover.ts",
             "id": "7"
+        },
+        {
+            "title": "Layouts",
+            "name": "LayoutDemo.ts",
+            "id": "8",
+            "url": "https://raw.githubusercontent.com/doric-pub/Doric/master/doric-demo/src/LayoutDemo.ts"
         }
     ]
 }
