@@ -32,6 +32,10 @@
             "title": "Layouts",
             "name": "LayoutDemo.ts",
             "url": "https://raw.githubusercontent.com/doric-pub/Doric/master/doric-demo/src/LayoutDemo.ts"
+        },
+        {
+            "title": "Draggable",
+            "name": "Draggable.ts"
         }
     ]
 }
