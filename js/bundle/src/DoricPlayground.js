@@ -2,6 +2,12 @@
 
 var doric = require('doric');
 
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 const colors = [
     "#70a1ff",
     "#7bed9f",
@@ -14,13 +20,6 @@ const colors = [
     "#686de0",
     "#30336b",
 ].map(e => doric.Color.parse(e));
-
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
 const files = [
     {
         name: "五子棋",
@@ -45,12 +44,11 @@ let DoricPlayground = class DoricPlayground extends doric.Panel {
                 doric.text({
                     text: "小游戏",
                     textSize: 20,
-                }).apply({
-                    layoutConfig: doric.layoutConfig().fit().configAlignmnet(doric.gravity().centerY()).configMargin({
+                    layoutConfig: doric.layoutConfig().fit().configAlignment(doric.gravity().centerY()).configMargin({
                         left: 15,
-                    })
+                    }),
                 })
-            ]).apply({
+            ], {
                 layoutConfig: doric.layoutConfig().just().configWidth(doric.LayoutSpec.MOST).configMargin({
                     top: 0,
                 }),
@@ -70,24 +68,23 @@ let DoricPlayground = class DoricPlayground extends doric.Panel {
                         text: e.name,
                         textSize: 30,
                         textColor: doric.Color.BLACK,
-                    }).apply({
-                        layoutConfig: doric.layoutConfig().fit().configAlignmnet(doric.gravity().centerY()).configMargin({
+                        layoutConfig: doric.layoutConfig().fit().configAlignment(doric.gravity().centerY()).configMargin({
                             left: 15,
                         })
                     }),
-                ]).apply({
+                ], {
                     layoutConfig: doric.layoutConfig().just().configWidth(doric.LayoutSpec.MOST).configMargin({
                         top: 10,
                         bottom: 10
                     }),
                     height: 50,
                 }),
-                (new doric.Stack).apply({
+                doric.stack([], {
                     layoutConfig: doric.layoutConfig().just().configWidth(doric.LayoutSpec.MOST),
                     height: 1,
                     backgroundColor: colors[3].alpha(0.2),
                 }),
-            ]).apply({
+            ], {
                 layoutConfig: doric.layoutConfig().fit().configWidth(doric.LayoutSpec.MOST),
                 onClick: () => {
                     doric.navigator(context).push(e.url, {
@@ -99,26 +96,22 @@ let DoricPlayground = class DoricPlayground extends doric.Panel {
                 doric.text({
                     text: "待上线",
                     textSize: 20,
-                }).apply({
-                    layoutConfig: doric.layoutConfig().fit().configAlignmnet(doric.gravity().centerY()).configMargin({
+                    layoutConfig: doric.layoutConfig().fit().configAlignment(doric.gravity().centerY()).configMargin({
                         left: 15,
                     })
                 })
-            ]).apply({
+            ], {
                 layoutConfig: doric.layoutConfig().just().configWidth(doric.LayoutSpec.MOST).configMargin({
                     top: 0,
                 }),
                 height: 50,
                 backgroundColor: colors[3].alpha(0.2),
             }),
-        ])
-            .apply({
+        ], {
             layoutConfig: doric.layoutConfig().fit().configWidth(doric.LayoutSpec.MOST)
-        }))
-            .apply({
+        }), {
             layoutConfig: doric.layoutConfig().most()
-        })
-            .in(rootView);
+        }).in(rootView);
     }
 };
 DoricPlayground = __decorate([

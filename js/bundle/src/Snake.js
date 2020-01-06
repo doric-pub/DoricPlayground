@@ -155,7 +155,7 @@ class SnakeView extends doric.ViewHolder {
                     width: 1,
                     color: doric.Color.BLACK,
                 },
-                layoutConfig: doric.layoutConfig().fit().configAlignmnet(doric.Gravity.Center),
+                layoutConfig: doric.layoutConfig().fit().configAlignment(doric.Gravity.Center),
             }),
             doric.hlayout([
                 doric.text({
@@ -180,7 +180,7 @@ class SnakeView extends doric.ViewHolder {
             ]).apply({
                 layoutConfig: doric.layoutConfig().fit()
                     .configWidth(doric.LayoutSpec.MOST)
-                    .configAlignmnet(doric.Gravity.Left).configMargin({ left: 40, right: 40 }),
+                    .configAlignment(doric.Gravity.Left).configMargin({ left: 40, right: 40 }),
                 space: 10,
             }),
         ]).apply({
@@ -266,7 +266,7 @@ class SnakeView extends doric.ViewHolder {
             if (item === undefined) {
                 item = doric.stack([
                     doric.stack([]).apply({
-                        layoutConfig: doric.layoutConfig().just().configAlignmnet(doric.Gravity.Center),
+                        layoutConfig: doric.layoutConfig().just().configAlignment(doric.Gravity.Center),
                         width: 9,
                         height: 9,
                     })

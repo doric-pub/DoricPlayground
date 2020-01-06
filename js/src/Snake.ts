@@ -179,7 +179,7 @@ class SnakeView extends ViewHolder {
                     width: 1,
                     color: Color.BLACK,
                 },
-                layoutConfig: layoutConfig().fit().configAlignmnet(Gravity.Center),
+                layoutConfig: layoutConfig().fit().configAlignment(Gravity.Center),
             }),
             hlayout([
                 text({
@@ -204,7 +204,7 @@ class SnakeView extends ViewHolder {
             ]).apply({
                 layoutConfig: layoutConfig().fit()
                     .configWidth(LayoutSpec.MOST)
-                    .configAlignmnet(Gravity.Left).configMargin({ left: 40, right: 40 }),
+                    .configAlignment(Gravity.Left).configMargin({ left: 40, right: 40 }),
                 space: 10,
             } as IHLayout),
         ]).apply({
@@ -291,7 +291,7 @@ class SnakeView extends ViewHolder {
             if (item === undefined) {
                 item = stack([
                     stack([]).apply({
-                        layoutConfig: layoutConfig().just().configAlignmnet(Gravity.Center),
+                        layoutConfig: layoutConfig().just().configAlignment(Gravity.Center),
                         width: 9,
                         height: 9,
                     })

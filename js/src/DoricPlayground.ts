@@ -1,5 +1,17 @@
-import { Panel, Group, vlayout, layoutConfig, Gravity, IVLayout, text, Text, Color, navbar, navigator, scroller, LayoutSpec, hlayout, gravity, image, Stack, ScaleType } from "doric";
-import { title, colors } from "./utils";
+import { Panel, Group, vlayout, layoutConfig, text, Color, navbar, navigator, scroller, LayoutSpec, hlayout, gravity, image, Stack, ScaleType, stack } from "doric";
+
+const colors = [
+    "#70a1ff",
+    "#7bed9f",
+    "#ff6b81",
+    "#a4b0be",
+    "#f0932b",
+    "#eb4d4b",
+    "#6ab04c",
+    "#e056fd",
+    "#686de0",
+    "#30336b",
+].map(e => Color.parse(e))
 
 const files = [
     {
@@ -25,86 +37,96 @@ class DoricPlayground extends Panel {
         scroller(
             vlayout(
                 [
-                    hlayout([
-                        text({
-                            text: "小游戏",
-                            textSize: 20,
-                        }).apply({
-                            layoutConfig: layoutConfig().fit().configAlignmnet(gravity().centerY()).configMargin({
-                                left: 15,
+                    hlayout(
+                        [
+                            text({
+                                text: "小游戏",
+                                textSize: 20,
+                                layoutConfig: layoutConfig().fit().configAlignment(gravity().centerY()).configMargin({
+                                    left: 15,
+                                }),
                             })
-                        })
-                    ]).apply({
-                        layoutConfig: layoutConfig().just().configWidth(LayoutSpec.MOST).configMargin({
-                            top: 0,
-                        }),
-                        height: 50,
-                        backgroundColor: colors[3].alpha(0.2),
-                    }),
-                    ...files.map(e =>
-                        vlayout([
-                            hlayout([
-                                image({
-                                    imageBase64: e.icon,
-                                    layoutConfig: layoutConfig().just(),
-                                    width: 50,
-                                    height: 50,
-                                    scaleType: ScaleType.ScaleAspectFit,
-                                }),
-                                text({
-                                    text: e.name,
-                                    textSize: 30,
-                                    textColor: Color.BLACK,
-                                }).apply({
-                                    layoutConfig: layoutConfig().fit().configAlignmnet(gravity().centerY()).configMargin({
-                                        left: 15,
-                                    })
-                                }),
-                            ]).apply({
-                                layoutConfig: layoutConfig().just().configWidth(LayoutSpec.MOST).configMargin({
-                                    top: 10,
-                                    bottom: 10
-                                }),
-                                height: 50,
+                        ],
+                        {
+                            layoutConfig: layoutConfig().just().configWidth(LayoutSpec.MOST).configMargin({
+                                top: 0,
                             }),
-                            (new Stack).apply({
-                                layoutConfig: layoutConfig().just().configWidth(LayoutSpec.MOST),
-                                height: 1,
-                                backgroundColor: colors[3].alpha(0.2),
-                            }),
-                        ]).apply({
-                            layoutConfig: layoutConfig().fit().configWidth(LayoutSpec.MOST),
-                            onClick: () => {
-                                navigator(context).push(e.url, {
-                                    alias: e.alias,
-                                })
-                            },
-                        }),
+                            height: 50,
+                            backgroundColor: colors[3].alpha(0.2),
+                        }
                     ),
-                    hlayout([
-                        text({
-                            text: "待上线",
-                            textSize: 20,
-                        }).apply({
-                            layoutConfig: layoutConfig().fit().configAlignmnet(gravity().centerY()).configMargin({
-                                left: 15,
+                    ...files.map(e =>
+                        vlayout(
+                            [
+                                hlayout(
+                                    [
+                                        image({
+                                            imageBase64: e.icon,
+                                            layoutConfig: layoutConfig().just(),
+                                            width: 50,
+                                            height: 50,
+                                            scaleType: ScaleType.ScaleAspectFit,
+                                        }),
+                                        text({
+                                            text: e.name,
+                                            textSize: 30,
+                                            textColor: Color.BLACK,
+                                            layoutConfig: layoutConfig().fit().configAlignment(gravity().centerY()).configMargin({
+                                                left: 15,
+                                            })
+                                        }),
+                                    ],
+                                    {
+                                        layoutConfig: layoutConfig().just().configWidth(LayoutSpec.MOST).configMargin({
+                                            top: 10,
+                                            bottom: 10
+                                        }),
+                                        height: 50,
+                                    }),
+                                stack(
+                                    [],
+                                    {
+                                        layoutConfig: layoutConfig().just().configWidth(LayoutSpec.MOST),
+                                        height: 1,
+                                        backgroundColor: colors[3].alpha(0.2),
+                                    }),
+                            ],
+                            {
+                                layoutConfig: layoutConfig().fit().configWidth(LayoutSpec.MOST),
+                                onClick: () => {
+                                    navigator(context).push(e.url, {
+                                        alias: e.alias,
+                                    })
+                                },
+                            }
+                        ),
+                    ),
+                    hlayout(
+                        [
+                            text({
+                                text: "待上线",
+                                textSize: 20,
+                                layoutConfig: layoutConfig().fit().configAlignment(gravity().centerY()).configMargin({
+                                    left: 15,
+                                })
                             })
-                        })
-                    ]).apply({
-                        layoutConfig: layoutConfig().just().configWidth(LayoutSpec.MOST).configMargin({
-                            top: 0,
+                        ],
+                        {
+                            layoutConfig: layoutConfig().just().configWidth(LayoutSpec.MOST).configMargin({
+                                top: 0,
+                            }),
+                            height: 50,
+                            backgroundColor: colors[3].alpha(0.2),
                         }),
-                        height: 50,
-                        backgroundColor: colors[3].alpha(0.2),
-                    }),
-                ])
-                .apply({
+                ],
+                {
                     layoutConfig: layoutConfig().fit().configWidth(LayoutSpec.MOST)
-                }))
-            .apply({
+                }
+            ),
+            {
                 layoutConfig: layoutConfig().most()
-            })
-            .in(rootView)
+            }
+        ).in(rootView)
     }
 
 }

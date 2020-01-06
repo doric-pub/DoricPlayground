@@ -1,5 +1,17 @@
 import { Stack, hlayout, Group, Color, stack, layoutConfig, LayoutSpec, vlayout, IVLayout, Text, ViewHolder, ViewModel, VMPanel, scroller, modal, text, gravity, Gravity, IHLayout, takeNonNull, View, log, popover, navbar } from "doric";
-import { colors } from "./utils";
+
+const colors = [
+    "#70a1ff",
+    "#7bed9f",
+    "#ff6b81",
+    "#a4b0be",
+    "#f0932b",
+    "#eb4d4b",
+    "#6ab04c",
+    "#e056fd",
+    "#686de0",
+    "#30336b",
+].map(e => Color.parse(e))
 
 enum State {
     Unspecified,
