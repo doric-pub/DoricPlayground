@@ -7,7 +7,7 @@ class HelloDoric extends Panel {
         vlayout(
             [
                 image({
-                    imageUrl: './favicon.ico'
+                    imageUrl: 'https://doric.pub/logo.png'
                 }),
                 text({
                     text: "Hello,    Doric",
