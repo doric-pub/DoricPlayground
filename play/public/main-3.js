@@ -715,7 +715,7 @@ async function main() {
           exampleName.textContent = e.title
           exampleName.classList.add("example-link")
 
-          const hash = "example/" + e.id
+          const hash = "example/" + e.name
           // the e: rand(200) is so that each link has a unique querystring which will force a reload, unlike the hash
           const params = Object.assign(e.compilerSettings || {}, { e: Math.round(Math.random() * 200) })
           const query = objectToQueryParams(params)
@@ -750,14 +750,14 @@ async function main() {
         }
 
         const toc = await res.json()
-        const example = toc.examples.find(e => e.id === exampleId)
+        const example = toc.examples.find(e => e.name === exampleId)
         if (!example) {
           State.inputModel.setValue(`// Could not find example with id: ${exampleId} in\n// ${document.location.protocol}//${document.location.host}${examplesTOCHref}`);
           return
         }
 
 
-        const codeRes = await fetch(example.url || `${window.CONFIG.baseUrl}examples/${example.name}`);
+        const codeRes = await fetch(example.url || `${window.CONFIG.siteRoot}/js/src/${example.name}`);
         let code = await codeRes.text();
 
         // Handle removing the compiler settings stuff

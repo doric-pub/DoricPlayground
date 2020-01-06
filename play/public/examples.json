@@ -2,43 +2,35 @@
     "examples": [
         {
             "title": "HelloDoric",
-            "name": "HelloDoric.ts",
-            "id": "1"
+            "name": "HelloDoric.ts"
         },
         {
             "title": "Counter",
-            "name": "Counter.ts",
-            "id": "2"
+            "name": "Counter.ts"
         },
         {
             "title": "Gobang",
-            "name": "Gobang.ts",
-            "id": "3"
+            "name": "Gobang.ts"
         },
         {
             "title": "Image",
-            "name": "Image.ts",
-            "id": "4"
+            "name": "Image.ts"
         },
         {
             "title": "Modal",
-            "name": "Modal.ts",
-            "id": "5"
+            "name": "Modal.ts"
         },
         {
             "title": "Storage",
-            "name": "Storage.ts",
-            "id": "6"
+            "name": "Storage.ts"
         },
         {
             "title": "Popover",
-            "name": "Popover.ts",
-            "id": "7"
+            "name": "Popover.ts"
         },
         {
             "title": "Layouts",
             "name": "LayoutDemo.ts",
-            "id": "8",
             "url": "https://raw.githubusercontent.com/doric-pub/Doric/master/doric-demo/src/LayoutDemo.ts"
         }
     ]

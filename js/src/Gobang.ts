@@ -1,4 +1,4 @@
-import { Stack, hlayout, Group, Color, stack, layoutConfig, LayoutSpec, vlayout, IVLayout, Text, ViewHolder, ViewModel, VMPanel, scroller, modal, text, gravity, Gravity, IHLayout, takeNonNull, View, log, popover, navbar } from "doric";
+import { Stack, hlayout, Group, Color, stack, layoutConfig, LayoutSpec, vlayout, IVLayout, Text, ViewHolder, ViewModel, VMPanel, scroller, modal, text, gravity, Gravity, IHLayout, takeNonNull, View, log, popover } from "doric";
 
 const colors = [
     "#70a1ff",
@@ -685,8 +685,5 @@ class Gobang extends VMPanel<GoBangState, GoBangVH> {
     }
     getViewHolderClass() {
         return GoBangVH
-    }
-    onShow() {
-        navbar(context).setTitle("五子棋")
     }
 }
