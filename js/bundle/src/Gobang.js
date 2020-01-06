@@ -660,9 +660,6 @@ let Gobang = class Gobang extends doric.VMPanel {
     getViewHolderClass() {
         return GoBangVH;
     }
-    onShow() {
-        doric.navbar(context).setTitle("五子棋");
-    }
 };
 Gobang = __decorate([
     Entry
