@@ -3,6 +3,8 @@ package pub.doric.example;
 import android.app.Application;
 
 import pub.doric.Doric;
+import pub.doric.DoricLibrary;
+import pub.doric.DoricRegistry;
 
 /**
  * @Description: pub.doric.example
@@ -14,5 +16,11 @@ public class MainApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Doric.init(this);
+        DoricRegistry.register(new DoricLibrary() {
+            @Override
+            public void load(DoricRegistry registry) {
+                registry.registerNativePlugin(QRCodePlugin.class);
+            }
+        });
     }
 }

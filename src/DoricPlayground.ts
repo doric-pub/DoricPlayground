@@ -1,4 +1,4 @@
-import { Panel, Group, vlayout, layoutConfig, text, Color, navbar, navigator, scroller, LayoutSpec, hlayout, gravity, image, Stack, ScaleType, stack } from "doric";
+import { Panel, Group, vlayout, layoutConfig, text, Color, navbar, navigator, scroller, LayoutSpec, hlayout, gravity, image, View, ScaleType, stack } from "doric";
 
 const colors = [
     "#70a1ff",
@@ -12,6 +12,11 @@ const colors = [
     "#686de0",
     "#30336b",
 ].map(e => Color.parse(e))
+
+const qrcode = {
+    name: "扫一扫",
+    icon: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAYAAAD0eNT6AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALiQAAC4kBN8nLrQAACjNJREFUeJzt2THL3uUdhuEr8talIBadzEfoJIhaMJNLF3FwcRC61NnFot+hRcdunRUyuGhxFKoudvYDxK1Ll5YOATskQ4sULXnN/cTzOOA//66XkIcT7hvbvh1cvg+3vX56xAV5etvfTo+47xfb/n56xAW5ve210yPg+zx2egAA8PAJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAEHR14OZ72748cJfr9fa2F06PAPbFtvdPj+CBvbPtuYd58EQAfLnt9oG7XK/XJwDgEtyZ39Sfgjf2kAPAEwAABAkAAAgSAAAQJAAAIEgAAECQAACAIAEAAEECAACCBAAABAkAAAgSAAAQJAAAIEgAAECQAACAIAEAAEECAACCBAAABAkAAAgSAAAQJAAAIEgAAECQAACAIAEAAEECAACCBAAABAkAAAgSAAAQJAAAIEgAAECQAACAIAEAAEECAACCBAAABAkAAAgSAAAQJAAAIEgAAECQAACAoKvTAy7Q77c9e3rEtve2fXJ6BMADemXbW6dHbPtq27unR1wSAfBdz257+fSIbR+cHgBwDW7uMn5T754ecGk8AQBAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACDo6vSAC/Tetg9Oj9j2l9MDAK7BZ9vePD1i2zenB1waAfBdn5weAPAT8vX9jwvjCQAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABA0NWBm29ve/3AXa7Xr04PALZtL227fXoED+z5h33wRAC8cP8D4MHd3Pba6RE8ejwBAECQAACAIAEAAEECAACCBAAABAkAAAgSAAAQJAAAIEgAAECQAACAIAEAAEECAACCBAAABAkAAAgSAAAQJAAAIEgAAECQAACAIAEAAEECAACCBAAABAkAAAgSAAAQJAAAIEgAAECQAACAoKttH54eAT/Al6cHwA/0+ba7p0cA8NP09LZvL+R78kf+W4EfgScAAAgSAAAQJAAAIEgAAECQAACAIAEAAEECAACCBAAABAkAAAgSAAAQJAAAIEgAAECQAACAIAEAAEECAACCBAAABAkAAAgSAAAQJAAAIEgAAECQAACAIAEAAEECAACCBAAABAkAAAgSAAAQJAAAIEgAAECQAACAIAEAAEECAACCBAAABAkAAAgSAAAQJAAAIEgAAECQAACAIAEAAEECAACCBAAABAkAAAgSAAAQJAAAIEgAAECQAACAIAEAAEECAACCBAAABAkAAAgSAAAQJAAAIEgAAECQAACAIAEAAEECAACCBAAABAkAAAgSAAAQJAAAIEgAAECQAACAIAEAAEECAACCBAAABAkAAAgSAAAQdLXt6dMjgP/bU6cH/Iendu+3hMvyz/sf9zy+7YnTIy7JjW3fnh4BwLX73bY/nB5xQX697c+nR1wSTwAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAEHRj25OnRwBw7f51/+Oen237+ekRAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI+IG9tunx4BP8Dn294/PeKCPLHtT6dH3Pebbf84PeKCvL3txdMj4PtcbXvt9Aj4Ae6eHnBhHt/l/N/97ekBF+bFXc6/DfxPj50eAAA8fAIAAIIEAAAECQAACBIAABAkAAAgSAAAQJAAAIAgAQAAQQIAAIIEAAAECQAACBIAABAkAAAgSAAAQJAAAIAgAQAAQQIAAIIEAAAECQAACBIAABAkAAAgSAAAQJAAAIAgAQAAQQIAAIKuDtz8YtudA3e5Xi9tu3l6BLA7u/e7yqPt1rZnHubBEwHw/rbbB+5yvW5ve+30CGBfbHv99Age2EfbXn2YBz0BAECQAACAIAEAAEECAACCBAAABAkAAAgSAAAQJAAAIEgAAECQAACAIAEAAEECAACCBAAABAkAAAgSAAAQJAAAIEgAAECQAACAIAEAAEECAACCBAAABAkAAAgSAAAQJAAAIEgAAECQAACAIAEAAEECAACCBAAABAkAAAgSAAAQJAAAIEgAAECQAACAIAEAAEECAACCBAAABAkAAAi6Oj3gAr2y7ebpEds+2/b16READ+iX226dHrHtzraPT4+4JALgu97a9vLpEdvenAAAHn23tv3x9Ihtn04A/BdPAAAQJAAAIEgAAECQAACAIAEAAEECAACCBAAABAkAAAgSAAAQJAAAIEgAAECQAACAIAEAAEECAACCBAAABAkAAAgSAAAQJAAAIEgAAECQAACAIAEAAEECAACCBAAABAkAAAgSAAAQJAAAIEgAAECQAACAIAEAAEECAACCBAAABAkAAAi6Oj3gAn217e7pEdu+OT0A4Brc2fbp6RHb/np6wKURAN/17ukBAD8hH9//uDCeAAAgSAAAQJAAAIAgAQAAQQIAAIIEAAAECQAACBIAABAkAAAgSAAAQJAAAIAgAQAAQQIAAIIEAAAECQAACBIAABAkAAAgSAAAQJAAAIAgAQAAQQIAAIIEAAAECQAACBIAABAkAAAgSAAAQJAAAIAgAQAAQQIAAIIEAAAECQAACBIAABAkAAAgSAAAQJAAAIAgAQAAQQIAAIIEAAAEXR24+c62Nw7c5Xo9f3oAsG27te2j0yN4YC887IMnAuC5+x8AD+6Zba+eHsGjxxMAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAEPRvzxFu1wZYgxgAAAAASUVORK5CYII="
+}
 
 const files = [
     {
@@ -34,9 +39,53 @@ class DoricPlayground extends Panel {
         navbar(context).setTitle("Doric Playground")
     }
     build(rootView: Group): void {
+        let scan: View
+        if (Environment.platform == "Android" || Environment.platform == "iOS") {
+            scan = hlayout(
+                [
+                    image({
+                        imageBase64: qrcode.icon,
+                        layoutConfig: layoutConfig().just().configMargin({left: 8, top: 4}),
+                        width: 42,
+                        height: 42,
+                        scaleType: ScaleType.ScaleAspectFit,
+                    }),
+                    text({
+                        text: qrcode.name,
+                        textSize: 30,
+                        textColor: Color.BLACK,
+                        layoutConfig: layoutConfig().fit().configAlignment(gravity().centerY()).configMargin({
+                            left: 15,
+                        })
+                    }),
+                ],
+                {
+                    layoutConfig: layoutConfig().just().configWidth(LayoutSpec.MOST).configMargin({
+                        top: 10,
+                        bottom: 10
+                    }),
+                    height: 50,
+                    onClick: () => {
+                        context.qrcode.scan()
+                    }
+                }
+            )
+        } else {
+            scan = hlayout([])
+        }
+        
         scroller(
             vlayout(
                 [
+                    stack(
+                        [],
+                        {
+                            layoutConfig: layoutConfig().just().configWidth(LayoutSpec.MOST),
+                            height: 1,
+                            backgroundColor: colors[3].alpha(0.2),
+                        }
+                    ),
+                    scan,
                     hlayout(
                         [
                             text({
@@ -117,7 +166,8 @@ class DoricPlayground extends Panel {
                             }),
                             height: 50,
                             backgroundColor: colors[3].alpha(0.2),
-                        }),
+                        }
+                    ),
                 ],
                 {
                     layoutConfig: layoutConfig().fit().configWidth(LayoutSpec.MOST)
