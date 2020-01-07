@@ -758,6 +758,8 @@ async function main() {
 
 
         const codeRes = await fetch(example.url || `${window.CONFIG.siteRoot}/src/${example.name}`);
+        new QRCode(document.getElementById("qrcode"), `${window.CONFIG.siteRoot}/src/${example.name}`);
+        
         let code = await codeRes.text();
 
         // Handle removing the compiler settings stuff

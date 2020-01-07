@@ -260,6 +260,7 @@
     }
   </style>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="qrcode.min.js"></script>
 </head>
 
 <body>
@@ -389,9 +390,7 @@
             aria-expanded="false">QR Code <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <div class="info" id="qrcode_content">
-              <p>
-                Generating QR Code ...
-              </p>
+              <div id="qrcode" style="width: 280px; height: 280px;"></div>
             </div>
           </ul>
         </li>
