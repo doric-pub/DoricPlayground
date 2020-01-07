@@ -20,7 +20,7 @@ android {
 
     sourceSets {
         main {
-            assets.srcDirs = [project.getRootDir().getParent() + "/js/bundle"]
+            assets.srcDirs = [project.getRootDir().getParent() + "/bundle"]
         }
     }
 
@@ -38,6 +38,6 @@ afterEvaluate {
 }
 
 task buildJSBundle(type: Exec) {
-    workingDir project.rootDir.getParent() + "/js"
+    workingDir project.rootDir.getParent()
     commandLine 'doric', 'build'
 }
