@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		8B6AF9DE23C46C4B002F81E5 /* DoricQRCodeLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6AF9DD23C46C4B002F81E5 /* DoricQRCodeLibrary.m */; };
 		8B6AF9E123C46D6D002F81E5 /* DoricQRCodePlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6AF9E023C46D6D002F81E5 /* DoricQRCodePlugin.m */; };
+		8B6AF9E423C47047002F81E5 /* DoricQRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6AF9E323C47047002F81E5 /* DoricQRCodeViewController.m */; };
 		95EDDB7EAB47A65821DBC7EC /* Pods_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB59FE64F1D814FD13C71BB2 /* Pods_Example.framework */; };
 		E2B059BF23C452BB007555C7 /* src in Resources */ = {isa = PBXBuildFile; fileRef = E2B059BE23C452BB007555C7 /* src */; };
 		E2F64CEF2399359C0006BD9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E2F64CEE2399359C0006BD9A /* AppDelegate.m */; };
@@ -25,6 +26,8 @@
 		8B6AF9DD23C46C4B002F81E5 /* DoricQRCodeLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DoricQRCodeLibrary.m; sourceTree = "<group>"; };
 		8B6AF9DF23C46D68002F81E5 /* DoricQRCodePlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DoricQRCodePlugin.h; sourceTree = "<group>"; };
 		8B6AF9E023C46D6D002F81E5 /* DoricQRCodePlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DoricQRCodePlugin.m; sourceTree = "<group>"; };
+		8B6AF9E223C47041002F81E5 /* DoricQRCodeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DoricQRCodeViewController.h; sourceTree = "<group>"; };
+		8B6AF9E323C47047002F81E5 /* DoricQRCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DoricQRCodeViewController.m; sourceTree = "<group>"; };
 		AB59FE64F1D814FD13C71BB2 /* Pods_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2B059BE23C452BB007555C7 /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; name = src; path = ../bundle/src; sourceTree = "<group>"; };
 		E2F64CEA2399359C0006BD9A /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -87,6 +90,8 @@
 				8B6AF9DD23C46C4B002F81E5 /* DoricQRCodeLibrary.m */,
 				8B6AF9DF23C46D68002F81E5 /* DoricQRCodePlugin.h */,
 				8B6AF9E023C46D6D002F81E5 /* DoricQRCodePlugin.m */,
+				8B6AF9E223C47041002F81E5 /* DoricQRCodeViewController.h */,
+				8B6AF9E323C47047002F81E5 /* DoricQRCodeViewController.m */,
 				E2F64CF02399359C0006BD9A /* SceneDelegate.h */,
 				E2F64CF12399359C0006BD9A /* SceneDelegate.m */,
 				E2F64CF92399359E0006BD9A /* Assets.xcassets */,
@@ -238,6 +243,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B6AF9E423C47047002F81E5 /* DoricQRCodeViewController.m in Sources */,
 				8B6AF9E123C46D6D002F81E5 /* DoricQRCodePlugin.m in Sources */,
 				E2F64CEF2399359C0006BD9A /* AppDelegate.m in Sources */,
 				E2F64D002399359E0006BD9A /* main.m in Sources */,
