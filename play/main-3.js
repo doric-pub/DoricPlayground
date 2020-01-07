@@ -757,7 +757,7 @@ async function main() {
         }
 
 
-        const codeRes = await fetch(example.url || `${window.CONFIG.siteRoot}/js/src/${example.name}`);
+        const codeRes = await fetch(example.url || `${window.CONFIG.siteRoot}/src/${example.name}`);
         let code = await codeRes.text();
 
         // Handle removing the compiler settings stuff
@@ -1227,6 +1227,13 @@ class HelloDoric extends Panel {
 
   function prettier() {
     inputEditor.getAction('editor.action.formatDocument').run()
+  }
+
+  document.getElementById("qrcode_button").onclick = () => {
+    if (State.outputModel && document.getElementById("qrcode_button").className === "dropdown") {
+      console.log("Generating QR Code", State.outputModel.getValue())
+
+    }
   }
 }
 

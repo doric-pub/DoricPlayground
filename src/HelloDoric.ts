@@ -1,5 +1,4 @@
-import { image, text, Gravity, Color, vlayout, layoutConfig, Panel, Group, IVLayout } from "doric"
-
+import { image, text, Gravity, Color, vlayout, layoutConfig, Panel, Group } from "doric"
 
 @Entry
 class HelloDoric extends Panel {

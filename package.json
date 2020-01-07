@@ -6,7 +6,8 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "build": "tsc -p .&& rollup -c",
         "dev": "tsc -w -p . & rollup -c -w",
-        "clean": "rm -rf build && rm -rf bundle"
+        "clean": "rm -rf build && rm -rf bundle",
+        "start": "serve ./"
     },
     "license": "Apache-2.0",
     "dependencies": {
@@ -15,6 +16,7 @@
         "doric": "^0.2.3",
         "reflect-metadata": "^0.1.13",
         "rollup": "^1.28.0",
+        "serve": "^11.3.0",
         "tslib": "^1.10.0",
         "typescript": "^3.7.4"
     }
