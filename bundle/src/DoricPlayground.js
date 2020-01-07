@@ -44,7 +44,7 @@ let DoricPlayground = class DoricPlayground extends doric.Panel {
     }
     build(rootView) {
         let scan;
-        if (Environment.platform == "h5") {
+        if (Environment.platform == "Android" || Environment.platform == "iOS") {
             scan = doric.hlayout([
                 doric.image({
                     imageBase64: qrcode.icon,

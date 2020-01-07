@@ -9,6 +9,8 @@
 #import "AppDelegate.h"
 #import <DoricCore/Doric.h>
 
+#import "DoricQRCodeLibrary.h"
+
 @interface AppDelegate ()
 @end
 
@@ -16,6 +18,9 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    DoricQRCodeLibrary* library = [[DoricQRCodeLibrary alloc] init];
+    [DoricRegistry register:library];
+    
     NSString *bundleName = @"DoricPlayground";
     DoricViewController *doricViewController = [[DoricViewController alloc] initWithScheme:[NSString stringWithFormat:@"assets://src/%@.js", bundleName]
                                                                                      alias:bundleName
