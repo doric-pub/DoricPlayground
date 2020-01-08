@@ -758,8 +758,6 @@ async function main() {
 
 
         const codeRes = await fetch(example.url || `${window.CONFIG.siteRoot}/src/${example.name}`);
-        new QRCode(document.getElementById("qrcode"), `${window.CONFIG.siteRoot}/src/${example.name}`);
-        
         let code = await codeRes.text();
 
         // Handle removing the compiler settings stuff
@@ -1232,9 +1230,21 @@ class HelloDoric extends Panel {
   }
 
   document.getElementById("qrcode_button").onclick = () => {
-    if (State.outputModel && document.getElementById("qrcode_button").className === "dropdown") {
-      console.log("Generating QR Code", State.outputModel.getValue())
+    const qrHint = document.getElementById("qr_hint")
+    const qrView = document.getElementById("qr_code")
 
+    if (State.outputModel && document.getElementById("qrcode_button").className === "dropdown") {
+      qrHint.style.visibility = "visible"
+      qrView.style.visibility = "hidden"
+      upload(State.outputModel.getValue()).then(url => {
+        qrHint.style.visibility = "hidden"
+        qrView.style.visibility = "visible"
+        while (qrView.firstElementChild) {
+          qrView.removeChild(qrView.firstElementChild)
+        }
+        new QRCode(qrView, url)
+        console.log(`Generated, url is ${url}`)
+      })
     }
   }
 }
@@ -1404,3 +1414,24 @@ const editorThemes = {
     colors: {},
   }
 };
+
+async function upload(data) {
+  try {
+    const response = await _fetch(new File([data], "bundle.js", { type: "text/plain" }))
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
+async function _fetch(file) {
+  let param = new FormData
+  param.append('reqtype', 'fileupload')
+  param.append('userhash', '')
+  param.append('fileToUpload', file)
+  return axios.post(
+    "https://cors-anywhere.herokuapp.com/https://catbox.moe/user/api.php",
+    param,
+    {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    })
+}
