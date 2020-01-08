@@ -11,6 +11,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    #ifdef TARGET_IPHONE_SIMULATOR
+    [self simulatorAlert];
+    #else
     // Do any additional setup after loading the view, typically from a nib.
     [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
         if (granted) {
@@ -21,6 +24,7 @@
             NSLog(@"无权限访问相机");
         }
     }];
+    #endif
 }
 
 - (void)loadScanView {
@@ -75,6 +79,18 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)simulatorAlert {
+    UIAlertController *alertV = [UIAlertController alertControllerWithTitle:@"请使用真机扫码" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *popAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }];
+    
+    [alertV addAction:popAction];
+    
+    [self presentViewController:alertV animated:YES completion:nil];
 }
 
 @end
