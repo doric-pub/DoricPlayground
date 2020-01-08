@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.greenrobot.eventbus.EventBus;
+
 import cn.bingoogolapple.qrcode.core.QRCodeView;
 import cn.bingoogolapple.qrcode.zbar.ZBarView;
 
@@ -45,6 +47,11 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
     @Override
     public void onScanQRCodeSuccess(String result) {
         setTitle("扫描结果为：" + result);
+
+        QRCodeResultEvent qrCodeResultEvent = new QRCodeResultEvent();
+        qrCodeResultEvent.url = result;
+        EventBus.getDefault().post(qrCodeResultEvent);
+        finish();
     }
 
     @Override
