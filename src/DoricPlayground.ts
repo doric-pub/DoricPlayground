@@ -66,7 +66,7 @@ class DoricPlayground extends Panel {
                     }),
                     height: 50,
                     onClick: () => {
-                        context.qrcode.scan()
+                        context.callNative('qrcode', 'scan')
                     }
                 }
             )

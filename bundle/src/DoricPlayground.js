@@ -68,7 +68,7 @@ let DoricPlayground = class DoricPlayground extends doric.Panel {
                 }),
                 height: 50,
                 onClick: () => {
-                    context.qrcode.scan();
+                    context.callNative('qrcode', 'scan');
                 }
             });
         }
