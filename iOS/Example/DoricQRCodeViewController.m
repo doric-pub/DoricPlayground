@@ -1,6 +1,8 @@
 #import <AVFoundation/AVFoundation.h>
 
 #import "DoricQRCodeViewController.h"
+#import <DoricContextManager.h>
+#import <DoricContext.h>
 
 @interface DoricQRCodeViewController ()<AVCaptureMetadataOutputObjectsDelegate>
 @property (nonatomic, strong) AVCaptureSession *session;
@@ -71,7 +73,9 @@
         [self.session stopRunning];
         AVMetadataMachineReadableCodeObject *metadataObject = metadataObjects[0];
 
-        NSLog(@"%@",metadataObject.stringValue);
+        NSLog(@"%@", metadataObject.stringValue);
+        DoricContext *first = DoricContextManager.instance.aliveContexts[0];
+        [first.navigator doric_navigator_push:metadataObject.stringValue alias:@"temp.js" animated:YES extra:@""];
     }
 }
 
