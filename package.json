@@ -13,7 +13,7 @@
     "dependencies": {
         "@rollup/plugin-commonjs": "^11.0.2",
         "@rollup/plugin-node-resolve": "^7.1.1",
-        "doric": "^0.2.5",
+        "doric": "^0.2.9",
         "reflect-metadata": "^0.1.13",
         "rollup": "^1.31.0",
         "serve": "^11.3.0",
