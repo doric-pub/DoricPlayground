@@ -22,7 +22,7 @@
     [DoricRegistry register:library];
     
     NSString *bundleName = @"DoricPlayground";
-    DoricViewController *doricViewController = [[DoricViewController alloc] initWithScheme:[NSString stringWithFormat:@"assets://src/%@.js", bundleName]
+    DoricViewController *doricViewController = [[DoricViewController alloc] initWithSource:[NSString stringWithFormat:@"assets://src/%@.js", bundleName]
                                                                                      alias:bundleName
                                                                                      extra:@""];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];

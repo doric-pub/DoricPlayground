@@ -6,5 +6,5 @@ target 'Example' do
   use_frameworks!
 
   # Pods for Example
-  pod 'DoricCore'
+  pod 'DoricCore',  '0.2.9'
 end
