@@ -11,9 +11,9 @@
 		8B6AF9E123C46D6D002F81E5 /* DoricQRCodePlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6AF9E023C46D6D002F81E5 /* DoricQRCodePlugin.m */; };
 		8B6AF9E423C47047002F81E5 /* DoricQRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6AF9E323C47047002F81E5 /* DoricQRCodeViewController.m */; };
 		95EDDB7EAB47A65821DBC7EC /* Pods_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB59FE64F1D814FD13C71BB2 /* Pods_Example.framework */; };
+		D751DCD6A13050E4EC991FD1 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D751DAA3DBC35397DBF9C3A3 /* SceneDelegate.m */; };
 		E2B059BF23C452BB007555C7 /* src in Resources */ = {isa = PBXBuildFile; fileRef = E2B059BE23C452BB007555C7 /* src */; };
 		E2F64CEF2399359C0006BD9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E2F64CEE2399359C0006BD9A /* AppDelegate.m */; };
-		E2F64CF22399359C0006BD9A /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E2F64CF12399359C0006BD9A /* SceneDelegate.m */; };
 		E2F64CFA2399359E0006BD9A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E2F64CF92399359E0006BD9A /* Assets.xcassets */; };
 		E2F64CFD2399359E0006BD9A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2F64CFB2399359E0006BD9A /* LaunchScreen.storyboard */; };
 		E2F64D002399359E0006BD9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E2F64CFF2399359E0006BD9A /* main.m */; };
@@ -29,12 +29,12 @@
 		8B6AF9E223C47041002F81E5 /* DoricQRCodeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DoricQRCodeViewController.h; sourceTree = "<group>"; };
 		8B6AF9E323C47047002F81E5 /* DoricQRCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DoricQRCodeViewController.m; sourceTree = "<group>"; };
 		AB59FE64F1D814FD13C71BB2 /* Pods_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D751DAA3DBC35397DBF9C3A3 /* SceneDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
+		D751DFCFEDD2BD08F38E5FFD /* SceneDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
 		E2B059BE23C452BB007555C7 /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; name = src; path = ../bundle/src; sourceTree = "<group>"; };
 		E2F64CEA2399359C0006BD9A /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2F64CED2399359C0006BD9A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		E2F64CEE2399359C0006BD9A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		E2F64CF02399359C0006BD9A /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
-		E2F64CF12399359C0006BD9A /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
 		E2F64CF92399359E0006BD9A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E2F64CFC2399359E0006BD9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E2F64CFE2399359E0006BD9A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -92,12 +92,12 @@
 				8B6AF9E023C46D6D002F81E5 /* DoricQRCodePlugin.m */,
 				8B6AF9E223C47041002F81E5 /* DoricQRCodeViewController.h */,
 				8B6AF9E323C47047002F81E5 /* DoricQRCodeViewController.m */,
-				E2F64CF02399359C0006BD9A /* SceneDelegate.h */,
-				E2F64CF12399359C0006BD9A /* SceneDelegate.m */,
 				E2F64CF92399359E0006BD9A /* Assets.xcassets */,
 				E2F64CFB2399359E0006BD9A /* LaunchScreen.storyboard */,
 				E2F64CFE2399359E0006BD9A /* Info.plist */,
 				E2F64CFF2399359E0006BD9A /* main.m */,
+				D751DFCFEDD2BD08F38E5FFD /* SceneDelegate.h */,
+				D751DAA3DBC35397DBF9C3A3 /* SceneDelegate.m */,
 			);
 			path = Example;
 			sourceTree = "<group>";
@@ -247,8 +247,8 @@
 				8B6AF9E123C46D6D002F81E5 /* DoricQRCodePlugin.m in Sources */,
 				E2F64CEF2399359C0006BD9A /* AppDelegate.m in Sources */,
 				E2F64D002399359E0006BD9A /* main.m in Sources */,
-				E2F64CF22399359C0006BD9A /* SceneDelegate.m in Sources */,
 				8B6AF9DE23C46C4B002F81E5 /* DoricQRCodeLibrary.m in Sources */,
+				D751DCD6A13050E4EC991FD1 /* SceneDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

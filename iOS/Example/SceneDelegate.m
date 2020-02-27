@@ -1,22 +1,26 @@
 #import "SceneDelegate.h"
 #import <DoricCore/Doric.h>
+#import "DoricQRCodeLibrary.h"
 
 @interface SceneDelegate ()
 @end
 
 @implementation SceneDelegate
 - (void)scene:(UIScene *)scene willConnectToSession:(UISceneSession *)session options:(UISceneConnectionOptions *)connectionOptions {
+    DoricQRCodeLibrary *library = [[DoricQRCodeLibrary alloc] init];
+    [DoricRegistry register:library];
     UIWindowScene *windowScene = (UIWindowScene *) scene;
     NSString *bundleName = @"DoricPlayground";
     DoricViewController *doricViewController = [[DoricViewController alloc] initWithSource:[NSString stringWithFormat:@"assets://src/%@.js", bundleName]
                                                                                      alias:bundleName
-                                                                                     extra:@""];
+                                                                                     extra:@"{\"href\":\"assets://\"}"];
     doricViewController.view.backgroundColor = [UIColor whiteColor];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:doricViewController];
-    self.window = [[UIWindow alloc] initWithWindowScene:windowScene];
-    self.window.frame = windowScene.coordinateSpace.bounds;
-    self.window.rootViewController = navigationController;
-    [self.window makeKeyAndVisible];
+    UIWindow *window = [[UIWindow alloc] initWithWindowScene:windowScene];
+    window.frame = windowScene.coordinateSpace.bounds;
+    window.rootViewController = navigationController;
+    [window makeKeyAndVisible];
+    [UIApplication sharedApplication].delegate.window = window;
 }
 
 

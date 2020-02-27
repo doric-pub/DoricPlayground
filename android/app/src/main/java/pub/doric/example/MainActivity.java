@@ -3,6 +3,8 @@ package pub.doric.example;
 
 import android.os.Bundle;
 
+import com.github.pengfeizhou.jscore.JSONBuilder;
+
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -15,10 +17,22 @@ public class MainActivity extends DemoDebugActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        String scheme = "assets://src/" + BUNDLE_NAME + ".js";
-        getIntent().putExtra("scheme", scheme);
-        getIntent().putExtra("alias", BUNDLE_NAME);
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    protected String getSource() {
+        return "assets://src/" + BUNDLE_NAME + ".js";
+    }
+
+    @Override
+    protected String getAlias() {
+        return BUNDLE_NAME;
+    }
+
+    @Override
+    protected String getExtra() {
+        return new JSONBuilder().put("href", "assets://").toJSONObject().toString();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
