@@ -9,27 +9,12 @@
 #import "AppDelegate.h"
 #import <DoricCore/Doric.h>
 
-#import "DoricQRCodeLibrary.h"
-
 @interface AppDelegate ()
 @end
 
 @implementation AppDelegate
 
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    DoricQRCodeLibrary* library = [[DoricQRCodeLibrary alloc] init];
-    [DoricRegistry register:library];
-    
-    NSString *bundleName = @"DoricPlayground";
-    DoricViewController *doricViewController = [[DoricViewController alloc] initWithScheme:[NSString stringWithFormat:@"assets://src/%@.js", bundleName]
-                                                                                     alias:bundleName
-                                                                                     extra:@""];
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    UINavigationController *navVC = [[UINavigationController
-            alloc] initWithRootViewController:doricViewController];
-    self.window.rootViewController = navVC;
-    [self.window makeKeyAndVisible];
     return YES;
 }
 

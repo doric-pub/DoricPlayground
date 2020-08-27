@@ -1,15 +1,17 @@
 package pub.doric.example;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
-import com.tbruyelle.rxpermissions2.RxPermissions;
 
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import pub.doric.DoricContext;
+import pub.doric.devkit.qrcode.activity.CaptureActivity;
 import pub.doric.extension.bridge.DoricMethod;
 import pub.doric.extension.bridge.DoricPlugin;
 import pub.doric.plugin.DoricJavaPlugin;
@@ -23,17 +25,24 @@ public class QRCodePlugin extends DoricJavaPlugin {
 
     @DoricMethod(thread = ThreadMode.UI)
     public void scan() {
-        final RxPermissions rxPermissions = new RxPermissions((AppCompatActivity) getDoricContext().getContext());
-        Disposable disposable = rxPermissions
-                .request(Manifest.permission.CAMERA)
-                .subscribe(new Consumer<Boolean>() {
-                    @Override
-                    public void accept(Boolean grant) throws Exception {
-                        if (grant) {
-                            Intent intent = new Intent(getDoricContext().getContext(), ScanQRCodeActivity.class);
-                            getDoricContext().getContext().startActivity(intent);
-                        }
-                    }
-                });
+        Activity activity = (Activity) getDoricContext().getContext();
+        if (!(activity instanceof MainActivity)) {
+            return;
+        }
+        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
+                    Manifest.permission.CAMERA)) {
+                Toast.makeText(activity, "Please grant camera permission", Toast.LENGTH_SHORT).show();
+            } else {
+                ActivityCompat.requestPermissions(activity,
+                        new String[]{Manifest.permission.CAMERA,}, 1);
+            }
+        } else {
+            Intent intent = new Intent(activity, CaptureActivity.class);
+            activity.startActivityForResult(intent, MainActivity.REQUEST_CODE);
+        }
     }
+
+
 }

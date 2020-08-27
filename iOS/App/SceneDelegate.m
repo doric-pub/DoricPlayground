@@ -1,5 +1,8 @@
 #import "SceneDelegate.h"
 #import <DoricCore/Doric.h>
+#import "MyLibrary.h"
+
+#import <DoricDevkit/DoricDev.h>
 
 @interface SceneDelegate ()
 @end
@@ -8,17 +11,28 @@
 - (void)scene:(UIScene *)scene willConnectToSession:(UISceneSession *)session options:(UISceneConnectionOptions *)connectionOptions {
     UIWindowScene *windowScene = (UIWindowScene *) scene;
     NSString *bundleName = @"DoricPlayground";
-    DoricViewController *doricViewController = [[DoricViewController alloc] initWithScheme:[NSString stringWithFormat:@"assets://src/%@.js", bundleName]
+    [DoricRegistry register:[MyLibrary new]];
+    DoricViewController *doricViewController = [[DoricViewController alloc] initWithSource:[NSString stringWithFormat:@"assets://src/%@.js", bundleName]
                                                                                      alias:bundleName
                                                                                      extra:@""];
     doricViewController.view.backgroundColor = [UIColor whiteColor];
+    UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithTitle:@"Devkit" style:UIBarButtonItemStylePlain target:self action:@selector(onOpenDevkit)];
+    doricViewController.navigationItem.rightBarButtonItem = rightBarItem;
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:doricViewController];
-    self.window = [[UIWindow alloc] initWithWindowScene:windowScene];
-    self.window.frame = windowScene.coordinateSpace.bounds;
-    self.window.rootViewController = navigationController;
-    [self.window makeKeyAndVisible];
+    UIWindow *window = [[UIWindow alloc] initWithWindowScene:windowScene];
+    window.frame = windowScene.coordinateSpace.bounds;
+    window.rootViewController = navigationController;
+    [UIApplication sharedApplication].delegate.window = window;
+    [window makeKeyAndVisible];
 }
 
+#if DEBUG
+
+- (void)onOpenDevkit {
+    [[DoricDev instance] openDevMode];
+}
+
+#endif
 
 - (void)sceneDidDisconnect:(UIScene *)scene {
     // Called as the scene is being released by the system.
@@ -54,3 +68,4 @@
 
 
 @end
+

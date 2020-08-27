@@ -39,32 +39,32 @@ class DuadView extends doric.ViewHolder {
             this.cellMatrix.push([]);
             for (let j = 0; j < 5; j++) {
                 let view = doric.stack([
-                    (new doric.Text).also(it => {
+                    new doric.Text().also((it) => {
                         it.width = this.cellWidth - 2;
                         it.height = this.cellHeight - 2;
                         it.textColor = doric.Color.WHITE;
                         it.textSize = 40;
                         it.layoutConfig = {
-                            alignment: doric.gravity().center()
+                            alignment: doric.gravity().center(),
                         };
                     }),
-                    (new doric.Stack).also(it => {
+                    new doric.Stack().also((it) => {
                         it.width = this.cellWidth - 2;
                         it.height = this.cellHeight - 2;
                         it.backgroundColor = doric.Color.LTGRAY;
                         it.layoutConfig = {
-                            alignment: doric.gravity().center()
+                            alignment: doric.gravity().center(),
                         };
                         it.onClick = () => {
                             this.cellClick(i, j);
                         };
-                    })
+                    }),
                 ], {
                     width: this.cellWidth,
                     height: this.cellHeight,
                     layoutConfig: {
-                        alignment: doric.gravity().center()
-                    }
+                        alignment: doric.gravity().center(),
+                    },
                 });
                 cols.push(view);
                 this.cellMatrix[i].push(new Cell(view.children[0], view.children[1]));
@@ -72,15 +72,15 @@ class DuadView extends doric.ViewHolder {
             let row = doric.hlayout(cols, {
                 layoutConfig: {
                     widthSpec: doric.LayoutSpec.FIT,
-                    heightSpec: doric.LayoutSpec.FIT
-                }
+                    heightSpec: doric.LayoutSpec.FIT,
+                },
             });
             res.push(row);
         }
         return res;
     }
     revealAnim(view) {
-        let animation = new doric.ScaleAnimation;
+        let animation = new doric.ScaleAnimation();
         animation.duration = 500;
         animation.fromScaleX = 1;
         animation.toScaleX = 0;
@@ -89,7 +89,7 @@ class DuadView extends doric.ViewHolder {
         });
     }
     coverAnim(views) {
-        let animation = new doric.ScaleAnimation;
+        let animation = new doric.ScaleAnimation();
         animation.duration = 500;
         animation.fromScaleX = 0;
         animation.toScaleX = 1;
@@ -134,7 +134,7 @@ class DuadVM extends doric.ViewModel {
         return arr;
     }
     generateMatrix() {
-        let colors = [doric.Color.RED, doric.Color.parse('#9900FF'), doric.Color.BLUE];
+        let colors = [doric.Color.RED, doric.Color.parse("#9900FF"), doric.Color.BLUE];
         let values = [];
         for (let i = 1; i <= 5; i++) {
             values.push(i);
@@ -182,7 +182,7 @@ class DuadVM extends doric.ViewModel {
             }
         }
         if (won) {
-            doric.modal(context).toast('Bingo!', doric.Gravity.Center);
+            doric.modal(context).toast("Bingo!", doric.Gravity.Center);
         }
     }
     onAttached(state, vh) {
@@ -203,7 +203,8 @@ class DuadVM extends doric.ViewModel {
                     state.firstSelect = [i, j];
                 }
                 else {
-                    let firTop = vh.cellMatrix[state.firstSelect[0]][state.firstSelect[1]].top;
+                    let firTop = vh.cellMatrix[state.firstSelect[0]][state.firstSelect[1]]
+                        .top;
                     let fir = state.matrix[state.firstSelect[0]][state.firstSelect[1]];
                     let sec = state.matrix[i][j];
                     if (fir.value != sec.value || fir.color != sec.color) {
@@ -240,4 +241,5 @@ let DuadPanel = class DuadPanel extends doric.VMPanel {
 DuadPanel = __decorate([
     Entry
 ], DuadPanel);
+//# sourceMappingURL=DuadGame.js.map
 //# sourceMappingURL=DuadGame.js.map

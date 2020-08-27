@@ -9,7 +9,7 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 const colors = {
-    bgColor: doric.Color.parse('#FFB7BFAC'),
+    bgColor: doric.Color.parse("#FFB7BFAC"),
     snakeColor: doric.Color.BLACK,
     foodColor: doric.Color.BLACK,
 };
@@ -97,8 +97,10 @@ class SnakeModel {
             tail = tail.prev;
         }
         this.forward(this.head);
-        if (this.head.x < 0 || this.head.x >= this.width
-            || this.head.y < 0 || this.head.y >= this.height) {
+        if (this.head.x < 0 ||
+            this.head.x >= this.width ||
+            this.head.y < 0 ||
+            this.head.y >= this.height) {
             //If out of bound
             this.state = State.fail;
         }
@@ -141,9 +143,9 @@ class SnakeView extends doric.ViewHolder {
     panelZone() {
         return doric.vlayout([
             doric.stack([
-                this.panel = doric.stack([]).apply({
+                (this.panel = doric.stack([]).apply({
                     layoutConfig: doric.layoutConfig().just(),
-                }),
+                })),
             ]).apply({
                 padding: {
                     left: 2,
@@ -162,25 +164,27 @@ class SnakeView extends doric.ViewHolder {
                     text: "SCORE",
                     textSize: 20,
                 }),
-                this.score = doric.text({
+                (this.score = doric.text({
                     text: "000",
                     textSize: 20,
-                }),
-                (new doric.Stack()).apply({
+                })),
+                new doric.Stack().apply({
                     layoutConfig: doric.layoutConfig().just().configWeight(1),
                 }),
                 doric.text({
                     text: "HIGH",
                     textSize: 20,
                 }),
-                this.high = doric.text({
+                (this.high = doric.text({
                     text: "000",
                     textSize: 20,
-                }),
+                })),
             ]).apply({
-                layoutConfig: doric.layoutConfig().fit()
+                layoutConfig: doric.layoutConfig()
+                    .fit()
                     .configWidth(doric.LayoutSpec.MOST)
-                    .configAlignment(doric.Gravity.Left).configMargin({ left: 40, right: 40 }),
+                    .configAlignment(doric.Gravity.Left)
+                    .configMargin({ left: 40, right: 40 }),
                 space: 10,
             }),
         ]).apply({
@@ -189,50 +193,50 @@ class SnakeView extends doric.ViewHolder {
             padding: {
                 top: 20,
                 bottom: 20,
-            }
+            },
         });
     }
     controlZone() {
         return doric.vlayout([
             doric.hlayout([
-                this.up = doric.image({
+                (this.up = doric.image({
                     layoutConfig: doric.layoutConfig().just(),
                     width: 50,
                     height: 50,
-                    imageBase64: arrowUp
-                })
+                    imageBase64: arrowUp,
+                })),
             ]),
             doric.hlayout([
-                this.left = doric.image({
+                (this.left = doric.image({
                     layoutConfig: doric.layoutConfig().just(),
                     width: 50,
                     height: 50,
                     imageBase64: arrowLeft,
-                }),
-                this.start = doric.image({
+                })),
+                (this.start = doric.image({
                     layoutConfig: doric.layoutConfig().just(),
                     width: 50,
                     height: 50,
                     imageBase64: startIcon,
-                }),
-                this.right = doric.image({
+                })),
+                (this.right = doric.image({
                     layoutConfig: doric.layoutConfig().just(),
                     width: 50,
                     height: 50,
                     imageBase64: arrowRight,
-                }),
-            ]).also(it => {
+                })),
+            ]).also((it) => {
                 it.space = 10;
             }),
             doric.hlayout([
-                this.down = doric.image({
+                (this.down = doric.image({
                     layoutConfig: doric.layoutConfig().just(),
                     width: 50,
                     height: 50,
                     imageBase64: arrowDown,
-                })
+                })),
             ]),
-        ]).also(controlArea => {
+        ]).also((controlArea) => {
             controlArea.space = 10;
             controlArea.gravity = new doric.Gravity().centerX();
             controlArea.layoutConfig = {
@@ -244,14 +248,13 @@ class SnakeView extends doric.ViewHolder {
     }
     build(root) {
         root.backgroundColor = doric.Color.WHITE;
-        doric.vlayout([
-            this.panelZone(),
-            this.controlZone(),
-        ]).also(it => {
+        doric.vlayout([this.panelZone(), this.controlZone()])
+            .also((it) => {
             it.layoutConfig = doric.layoutConfig().most();
             it.gravity = new doric.Gravity().centerX();
             it.space = 50;
-        }).in(root);
+        })
+            .in(root);
     }
     bind(state) {
         let node = state.head;
@@ -269,14 +272,16 @@ class SnakeView extends doric.ViewHolder {
                         layoutConfig: doric.layoutConfig().just().configAlignment(doric.Gravity.Center),
                         width: 9,
                         height: 9,
-                    })
-                ]).apply({
+                    }),
+                ])
+                    .apply({
                     layoutConfig: doric.layoutConfig().just(),
                     width: 10,
                     height: 10,
-                }).in(this.panel);
+                })
+                    .in(this.panel);
             }
-            doric.takeNonNull(item.children[0])(v => {
+            doric.takeNonNull(item.children[0])((v) => {
                 if (index === nodes.length - 1) {
                     v.backgroundColor = colors.foodColor;
                 }
@@ -303,9 +308,9 @@ class SnakeVM extends doric.ViewModel {
             if (this.timerId !== undefined) {
                 clearInterval(this.timerId);
             }
-            this.updateState(it => it.reset());
+            this.updateState((it) => it.reset());
             this.timerId = setInterval(() => {
-                this.updateState(it => it.step());
+                this.updateState((it) => it.step());
                 if (this.getState().state === State.fail) {
                     this.stop();
                 }
@@ -315,15 +320,15 @@ class SnakeVM extends doric.ViewModel {
             if (this.timerId !== undefined) {
                 clearInterval(this.timerId);
             }
-            this.updateState(it => it.state = State.paused);
+            this.updateState((it) => (it.state = State.paused));
         };
         this.resume = () => {
             if (this.timerId !== undefined) {
                 clearInterval(this.timerId);
             }
-            this.updateState(it => it.state = State.run);
+            this.updateState((it) => (it.state = State.run));
             this.timerId = setInterval(() => {
-                this.updateState(it => it.step());
+                this.updateState((it) => it.step());
                 if (this.getState().state === State.fail) {
                     this.stop();
                 }
@@ -336,20 +341,20 @@ class SnakeVM extends doric.ViewModel {
             }
         };
         this.left = () => {
-            this.updateState(it => it.direction = Direction.left);
+            this.updateState((it) => (it.direction = Direction.left));
         };
         this.right = () => {
-            this.updateState(it => it.direction = Direction.right);
+            this.updateState((it) => (it.direction = Direction.right));
         };
         this.up = () => {
-            this.updateState(it => it.direction = Direction.up);
+            this.updateState((it) => (it.direction = Direction.up));
         };
         this.down = () => {
-            this.updateState(it => it.direction = Direction.down);
+            this.updateState((it) => (it.direction = Direction.down));
         };
     }
     onAttached(state, v) {
-        doric.takeNonNull(v.start)(it => it.onClick = () => {
+        doric.takeNonNull(v.start)((it) => (it.onClick = () => {
             if (state.state === State.run) {
                 this.pause();
             }
@@ -359,17 +364,19 @@ class SnakeVM extends doric.ViewModel {
             else {
                 this.start();
             }
-        });
-        doric.takeNonNull(v.left)(it => it.onClick = this.left);
-        doric.takeNonNull(v.right)(it => it.onClick = this.right);
-        doric.takeNonNull(v.up)(it => it.onClick = this.up);
-        doric.takeNonNull(v.down)(it => it.onClick = this.down);
+        }));
+        doric.takeNonNull(v.left)((it) => (it.onClick = this.left));
+        doric.takeNonNull(v.right)((it) => (it.onClick = this.right));
+        doric.takeNonNull(v.up)((it) => (it.onClick = this.up));
+        doric.takeNonNull(v.down)((it) => (it.onClick = this.down));
         v.panel.apply({
             width: state.width * 10,
             height: state.height * 10,
         });
-        doric.storage(context).getItem(hignScoreKey).then(r => {
-            this.updateState(s => {
+        doric.storage(context)
+            .getItem(hignScoreKey)
+            .then((r) => {
+            this.updateState((s) => {
                 if (r) {
                     s.highScore = parseInt(r);
                 }
@@ -430,11 +437,14 @@ class SnakeVM extends doric.ViewModel {
                 ]).apply({
                     space: 100,
                     layoutConfig: doric.layoutConfig().fit().configMargin({
-                        bottom: 20
+                        bottom: 20,
                     }),
                 }),
             ]).apply({
-                layoutConfig: doric.layoutConfig().fit().configWidth(doric.LayoutSpec.MOST).configMargin({
+                layoutConfig: doric.layoutConfig()
+                    .fit()
+                    .configWidth(doric.LayoutSpec.MOST)
+                    .configMargin({
                     top: 300,
                     left: 20,
                     right: 20,
@@ -466,4 +476,5 @@ let SnakePanel = class SnakePanel extends doric.VMPanel {
 SnakePanel = __decorate([
     Entry
 ], SnakePanel);
+//# sourceMappingURL=Snake.js.map
 //# sourceMappingURL=Snake.js.map

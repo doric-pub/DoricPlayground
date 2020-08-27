@@ -1,8 +1,8 @@
 #import <AVFoundation/AVFoundation.h>
 
 #import "DoricQRCodeViewController.h"
-#import <DoricContextManager.h>
-#import <DoricContext.h>
+#import <DoricCore/DoricContextManager.h>
+#import <DoricCore/DoricContext.h>
 
 @interface DoricQRCodeViewController ()<AVCaptureMetadataOutputObjectsDelegate>
 @property (nonatomic, strong) AVCaptureSession *session;

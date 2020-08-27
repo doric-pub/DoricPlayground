@@ -19,7 +19,7 @@ const colors = [
     "#e056fd",
     "#686de0",
     "#30336b",
-].map(e => doric.Color.parse(e));
+].map((e) => doric.Color.parse(e));
 var State;
 (function (State) {
     State[State["Unspecified"] = 0] = "Unspecified";
@@ -123,7 +123,7 @@ class AIComputer {
                 return;
             }
             this.wins.forEach((e, winIdx) => {
-                if (e.filter(e => (e.x + e.y * count) === idx).length === 0) {
+                if (e.filter((e) => e.x + e.y * count === idx).length === 0) {
                     return;
                 }
                 switch (rivalWins[winIdx]) {
@@ -179,21 +179,21 @@ class AIComputer {
 }
 const lineColor = doric.Color.BLACK;
 function columLine() {
-    return (new doric.Stack).apply({
+    return new doric.Stack().apply({
         layoutConfig: doric.layoutConfig().most().configWidth(doric.LayoutSpec.JUST),
         width: 1,
         backgroundColor: lineColor,
     });
 }
 function rowLine() {
-    return (new doric.Stack).apply({
+    return new doric.Stack().apply({
         layoutConfig: doric.layoutConfig().most().configHeight(doric.LayoutSpec.JUST),
         height: 1,
         backgroundColor: lineColor,
     });
 }
 function pointer(size) {
-    return (new doric.Stack).apply({
+    return new doric.Stack().apply({
         layoutConfig: doric.layoutConfig().just(),
         width: size,
         height: size,
@@ -231,19 +231,19 @@ class GoBangVH extends doric.ViewHolder {
             }),
             doric.stack([
                 doric.stack([
-                    ...(new Array(count - 2)).fill(0).map((_, idx) => {
-                        return columLine().also(v => {
+                    ...new Array(count - 2).fill(0).map((_, idx) => {
+                        return columLine().also((v) => {
                             v.left = (idx + 1) * gap;
                         });
                     }),
-                    ...(new Array(count - 2)).fill(0).map((_, idx) => {
-                        return rowLine().also(v => {
+                    ...new Array(count - 2).fill(0).map((_, idx) => {
+                        return rowLine().also((v) => {
                             v.top = (idx + 1) * gap;
                         });
                     }),
-                ])
-                    .apply({
-                    layoutConfig: doric.layoutConfig().just()
+                ]).apply({
+                    layoutConfig: doric.layoutConfig()
+                        .just()
                         .configMargin({ top: borderWidth, left: borderWidth }),
                     width: boardSize,
                     height: boardSize,
@@ -252,60 +252,61 @@ class GoBangVH extends doric.ViewHolder {
                         color: lineColor,
                     },
                 }),
-                ...this.targetZone = (new Array(count * count)).fill(0).map((_, idx) => {
+                ...(this.targetZone = new Array(count * count)
+                    .fill(0)
+                    .map((_, idx) => {
                     const row = Math.floor(idx / count);
                     const colum = idx % count;
-                    return pointer(gap).also(v => {
+                    return pointer(gap).also((v) => {
                         v.top = (row - 0.5) * gap + borderWidth;
                         v.left = (colum - 0.5) * gap + borderWidth;
                     });
-                }),
+                })),
             ]).apply({
                 layoutConfig: doric.layoutConfig().just(),
                 width: boardSize + 2 * borderWidth,
                 height: boardSize + 2 * borderWidth,
                 backgroundColor: doric.Color.parse("#E6B080"),
             }),
-            this.gameMode = doric.text({
+            (this.gameMode = doric.text({
                 text: "游戏模式",
                 textSize: 20,
                 textColor: doric.Color.WHITE,
                 layoutConfig: doric.layoutConfig().most().configHeight(doric.LayoutSpec.JUST),
                 height: 50,
                 backgroundColor: colors[8],
-            }),
+            })),
             doric.hlayout([
-                this.currentRole = doric.text({
+                (this.currentRole = doric.text({
                     text: "当前:",
                     textSize: 20,
                     textColor: doric.Color.WHITE,
                     layoutConfig: doric.layoutConfig().just().configWeight(1),
                     height: 50,
                     backgroundColor: colors[1],
-                }),
-                this.result = doric.text({
+                })),
+                (this.result = doric.text({
                     text: "获胜方:",
                     textSize: 20,
                     textColor: doric.Color.WHITE,
                     layoutConfig: doric.layoutConfig().just().configWeight(1),
                     height: 50,
                     backgroundColor: colors[2],
-                }),
+                })),
             ]).apply({
                 layoutConfig: doric.layoutConfig().fit().configWidth(doric.LayoutSpec.MOST),
             }),
-            this.assistant = doric.text({
+            (this.assistant = doric.text({
                 text: "提示",
                 textSize: 20,
                 textColor: doric.Color.WHITE,
                 layoutConfig: doric.layoutConfig().just().configWidth(doric.LayoutSpec.MOST),
                 height: 50,
                 backgroundColor: colors[3],
-            }),
-        ])
-            .apply({
+            })),
+        ]).apply({
             layoutConfig: doric.layoutConfig().fit(),
-            backgroundColor: doric.Color.parse('#ecf0f1'),
+            backgroundColor: doric.Color.parse("#ecf0f1"),
         })).in(this.root);
     }
 }
@@ -317,41 +318,41 @@ class GoBangVM extends doric.ViewModel {
         vh.actualBuild(state);
         vh.targetZone.forEach((e, idx) => {
             e.onClick = () => {
-                if (state.gameState !== 'idle') {
+                if (state.gameState !== "idle") {
                     return;
                 }
                 const zoneState = state.matrix.get(idx);
                 if (zoneState === State.BLACK || zoneState === State.WHITE) {
-                    doric.modal(context).toast('This position had been token.');
+                    doric.modal(context).toast("This position had been token.");
                     return;
                 }
                 if (state.anchor === undefined || state.anchor != idx) {
-                    this.updateState(it => {
+                    this.updateState((it) => {
                         it.anchor = idx;
                     });
                 }
                 else {
-                    this.updateState(it => {
-                        if (it.role === 'black') {
+                    this.updateState((it) => {
+                        if (it.role === "black") {
                             it.matrix.set(idx, State.BLACK);
-                            it.role = 'white';
+                            it.role = "white";
                         }
                         else {
                             it.matrix.set(idx, State.WHITE);
-                            it.role = 'black';
+                            it.role = "black";
                         }
                         it.anchor = undefined;
                         if (this.checkResult(idx)) {
-                            doric.modal(context).toast(`恭喜获胜方${it.role === 'white' ? "黑方" : "白方"}`);
-                            it.gameState = it.role === 'white' ? 'blackWin' : 'whiteWin';
+                            doric.modal(context).toast(`恭喜获胜方${it.role === "white" ? "黑方" : "白方"}`);
+                            it.gameState = it.role === "white" ? "blackWin" : "whiteWin";
                         }
                         else {
-                            if (it.role === 'black' && it.gameMode === GameMode.C2P) {
+                            if (it.role === "black" && it.gameMode === GameMode.C2P) {
                                 setTimeout(() => {
                                     this.computeNextStep(it);
                                 }, 0);
                             }
-                            else if (it.role === 'white' && it.gameMode === GameMode.P2C) {
+                            else if (it.role === "white" && it.gameMode === GameMode.P2C) {
                                 setTimeout(() => {
                                     this.computeNextStep(it);
                                 }, 0);
@@ -383,17 +384,18 @@ class GoBangVM extends doric.ViewModel {
                     layoutConfig: doric.layoutConfig().just(),
                     height: 50,
                     width: 300,
-                    backgroundColor: (state.gameMode === e.mode) ? doric.Color.parse('#636e72') : doric.Color.parse('#b2bec3'),
+                    backgroundColor: state.gameMode === e.mode
+                        ? doric.Color.parse("#636e72")
+                        : doric.Color.parse("#b2bec3"),
                     onClick: () => {
-                        this.updateState(s => {
+                        this.updateState((s) => {
                             s.gameMode = e.mode;
                             this.reset(s);
                         });
                         doric.popover(context).dismiss();
                     },
-                }))
-            ])
-                .apply({
+                })),
+            ]).apply({
                 layoutConfig: doric.layoutConfig().most(),
                 onClick: () => {
                     doric.popover(context).dismiss();
@@ -404,7 +406,7 @@ class GoBangVM extends doric.ViewModel {
         vh.result.onClick = () => {
             switch (state.gameState) {
                 case "idle":
-                    this.updateState(state => {
+                    this.updateState((state) => {
                         this.reset(state);
                     });
                     break;
@@ -416,7 +418,7 @@ class GoBangVM extends doric.ViewModel {
                     break;
                 case "blackWin":
                 case "whiteWin":
-                    this.updateState(state => {
+                    this.updateState((state) => {
                         this.reset(state);
                     });
                     break;
@@ -424,19 +426,19 @@ class GoBangVM extends doric.ViewModel {
         };
         vh.assistant.onClick = () => {
             const it = this.getState();
-            if (it.gameState !== 'idle') {
+            if (it.gameState !== "idle") {
                 return;
             }
             this.computeNextStep(it);
-            if (it.gameState !== 'idle') {
+            if (it.gameState !== "idle") {
                 return;
             }
-            if (it.role === 'black' && it.gameMode === GameMode.C2P) {
+            if (it.role === "black" && it.gameMode === GameMode.C2P) {
                 setTimeout(() => {
                     this.computeNextStep(it);
                 }, 0);
             }
-            else if (it.role === 'white' && it.gameMode === GameMode.P2C) {
+            else if (it.role === "white" && it.gameMode === GameMode.P2C) {
                 setTimeout(() => {
                     this.computeNextStep(it);
                 }, 0);
@@ -444,32 +446,35 @@ class GoBangVM extends doric.ViewModel {
         };
     }
     computeNextStep(it) {
-        const tempMatrix = new Array(count * count).fill(0).map((_, idx) => {
+        const tempMatrix = new Array(count * count)
+            .fill(0)
+            .map((_, idx) => {
             return it.matrix.get(idx) || State.Unspecified;
         });
         let idx = 0;
         do {
-            idx = this.computer.compute(tempMatrix, it.role === 'black' ? State.BLACK : State.WHITE);
+            idx = this.computer.compute(tempMatrix, it.role === "black" ? State.BLACK : State.WHITE);
         } while (it.matrix.get(idx) === State.Unspecified);
-        this.updateState(state => {
-            state.matrix.set(idx, state.role === 'black' ? State.BLACK : State.WHITE);
-            state.role = state.role === 'black' ? 'white' : 'black';
+        this.updateState((state) => {
+            state.matrix.set(idx, state.role === "black" ? State.BLACK : State.WHITE);
+            state.role = state.role === "black" ? "white" : "black";
             if (this.checkResult(idx)) {
-                doric.modal(context).toast(`恭喜获胜方${it.role === 'white' ? "黑方" : "白方"}`);
-                it.gameState = it.role === 'white' ? 'blackWin' : 'whiteWin';
+                doric.modal(context).toast(`恭喜获胜方${it.role === "white" ? "黑方" : "白方"}`);
+                it.gameState = it.role === "white" ? "blackWin" : "whiteWin";
             }
         });
     }
     reset(it) {
         it.matrix.clear();
-        it.gameState = 'idle';
+        it.gameState = "idle";
         it.role = "black";
         it.anchor = undefined;
         this.computer = new AIComputer(it.matrix);
         if (it.gameMode === GameMode.C2P) {
-            const idx = Math.floor(Math.random() * count) * count + Math.floor(Math.random() * count);
+            const idx = Math.floor(Math.random() * count) * count +
+                Math.floor(Math.random() * count);
             it.matrix.set(idx, State.BLACK);
-            it.role = 'white';
+            it.role = "white";
         }
     }
     onBind(state, vh) {
@@ -477,7 +482,7 @@ class GoBangVM extends doric.ViewModel {
             const zoneState = state.matrix.get(idx);
             switch (zoneState) {
                 case State.BLACK:
-                    v.also(it => {
+                    v.also((it) => {
                         it.backgroundColor = doric.Color.BLACK;
                         it.corners = state.gap / 2;
                         it.border = {
@@ -487,7 +492,7 @@ class GoBangVM extends doric.ViewModel {
                     });
                     break;
                 case State.WHITE:
-                    v.also(it => {
+                    v.also((it) => {
                         it.backgroundColor = doric.Color.WHITE;
                         it.corners = state.gap / 2;
                         it.border = {
@@ -497,7 +502,7 @@ class GoBangVM extends doric.ViewModel {
                     });
                     break;
                 default:
-                    v.also(it => {
+                    v.also((it) => {
                         it.backgroundColor = doric.Color.TRANSPARENT;
                         it.corners = 0;
                         it.border = {
@@ -508,7 +513,7 @@ class GoBangVM extends doric.ViewModel {
                     break;
             }
             if (state.anchor === idx) {
-                v.also(it => {
+                v.also((it) => {
                     it.backgroundColor = doric.Color.RED.alpha(0.1);
                     it.corners = 0;
                     it.border = {
@@ -522,7 +527,7 @@ class GoBangVM extends doric.ViewModel {
         switch (state.gameState) {
             case "idle":
                 vh.result.text = "重新开始";
-                vh.currentRole.text = `当前: ${(state.role === 'black') ? "黑方" : "白方"}`;
+                vh.currentRole.text = `当前: ${state.role === "black" ? "黑方" : "白方"}`;
                 break;
             case "blackWin":
                 vh.result.text = "黑方获胜";
@@ -652,9 +657,9 @@ let Gobang = class Gobang extends doric.VMPanel {
             count,
             gap: this.getRootView().width / 14,
             role: "black",
-            matrix: new Map,
+            matrix: new Map(),
             gameMode: GameMode.P2C,
-            gameState: "idle"
+            gameState: "idle",
         };
     }
     getViewHolderClass() {
@@ -664,4 +669,5 @@ let Gobang = class Gobang extends doric.VMPanel {
 Gobang = __decorate([
     Entry
 ], Gobang);
+//# sourceMappingURL=Gobang.js.map
 //# sourceMappingURL=Gobang.js.map
