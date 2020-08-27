@@ -6,21 +6,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import pub.doric.DoricFragment;
 import pub.doric.devkit.DoricDev;
-import pub.doric.devkit.qrcode.activity.CaptureActivity;
-import pub.doric.devkit.qrcode.activity.CodeUtils;
 import pub.doric.navbar.BaseDoricNavBar;
 
 public class MainActivity extends AppCompatActivity {
     private final String BUNDLE_NAME = "DoricPlayground";
-    public static final int REQUEST_CODE = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,23 +42,6 @@ public class MainActivity extends AppCompatActivity {
         doricNavBar.setRight(textView);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE) {
-            if (null != data) {
-                Bundle bundle = data.getExtras();
-                if (bundle == null) {
-                    return;
-                }
-                if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
-                    String result = bundle.getString(CodeUtils.RESULT_STRING);
-                    Toast.makeText(this, "dev kit connecting to " + result, Toast.LENGTH_LONG).show();
-                }
-            }
-        }
-    }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -71,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == 1) {
             for (int i = 0; i < permissions.length; i++) {
                 if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                    Intent intent = new Intent(this, CaptureActivity.class);
-                    startActivityForResult(intent, REQUEST_CODE);
+                    Intent intent = new Intent(this, ScanQRCodeActivity.class);
+                    startActivity(intent);
                 }
             }
         }
