@@ -12,9 +12,8 @@
 @implementation DoricQRCodePlugin
 - (void)scan:(NSDictionary *)dic withPromise:(DoricPromise *)promise {
     dispatch_async(dispatch_get_main_queue(), ^{
-        DoricQRCodeViewController *doricQRCodeViewController = [[DoricQRCodeViewController alloc] init];
-
-        [((DoricViewController*) self.doricContext.navigator).navigationController pushViewController:doricQRCodeViewController animated:YES];
+        DoricQRCodeViewController *doricQRCodeViewController = [[DoricQRCodeViewController alloc] initWithPromise:promise];
+        [((DoricViewController *) self.doricContext.navigator).navigationController pushViewController:doricQRCodeViewController animated:NO];
     });
 }
 @end
