@@ -1,4 +1,4 @@
-package pub.doric.example;
+package pub.doric.playground;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;

@@ -1,4 +1,4 @@
-package pub.doric.example;
+package pub.doric.playground;
 
 import android.Manifest;
 import android.app.Activity;
