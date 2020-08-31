@@ -15,6 +15,7 @@ import {
   View,
   ScaleType,
   stack,
+  log,
 } from "doric";
 import icon_qrcode from "./assets/scan.png";
 import icon_gobang from "./assets/gobang.png";
@@ -207,6 +208,14 @@ class DoricPlayground extends Panel {
                   .configMargin({
                     left: 15,
                   }),
+                onClick: async () => {
+                  const url = (await context.callNative(
+                    "file",
+                    "choose"
+                  )) as string;
+                  navigator(context).push(url);
+                  log(url);
+                },
               }),
             ],
             {

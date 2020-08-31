@@ -1,7 +1,7 @@
 #import "SceneDelegate.h"
 #import <DoricCore/Doric.h>
 #import "MyLibrary.h"
-
+#import "DoricFileLoader.h"
 #import <DoricDevkit/DoricDev.h>
 
 @interface SceneDelegate ()
@@ -12,6 +12,7 @@
     UIWindowScene *windowScene = (UIWindowScene *) scene;
     NSString *bundleName = @"DoricPlayground";
     [DoricRegistry register:[MyLibrary new]];
+    [[DoricJSLoaderManager instance] addJSLoader:[DoricFileLoader new]];
     DoricViewController *doricViewController = [[DoricViewController alloc] initWithSource:[NSString stringWithFormat:@"assets://src/%@.js", bundleName]
                                                                                      alias:bundleName
                                                                                      extra:@""];
