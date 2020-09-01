@@ -2,7 +2,6 @@
 #import <DoricCore/Doric.h>
 #import "MyLibrary.h"
 #import "DoricFileLoader.h"
-#import <DoricDevkit/DoricDev.h>
 
 @interface SceneDelegate ()
 @end
@@ -17,8 +16,6 @@
                                                                                      alias:bundleName
                                                                                      extra:@""];
     doricViewController.view.backgroundColor = [UIColor whiteColor];
-    UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithTitle:@"Devkit" style:UIBarButtonItemStylePlain target:self action:@selector(onOpenDevkit)];
-    doricViewController.navigationItem.rightBarButtonItem = rightBarItem;
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:doricViewController];
     UIWindow *window = [[UIWindow alloc] initWithWindowScene:windowScene];
     window.frame = windowScene.coordinateSpace.bounds;
@@ -26,14 +23,6 @@
     [UIApplication sharedApplication].delegate.window = window;
     [window makeKeyAndVisible];
 }
-
-#if DEBUG
-
-- (void)onOpenDevkit {
-    [[DoricDev instance] openDevMode];
-}
-
-#endif
 
 - (void)sceneDidDisconnect:(UIScene *)scene {
     // Called as the scene is being released by the system.

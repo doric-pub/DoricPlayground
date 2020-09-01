@@ -15,6 +15,7 @@ import {
   animate,
   Image,
   Text,
+  ScaleType,
 } from "doric";
 import icon_doric from "./assets/doric.png";
 import { colors } from "./utils";
@@ -75,6 +76,7 @@ class DoricPlayground extends Panel {
               },
               width: 0,
               height: 0,
+              scaleType: ScaleType.ScaleAspectFit,
             })),
           ],
           {

@@ -8,6 +8,7 @@
 
 #import "DoricQRCodePlugin.h"
 #import "DoricQRCodeViewController.h"
+#import <DoricDevkit/DoricDev.h>
 
 @implementation DoricQRCodePlugin
 - (void)scan:(NSDictionary *)dic withPromise:(DoricPromise *)promise {
@@ -16,4 +17,11 @@
         [((DoricViewController *) self.doricContext.navigator).navigationController pushViewController:doricQRCodeViewController animated:NO];
     });
 }
+
+- (void)debug:(NSDictionary *)dic withPromise:(DoricPromise *)promise {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[DoricDev instance] openDevMode];
+    });
+}
+
 @end
