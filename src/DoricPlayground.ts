@@ -42,7 +42,7 @@ const entryData = [
     title: "本地文件",
     onClick: async () => {
       const url = (await context.callNative("file", "choose")) as string;
-      await navigator(context).push(url);
+      await navigator(context).push(url, { extra: { originUrl: url } });
     },
   },
   {
