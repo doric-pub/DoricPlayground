@@ -159,7 +159,7 @@ class DoricPlayground extends Panel {
               margin: { top: 30, left: 10, right: 10 },
             },
             space: 10,
-            alpha: 0,
+            alpha: 1,
           }
         )),
       ],
@@ -176,14 +176,9 @@ class DoricPlayground extends Panel {
       await animate(context)({
         animations: () => {
           logo.width = logo.height = 200;
-        },
-        duration: 2000,
-      });
-      await animate(context)({
-        animations: () => {
           intro.alpha = 1;
         },
-        duration: 1000,
+        duration: 2000,
       });
       entries.alpha = 1;
     });
