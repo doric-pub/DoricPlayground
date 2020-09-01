@@ -56,6 +56,12 @@ const entryData = [
       await navigator(context).push(url);
     },
   },
+  {
+    title: "官网链接",
+    onClick: async () => {
+      await navigator(context).openUrl("https://doric.pub");
+    },
+  },
 ];
 
 @Entry
@@ -102,7 +108,7 @@ class DoricPlayground extends Panel {
             left: 15,
             right: 15,
           },
-          text: `Doric是一个跨平台的应用开发框架.\n使用Typescript语言构建的原生应用可直接在Android、iOS或Web端无差别呈现.`,
+          text: `Doric是一个跨平台的应用开发框架.\n使用Typescript语言构建的应用可直接在Android、iOS或Web端无差别呈现.`,
           textSize: 20,
           fontStyle: "italic",
           textColor: Color.GRAY,
@@ -143,6 +149,7 @@ class DoricPlayground extends Panel {
                       onClick: () => {
                         entryData[index * 2 + 1]?.onClick();
                       },
+                      alpha: !!entryData[index * 2 + 1] ? 1 : 0,
                     }),
                   ],
                   {

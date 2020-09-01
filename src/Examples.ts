@@ -32,7 +32,43 @@ const colors = [
   "#686de0",
   "#30336b",
 ].map((e) => Color.parse(e));
-
+const examples = [
+  {
+    name: "Hello,Doric",
+    url: "assets://src/HelloDoric.js",
+    alias: "HelloDoric.js",
+  },
+  {
+    name: "计数器",
+    url: "assets://src/Counter.js",
+    alias: "Counter.js",
+  },
+  {
+    name: "图片",
+    url: "assets://src/Image.js",
+    alias: "Image.js",
+  },
+  {
+    name: "存储",
+    url: "assets://src/Storage.js",
+    alias: "Storage.js",
+  },
+  {
+    name: "Modal",
+    url: "assets://src/Modal.js",
+    alias: "Modal.js",
+  },
+  {
+    name: "Popover",
+    url: "assets://src/Popover.js",
+    alias: "Popover.js",
+  },
+  {
+    name: "Draggable",
+    url: "assets://src/Draggable.js",
+    alias: "Draggable.js",
+  },
+];
 const files = [
   {
     name: "五子棋",
@@ -67,6 +103,76 @@ class Examples extends Panel {
             height: 1,
             backgroundColor: colors[3].alpha(0.2),
           }),
+          hlayout(
+            [
+              text({
+                text: "示例",
+                textSize: 20,
+                layoutConfig: layoutConfig()
+                  .fit()
+                  .configAlignment(gravity().centerY())
+                  .configMargin({
+                    left: 15,
+                  }),
+              }),
+            ],
+            {
+              layoutConfig: layoutConfig()
+                .just()
+                .configWidth(LayoutSpec.MOST)
+                .configMargin({
+                  top: 0,
+                }),
+              height: 50,
+              backgroundColor: colors[3].alpha(0.2),
+            }
+          ),
+          ...examples.map((e) =>
+            vlayout(
+              [
+                hlayout(
+                  [
+                    text({
+                      text: e.name,
+                      textSize: 30,
+                      textColor: Color.BLACK,
+                      layoutConfig: layoutConfig()
+                        .fit()
+                        .configAlignment(gravity().centerY())
+                        .configMargin({
+                          left: 15,
+                        }),
+                    }),
+                  ],
+                  {
+                    layoutConfig: layoutConfig()
+                      .just()
+                      .configWidth(LayoutSpec.MOST)
+                      .configMargin({
+                        top: 10,
+                        bottom: 10,
+                      }),
+                    height: 50,
+                  }
+                ),
+                stack([], {
+                  layoutConfig: layoutConfig()
+                    .just()
+                    .configWidth(LayoutSpec.MOST),
+                  height: 1,
+                  backgroundColor: colors[3].alpha(0.2),
+                }),
+              ],
+              {
+                layoutConfig: layoutConfig().fit().configWidth(LayoutSpec.MOST),
+                onClick: () => {
+                  navigator(context).push(e.url, {
+                    alias: e.alias,
+                  });
+                },
+              }
+            )
+          ),
           hlayout(
             [
               text({
@@ -143,42 +249,6 @@ class Examples extends Panel {
                 },
               }
             )
-          ),
-          hlayout(
-            [
-              text({
-                text: "待上线",
-                textSize: 20,
-                layoutConfig: layoutConfig()
-                  .fit()
-                  .configAlignment(gravity().centerY())
-                  .configMargin({
-                    left: 15,
-                  }),
-                onClick: async () => {
-                  const url = (await context.callNative(
-                    "file",
-                    "choose"
-                  )) as string;
-                  navigator(context).push(url, {
-                    extra: {
-                      originUrl: url,
-                    },
-                  });
-                  log(url);
-                },
-              }),
-            ],
-            {
-              layoutConfig: layoutConfig()
-                .just()
-                .configWidth(LayoutSpec.MOST)
-                .configMargin({
-                  top: 0,
-                }),
-              height: 50,
-              backgroundColor: colors[3].alpha(0.2),
-            }
           ),
         ],
         {

@@ -28,7 +28,7 @@ public class FilePlugin extends DoricJavaPlugin {
     public void choose(DoricPromise promise) {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("*/*");
+        intent.setType("application/javascript");
         getDoricContext().startActivityForResult(intent, 10001);
         this.promise = promise;
     }
