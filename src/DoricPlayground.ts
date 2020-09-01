@@ -213,7 +213,11 @@ class DoricPlayground extends Panel {
                     "file",
                     "choose"
                   )) as string;
-                  navigator(context).push(url);
+                  navigator(context).push(url, {
+                    extra: {
+                      originUrl: url,
+                    },
+                  });
                   log(url);
                 },
               }),
