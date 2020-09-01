@@ -11,4 +11,5 @@ export default [
   "src/Storage",
   "src/Popover",
   "src/Draggable",
+  "src/Poetry",
 ];

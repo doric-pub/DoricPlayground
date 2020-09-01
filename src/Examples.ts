@@ -39,6 +39,11 @@ const examples = [
     alias: "HelloDoric.js",
   },
   {
+    name: "诗",
+    url: "assets://src/Poetry.js",
+    alias: "Poetry.js",
+  },
+  {
     name: "计数器",
     url: "assets://src/Counter.js",
     alias: "Counter.js",
