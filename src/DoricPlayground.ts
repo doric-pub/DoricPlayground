@@ -2,26 +2,21 @@ import {
   Panel,
   Group,
   vlayout,
-  layoutConfig,
   text,
   Color,
   navbar,
   navigator,
-  scroller,
   LayoutSpec,
   hlayout,
-  gravity,
   image,
   View,
-  ScaleType,
   stack,
-  log,
+  Gravity,
+  animate,
+  Image,
+  Text,
 } from "doric";
-import icon_qrcode from "./assets/scan.png";
-import icon_gobang from "./assets/gobang.png";
-import icon_snake from "./assets/snake.png";
-import icon_duad from "./assets/duad.png";
-
+import icon_doric from "./assets/doric.png";
 const colors = [
   "#70a1ff",
   "#7bed9f",
@@ -34,30 +29,32 @@ const colors = [
   "#686de0",
   "#30336b",
 ].map((e) => Color.parse(e));
-
-const qrcode = {
-  name: "扫一扫",
-  icon: icon_qrcode,
-};
-
-const files = [
+const entryData = [
   {
-    name: "五子棋",
-    url: "assets://src/Gobang.js",
-    alias: "Gobang.js",
-    icon: icon_gobang,
+    title: "开始调试",
+    onClick: () => {
+      context.callNative("qrcode", "debug");
+    },
   },
   {
-    name: "贪吃蛇",
-    url: "assets://src/Snake.js",
-    alias: "Snake.js",
-    icon: icon_snake,
+    title: "查看示例",
+    onClick: () => {
+      navigator(context).push("assets://src/Examples.js");
+    },
   },
   {
-    name: "消消乐",
-    url: "assets://src/DuadGame.js",
-    alias: "DuadGame.js",
-    icon: icon_duad,
+    title: "扫码跳转",
+    onClick: async () => {
+      const url = (await context.callNative("qrcode", "scan")) as string;
+      await navigator(context).push(url);
+    },
+  },
+  {
+    title: "本地文件",
+    onClick: async () => {
+      const url = (await context.callNative("file", "choose")) as string;
+      await navigator(context).push(url);
+    },
   },
 ];
 
@@ -67,180 +64,132 @@ class DoricPlayground extends Panel {
     navbar(context).setTitle("Doric Playground");
   }
   build(rootView: Group) {
-    let scan: View;
-    if (Environment.platform == "Android" || Environment.platform == "iOS") {
-      scan = hlayout(
-        [
-          image({
-            imageBase64: qrcode.icon,
-            layoutConfig: layoutConfig()
-              .just()
-              .configMargin({ left: 8, top: 4 }),
-            width: 42,
-            height: 42,
-            scaleType: ScaleType.ScaleAspectFit,
-          }),
-          text({
-            text: qrcode.name,
-            textSize: 30,
-            textColor: Color.BLACK,
-            layoutConfig: layoutConfig()
-              .fit()
-              .configAlignment(gravity().centerY())
-              .configMargin({
-                left: 15,
-              }),
-          }),
-        ],
-        {
-          layoutConfig: layoutConfig()
-            .just()
-            .configWidth(LayoutSpec.MOST)
-            .configMargin({
-              top: 10,
-              bottom: 10,
-            }),
-          height: 50,
-          onClick: async () => {
-            const ret = (await context.callNative("qrcode", "scan")) as string;
-            navigator(context).push(ret);
+    let logo: Image;
+    let intro: Text;
+    let entries: View;
+    vlayout(
+      [
+        stack(
+          [
+            (logo = image({
+              imageBase64: icon_doric,
+              layoutConfig: {
+                widthSpec: LayoutSpec.JUST,
+                heightSpec: LayoutSpec.JUST,
+                alignment: Gravity.Center,
+              },
+              width: 0,
+              height: 0,
+            })),
+          ],
+          {
+            layoutConfig: {
+              widthSpec: LayoutSpec.JUST,
+              heightSpec: LayoutSpec.JUST,
+              alignment: Gravity.Center,
+            },
+            width: 200,
+            height: 200,
+          }
+        ),
+        (intro = text({
+          layoutConfig: {
+            widthSpec: LayoutSpec.MOST,
+            heightSpec: LayoutSpec.FIT,
+            alignment: Gravity.Center,
           },
-        }
-      );
-    } else {
-      scan = hlayout([]);
-    }
-
-    scroller(
-      vlayout(
-        [
-          stack([], {
-            layoutConfig: layoutConfig().just().configWidth(LayoutSpec.MOST),
-            height: 1,
-            backgroundColor: colors[3].alpha(0.2),
-          }),
-          scan,
-          hlayout(
-            [
-              text({
-                text: "小游戏",
-                textSize: 20,
-                layoutConfig: layoutConfig()
-                  .fit()
-                  .configAlignment(gravity().centerY())
-                  .configMargin({
-                    left: 15,
-                  }),
-              }),
-            ],
-            {
-              layoutConfig: layoutConfig()
-                .just()
-                .configWidth(LayoutSpec.MOST)
-                .configMargin({
-                  top: 0,
-                }),
-              height: 50,
-              backgroundColor: colors[3].alpha(0.2),
-            }
-          ),
-          ...files.map((e) =>
-            vlayout(
-              [
-                hlayout(
+          padding: {
+            left: 15,
+            right: 15,
+          },
+          text: `Doric是一个跨平台的应用开发框架.\n使用Typescript语言构建的原生应用可直接在Android、iOS或Web端无差别呈现.`,
+          textSize: 20,
+          fontStyle: "italic",
+          textColor: Color.GRAY,
+          maxLines: 0,
+          alpha: 0,
+        })),
+        (entries = vlayout(
+          [
+            ...new Array(Math.round(entryData.length / 2))
+              .fill(0)
+              .map((_, index) => {
+                return hlayout(
                   [
-                    image({
-                      imageBase64: e.icon,
-                      layoutConfig: layoutConfig().just(),
-                      width: 50,
-                      height: 50,
-                      scaleType: ScaleType.ScaleAspectFit,
+                    text({
+                      text: entryData[index * 2].title,
+                      textSize: 20,
+                      textColor: Color.WHITE,
+                      layoutConfig: {
+                        widthSpec: LayoutSpec.JUST,
+                        heightSpec: LayoutSpec.MOST,
+                        weight: 1,
+                      },
+                      backgroundColor: colors[0],
+                      onClick: () => {
+                        entryData[index * 2]?.onClick();
+                      },
                     }),
                     text({
-                      text: e.name,
-                      textSize: 30,
-                      textColor: Color.BLACK,
-                      layoutConfig: layoutConfig()
-                        .fit()
-                        .configAlignment(gravity().centerY())
-                        .configMargin({
-                          left: 15,
-                        }),
+                      text: entryData[index * 2 + 1]?.title || "",
+                      textSize: 20,
+                      textColor: Color.WHITE,
+                      layoutConfig: {
+                        widthSpec: LayoutSpec.JUST,
+                        heightSpec: LayoutSpec.MOST,
+                        weight: 1,
+                      },
+                      backgroundColor: colors[0],
+                      onClick: () => {
+                        entryData[index * 2 + 1]?.onClick();
+                      },
                     }),
                   ],
                   {
-                    layoutConfig: layoutConfig()
-                      .just()
-                      .configWidth(LayoutSpec.MOST)
-                      .configMargin({
-                        top: 10,
-                        bottom: 10,
-                      }),
-                    height: 50,
-                  }
-                ),
-                stack([], {
-                  layoutConfig: layoutConfig()
-                    .just()
-                    .configWidth(LayoutSpec.MOST),
-                  height: 1,
-                  backgroundColor: colors[3].alpha(0.2),
-                }),
-              ],
-              {
-                layoutConfig: layoutConfig().fit().configWidth(LayoutSpec.MOST),
-                onClick: () => {
-                  navigator(context).push(e.url, {
-                    alias: e.alias,
-                  });
-                },
-              }
-            )
-          ),
-          hlayout(
-            [
-              text({
-                text: "待上线",
-                textSize: 20,
-                layoutConfig: layoutConfig()
-                  .fit()
-                  .configAlignment(gravity().centerY())
-                  .configMargin({
-                    left: 15,
-                  }),
-                onClick: async () => {
-                  const url = (await context.callNative(
-                    "file",
-                    "choose"
-                  )) as string;
-                  navigator(context).push(url, {
-                    extra: {
-                      originUrl: url,
+                    layoutConfig: {
+                      widthSpec: LayoutSpec.MOST,
+                      heightSpec: LayoutSpec.JUST,
                     },
-                  });
-                  log(url);
-                },
+                    height: 50,
+                    space: 10,
+                  }
+                );
               }),
-            ],
-            {
-              layoutConfig: layoutConfig()
-                .just()
-                .configWidth(LayoutSpec.MOST)
-                .configMargin({
-                  top: 0,
-                }),
-              height: 50,
-              backgroundColor: colors[3].alpha(0.2),
-            }
-          ),
-        ],
-        {
-          layoutConfig: layoutConfig().fit().configWidth(LayoutSpec.MOST),
-        }
-      ),
+          ],
+          {
+            layoutConfig: {
+              widthSpec: LayoutSpec.MOST,
+              heightSpec: LayoutSpec.FIT,
+              margin: { top: 30, left: 10, right: 10 },
+            },
+            space: 10,
+            alpha: 0,
+          }
+        )),
+      ],
       {
-        layoutConfig: layoutConfig().most(),
+        layoutConfig: {
+          widthSpec: LayoutSpec.MOST,
+          heightSpec: LayoutSpec.MOST,
+          margin: { top: 30 },
+        },
       }
     ).in(rootView);
+
+    this.addOnRenderFinishedCallback(async () => {
+      await animate(context)({
+        animations: () => {
+          logo.width = logo.height = 200;
+        },
+        duration: 2000,
+      });
+      await animate(context)({
+        animations: () => {
+          intro.alpha = 1;
+        },
+        duration: 1000,
+      });
+      entries.alpha = 1;
+    });
   }
 }

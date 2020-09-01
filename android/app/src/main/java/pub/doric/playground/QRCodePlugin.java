@@ -17,6 +17,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.github.pengfeizhou.jscore.JavaValue;
 
 import pub.doric.DoricContext;
+import pub.doric.devkit.DoricDev;
 import pub.doric.extension.bridge.DoricMethod;
 import pub.doric.extension.bridge.DoricPlugin;
 import pub.doric.extension.bridge.DoricPromise;
@@ -59,5 +60,10 @@ public class QRCodePlugin extends DoricJavaPlugin {
             Intent intent = new Intent(activity, ScanQRCodeActivity.class);
             activity.startActivity(intent);
         }
+    }
+
+    @DoricMethod(thread = ThreadMode.UI)
+    public void debug() {
+        DoricDev.getInstance().openDevMode();
     }
 }

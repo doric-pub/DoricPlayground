@@ -1,6 +1,7 @@
 export default [
-    'src/DoricPlayground',
-    'src/Gobang',
-    'src/Snake',
-    'src/DuadGame'
-]
+  "src/DoricPlayground",
+  "src/Gobang",
+  "src/Snake",
+  "src/DuadGame",
+  "src/Examples",
+];
