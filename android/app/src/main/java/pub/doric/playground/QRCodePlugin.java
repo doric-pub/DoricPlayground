@@ -66,4 +66,9 @@ public class QRCodePlugin extends DoricJavaPlugin {
     public void debug() {
         DoricDev.getInstance().openDevMode();
     }
+
+    @DoricMethod(thread = ThreadMode.UI)
+    public void isDebug(DoricPromise promise) {
+        promise.resolve(new JavaValue(DoricDev.getInstance().isInDevMode()));
+    }
 }

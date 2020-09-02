@@ -23,7 +23,7 @@ const entryData = [
   {
     title: "开始调试",
     onClick: () => {
-      context.callNative("qrcode", "debug");
+      navigator(context).push("assets://src/Debug.js", { alias: "__dev__" });
     },
   },
   {
@@ -50,6 +50,12 @@ const entryData = [
     title: "官网链接",
     onClick: async () => {
       await navigator(context).openUrl("https://doric.pub");
+    },
+  },
+  {
+    title: "应用更新",
+    onClick: async () => {
+      await navigator(context).openUrl("https://www.pgyer.com/0Pfu");
     },
   },
 ];

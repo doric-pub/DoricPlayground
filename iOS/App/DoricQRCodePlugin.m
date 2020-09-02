@@ -24,4 +24,10 @@
     });
 }
 
+- (void)isDebug:(NSDictionary *)dic withPromise:(DoricPromise *)promise {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [promise resolve:@([[DoricDev instance] isInDevMode])];
+    });
+}
+
 @end

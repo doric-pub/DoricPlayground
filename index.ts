@@ -12,4 +12,5 @@ export default [
   "src/Popover",
   "src/Draggable",
   "src/Poetry",
+  "src/Debug",
 ];
