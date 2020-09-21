@@ -5,6 +5,9 @@ import android.app.Application;
 import pub.doric.Doric;
 import pub.doric.DoricLibrary;
 import pub.doric.DoricRegistry;
+import pub.doric.extension.fs.DoricFileLoader;
+import pub.doric.extension.fs.DoricFsLibrary;
+import pub.doric.extension.sqlite.DoricSQLiteLibrary;
 import pub.doric.loader.DoricJSLoaderManager;
 
 /**
@@ -17,13 +20,14 @@ public class MainApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Doric.init(this);
-        DoricJSLoaderManager.getInstance().addJSLoader(new FileLoader());
         Doric.registerLibrary(new DoricLibrary() {
             @Override
             public void load(DoricRegistry registry) {
                 registry.registerNativePlugin(QRCodePlugin.class);
-                registry.registerNativePlugin(FilePlugin.class);
             }
         });
+        DoricJSLoaderManager.getInstance().addJSLoader(new DoricFileLoader());
+        Doric.registerLibrary(new DoricFsLibrary());
+        Doric.registerLibrary(new DoricSQLiteLibrary());
     }
 }

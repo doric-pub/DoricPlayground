@@ -17,6 +17,7 @@ import {
   Text,
   ScaleType,
 } from "doric";
+import { fs } from "doric-fs";
 import icon_doric from "./assets/doric.png";
 import { colors } from "./utils";
 const entryData = [
@@ -42,7 +43,10 @@ const entryData = [
   {
     title: "本地文件",
     onClick: async () => {
-      const url = (await context.callNative("file", "choose")) as string;
+      const url = await fs(context).choose({
+        uniformTypeIdentifiers: ["public.source-code", "public.executable"],
+        mimeType: "application/javascript",
+      });
       await navigator(context).push(url, { extra: { originUrl: url } });
     },
   },

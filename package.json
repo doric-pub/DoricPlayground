@@ -1,5 +1,5 @@
 {
-  "name": "DoricPlayground",
+  "name": "doric-playground",
   "version": "0.1.0",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,9 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "doric": "^0.6.0",
+    "doric": "^0.6.2",
+    "doric-fs": "^0.1.4",
+    "doric-sqlite": "^0.1.11",
     "reflect-metadata": "^0.1.13",
     "rollup": "^1.27.14",
     "tslib": "^1.10.0",
