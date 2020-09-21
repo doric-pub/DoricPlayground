@@ -13,4 +13,5 @@ export default [
   "src/Draggable",
   "src/Poetry",
   "src/Debug",
+  "src/FileManager",
 ];

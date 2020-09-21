@@ -8,11 +8,9 @@
 
 #import "MyLibrary.h"
 #import "DoricQRCodePlugin.h"
-#import "DoricFilePlugin.h"
 
 @implementation MyLibrary
 - (void)load:(DoricRegistry *)registry {
     [registry registerNativePlugin:DoricQRCodePlugin.class withName:@"qrcode"];
-    [registry registerNativePlugin:DoricFilePlugin.class withName:@"file"];
 }
 @end
