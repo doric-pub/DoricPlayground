@@ -16,5 +16,5 @@ target 'DoricPlayground' do
   pod 'DoricCore', "#{version}"
   pod 'DoricDevkit', "#{version}"
   pod 'DoricSQLite', "0.1.10"
-  pod 'DoricFs', "0.1.3"
+  pod 'DoricFs', "0.1.5"
 end

@@ -42,11 +42,6 @@ const entryData = [
   {
     title: "本地文件",
     onClick: async () => {
-      // const url = await fs(context).choose({
-      //   uniformTypeIdentifiers: ["public.source-code", "public.executable"],
-      //   mimeType: "application/javascript",
-      // });
-      // await navigator(context).push(url, { extra: { originUrl: url } });
       await navigator(context).push("assets://src/FileManager.js");
     },
   },

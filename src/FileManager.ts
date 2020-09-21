@@ -112,16 +112,17 @@ class FMVM extends ViewModel<Model, FMVH> {
           },
           onClick: async () => {
             if ("Import from local" === e.name) {
-              const url = await fs(context).choose({
+              const path = await fs(context).choose({
                 uniformTypeIdentifiers: [
                   "public.source-code",
                   "public.executable",
                 ],
                 mimeType: "application/javascript",
               });
-              const path = url.substr("file://".length);
               const content = await fs(context).readFile(path);
-              const dstPath = state.root + path.substr(path.lastIndexOf("/"));
+              const decodedPath = decodeURIComponent(path);
+              const dstPath =
+                state.root + decodedPath.substr(decodedPath.lastIndexOf("/"));
               await fs(context).writeFile(dstPath, content);
               await this.loadFile(state.root || "");
               return;
