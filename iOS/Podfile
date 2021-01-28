@@ -17,4 +17,5 @@ target 'DoricPlayground' do
   pod 'DoricDevkit', "#{version}"
   pod 'DoricSQLite', "0.1.10"
   pod 'DoricFs', "0.1.5"
+  pod 'YYImage/WebP'
 end
