@@ -10,12 +10,14 @@ source 'https://cdn.cocoapods.org/'
 
 target 'DoricPlayground' do
   # Comment the next line if you don't want to use dynamic frameworks
-  use_frameworks!
+  use_modular_headers!
 
   # Pods for DoricPlayground
   pod 'DoricCore', "#{version}"
   pod 'DoricDevkit', "#{version}"
   pod 'DoricSQLite', "0.1.10"
   pod 'DoricFs', "0.1.5"
-  pod 'YYImage/WebP'
+  pod 'SDWebImage'
+  pod 'SDWebImageWebPCoder'
+  pod 'PINCache'
 end

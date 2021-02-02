@@ -10,7 +10,7 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "doric": "^0.6.2",
+    "doric": "^0.6.18",
     "doric-fs": "^0.1.5",
     "doric-sqlite": "^0.1.11",
     "reflect-metadata": "^0.1.13",
