@@ -7,15 +7,9 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Debug TS",
+            "name": "Doric Debug",
             "program": "${workspaceFolder}/${relativeFile}",
-            "preLaunchTask": "Doric Build",
             "sourceMaps": true,
-            "serverReadyAction": {
-                "pattern": "listening on port ([0-9]+)",
-                "uriFormat": "http://localhost:%s",
-                "action": "openExternally"
-            },
             "outFiles": [
                 "${workspaceFolder}/bundle/**/*.js"
             ]
