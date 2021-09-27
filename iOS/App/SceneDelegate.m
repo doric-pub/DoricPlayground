@@ -4,6 +4,7 @@
 #import <DoricSQLite/DoricSQLiteLibrary.h>
 #import <DoricBarcodeScanner/DoricBarcodeScannerLibrary.h>
 #import <DoricImagePicker/DoricImagePickerLibrary.h>
+#import <DoricDevkit/DoricDev.h>
 
 @interface SceneDelegate ()
 @end
@@ -12,6 +13,7 @@
 - (void)scene:(UIScene *)scene willConnectToSession:(UISceneSession *)session options:(UISceneConnectionOptions *)connectionOptions {
     UIWindowScene *windowScene = (UIWindowScene *) scene;
     NSString *bundleName = @"DoricPlayground";
+    [DoricDev instance];
     [Doric registerLibrary:[DoricFsLibrary new]];
     [Doric registerLibrary:[DoricSQLiteLibrary new]];
     [Doric registerLibrary:[DoricBarcodeScannerLibrary new]];
@@ -21,6 +23,12 @@
                                                                                      extra:@""];
     doricViewController.view.backgroundColor = [UIColor whiteColor];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:doricViewController];
+    UINavigationBar *bar = navigationController.navigationBar;
+    if (@available(iOS 15.0, *)) {
+        UINavigationBarAppearance *barAppearance = [UINavigationBarAppearance new];
+        barAppearance.backgroundColor = UIColor.whiteColor;
+        bar.scrollEdgeAppearance = bar.standardAppearance = barAppearance;
+    }
     UIWindow *window = [[UIWindow alloc] initWithWindowScene:windowScene];
     window.frame = windowScene.coordinateSpace.bounds;
     window.rootViewController = navigationController;

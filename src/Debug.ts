@@ -25,7 +25,7 @@ class DebugVH extends ViewHolder {
 }
 class DebugVM extends ViewModel<DebugState, DebugVH> {
   onAttached(state: DebugState, vh: DebugVH) {
-    context.callNative("qrcode", "isDebug").then((ret: boolean) => {
+    context.callNative("devkit", "isDebug").then((ret: boolean) => {
       this.updateState((state) => (state.debug = ret));
     });
   }
@@ -53,7 +53,7 @@ class DebugVM extends ViewModel<DebugState, DebugVH> {
                 textColor: Color.BLUE,
                 underline: true,
                 onClick: async () => {
-                  await context.callNative("qrcode", "debug");
+                  await context.callNative("devkit", "debug");
                 },
               }),
             ]
@@ -82,7 +82,7 @@ class DebugVM extends ViewModel<DebugState, DebugVH> {
                   textColor: Color.BLUE,
                   underline: true,
                   onClick: async () => {
-                    await context.callNative("qrcode", "debug");
+                    await context.callNative("devkit", "debug");
                   },
                 });
                 return ret;

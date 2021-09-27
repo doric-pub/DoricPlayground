@@ -91,7 +91,9 @@ class DuadView extends ViewHolder {
           }
         );
         cols.push(view);
-        this.cellMatrix[i].push(new Cell(view.children[0], view.children[1]));
+        this.cellMatrix[i].push(
+          new Cell(view.children[0] as Text, view.children[1])
+        );
       }
       let row = hlayout(cols, {
         layoutConfig: {
@@ -242,8 +244,8 @@ class DuadVM extends ViewModel<DuadModel, DuadView> {
         if (state.firstSelect.length < 2) {
           state.firstSelect = [i, j];
         } else {
-          let firTop = vh.cellMatrix[state.firstSelect[0]][state.firstSelect[1]]
-            .top!;
+          let firTop =
+            vh.cellMatrix[state.firstSelect[0]][state.firstSelect[1]].top!;
 
           let fir = state.matrix![state.firstSelect[0]][state.firstSelect[1]];
           let sec = state.matrix![i][j];
