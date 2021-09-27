@@ -1,10 +1,7 @@
 package pub.doric.playground;
 
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import pub.doric.DoricFragment;
@@ -23,19 +20,5 @@ public class MainActivity extends AppCompatActivity {
         this.getSupportFragmentManager().beginTransaction().add(R.id.container, new DoricFragment()).commit();
         BaseDoricNavBar doricNavBar = findViewById(R.id.doric_nav_bar);
         doricNavBar.setBackIconVisible(false);
-    }
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 1) {
-            for (int i = 0; i < permissions.length; i++) {
-                if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                    Intent intent = new Intent(this, ScanQRCodeActivity.class);
-                    startActivity(intent);
-                }
-            }
-        }
     }
 }

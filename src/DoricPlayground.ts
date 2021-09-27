@@ -17,6 +17,11 @@ import {
   Text,
   ScaleType,
 } from "doric";
+import {
+  BarcodeFormat,
+  barcodeScanner,
+  ScanResult,
+} from "doric-barcodescanner";
 import icon_doric from "./assets/doric.png";
 export const colors = [
   "#70a1ff",
@@ -29,7 +34,8 @@ export const colors = [
   "#e056fd",
   "#686de0",
   "#30336b",
-].map((e) => Color.parse(e));const entryData = [
+].map((e) => Color.parse(e));
+const entryData = [
   {
     title: "开始调试",
     onClick: () => {
@@ -45,8 +51,12 @@ export const colors = [
   {
     title: "扫码跳转",
     onClick: async () => {
-      const url = (await context.callNative("qrcode", "scan")) as string;
-      await navigator(context).push(url);
+      const ret = await barcodeScanner(context).scan({
+        restrictFormat: [BarcodeFormat.QR],
+      });
+      if (ret.result === ScanResult.SUCCESS) {
+        await navigator(context).push(ret.formatNote);
+      }
     },
   },
   {

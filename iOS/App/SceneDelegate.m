@@ -1,8 +1,9 @@
 #import "SceneDelegate.h"
 #import <DoricCore/Doric.h>
-#import "MyLibrary.h"
 #import <DoricFs/DoricFsLibrary.h>
 #import <DoricSQLite/DoricSQLiteLibrary.h>
+#import <DoricBarcodeScanner/DoricBarcodeScannerLibrary.h>
+#import <DoricImagePicker/DoricImagePickerLibrary.h>
 
 @interface SceneDelegate ()
 @end
@@ -11,9 +12,10 @@
 - (void)scene:(UIScene *)scene willConnectToSession:(UISceneSession *)session options:(UISceneConnectionOptions *)connectionOptions {
     UIWindowScene *windowScene = (UIWindowScene *) scene;
     NSString *bundleName = @"DoricPlayground";
-    [Doric registerLibrary:[MyLibrary new]];
     [Doric registerLibrary:[DoricFsLibrary new]];
     [Doric registerLibrary:[DoricSQLiteLibrary new]];
+    [Doric registerLibrary:[DoricBarcodeScannerLibrary new]];
+    [Doric registerLibrary:[DoricImagePickerLibrary new]];
     DoricViewController *doricViewController = [[DoricViewController alloc] initWithSource:[NSString stringWithFormat:@"assets://src/%@.js", bundleName]
                                                                                      alias:bundleName
                                                                                      extra:@""];

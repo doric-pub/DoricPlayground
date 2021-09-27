@@ -8,9 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		DD51F3034A412A17B27EBE22 /* libPods-DoricPlayground.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F90A7D5AD016B402F68BBBD /* libPods-DoricPlayground.a */; };
-		E29D950124F76E0900E99ABB /* MyLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = E29D950024F76E0900E99ABB /* MyLibrary.m */; };
-		E29D950424F76EAB00E99ABB /* DoricQRCodePlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = E29D950324F76EAB00E99ABB /* DoricQRCodePlugin.m */; };
-		E29D950724F76FFF00E99ABB /* DoricQRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E29D950624F76FFF00E99ABB /* DoricQRCodeViewController.m */; };
 		E29D950B24F7712D00E99ABB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E29D950A24F7712D00E99ABB /* AVFoundation.framework */; };
 		E2B059BF23C452BB007555C7 /* src in Resources */ = {isa = PBXBuildFile; fileRef = E2B059BE23C452BB007555C7 /* src */; };
 		E2F64CEF2399359C0006BD9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E2F64CEE2399359C0006BD9A /* AppDelegate.m */; };
@@ -26,12 +23,6 @@
 		5D47A9D4EA2836D57373FDF6 /* Pods-Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example.release.xcconfig"; path = "Target Support Files/Pods-Example/Pods-Example.release.xcconfig"; sourceTree = "<group>"; };
 		7D55FE6FD030F9B3A19967E8 /* Pods-DoricPlayground.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoricPlayground.release.xcconfig"; path = "Target Support Files/Pods-DoricPlayground/Pods-DoricPlayground.release.xcconfig"; sourceTree = "<group>"; };
 		ABC61FE81BF8C9CC93E70D4E /* Pods-DoricPlayground.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoricPlayground.debug.xcconfig"; path = "Target Support Files/Pods-DoricPlayground/Pods-DoricPlayground.debug.xcconfig"; sourceTree = "<group>"; };
-		E29D94FF24F76E0900E99ABB /* MyLibrary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyLibrary.h; sourceTree = "<group>"; };
-		E29D950024F76E0900E99ABB /* MyLibrary.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyLibrary.m; sourceTree = "<group>"; };
-		E29D950224F76EAB00E99ABB /* DoricQRCodePlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DoricQRCodePlugin.h; sourceTree = "<group>"; };
-		E29D950324F76EAB00E99ABB /* DoricQRCodePlugin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DoricQRCodePlugin.m; sourceTree = "<group>"; };
-		E29D950524F76FFF00E99ABB /* DoricQRCodeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DoricQRCodeViewController.h; sourceTree = "<group>"; };
-		E29D950624F76FFF00E99ABB /* DoricQRCodeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DoricQRCodeViewController.m; sourceTree = "<group>"; };
 		E29D950824F7711900E99ABB /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		E29D950A24F7712D00E99ABB /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		E2ACF07324FD124E0035C607 /* DoricPlayground.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DoricPlayground.entitlements; sourceTree = "<group>"; };
@@ -102,12 +93,6 @@
 				E2F64CFB2399359E0006BD9A /* LaunchScreen.storyboard */,
 				E2F64CFE2399359E0006BD9A /* Info.plist */,
 				E2F64CFF2399359E0006BD9A /* main.m */,
-				E29D94FF24F76E0900E99ABB /* MyLibrary.h */,
-				E29D950024F76E0900E99ABB /* MyLibrary.m */,
-				E29D950224F76EAB00E99ABB /* DoricQRCodePlugin.h */,
-				E29D950324F76EAB00E99ABB /* DoricQRCodePlugin.m */,
-				E29D950524F76FFF00E99ABB /* DoricQRCodeViewController.h */,
-				E29D950624F76FFF00E99ABB /* DoricQRCodeViewController.m */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -255,10 +240,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E29D950724F76FFF00E99ABB /* DoricQRCodeViewController.m in Sources */,
-				E29D950424F76EAB00E99ABB /* DoricQRCodePlugin.m in Sources */,
 				E2F64CEF2399359C0006BD9A /* AppDelegate.m in Sources */,
-				E29D950124F76E0900E99ABB /* MyLibrary.m in Sources */,
 				E2F64D002399359E0006BD9A /* main.m in Sources */,
 				E2F64CF22399359C0006BD9A /* SceneDelegate.m in Sources */,
 			);
@@ -394,10 +376,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = DoricPlayground.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = AA8PQMDZ75;
+				DEVELOPMENT_TEAM = "";
 				GCC_INPUT_FILETYPE = sourcecode.cpp.objcpp;
 				INFOPLIST_FILE = "$(SRCROOT)/App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -407,7 +389,7 @@
 				MARKETING_VERSION = 1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = pub.doric.iplayground;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = doric_dev;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -418,10 +400,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = DoricPlayground.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = AA8PQMDZ75;
+				DEVELOPMENT_TEAM = "";
 				GCC_INPUT_FILETYPE = sourcecode.cpp.objcpp;
 				INFOPLIST_FILE = "$(SRCROOT)/App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -431,7 +413,7 @@
 				MARKETING_VERSION = 1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = pub.doric.iplayground;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = doric_dev;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
