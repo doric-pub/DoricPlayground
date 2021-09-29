@@ -23,6 +23,10 @@ import {
   ScanResult,
 } from "doric-barcodescanner";
 import icon_doric from "./assets/doric.png";
+import { DebugPanel } from "./Debug";
+import { Examples } from "./Examples";
+import { FileManagerPanel } from "./FileManager";
+
 export const colors = [
   "#70a1ff",
   "#7bed9f",
@@ -35,17 +39,18 @@ export const colors = [
   "#686de0",
   "#30336b",
 ].map((e) => Color.parse(e));
+
 const entryData = [
   {
     title: "开始调试",
     onClick: () => {
-      navigator(context).push("assets://src/Debug.js", { alias: "__dev__" });
+      navigator(context).push(DebugPanel, { alias: "__dev__" });
     },
   },
   {
     title: "查看示例",
     onClick: () => {
-      navigator(context).push("assets://src/Examples.js");
+      navigator(context).push(Examples);
     },
   },
   {
@@ -62,7 +67,7 @@ const entryData = [
   {
     title: "本地文件",
     onClick: async () => {
-      await navigator(context).push("assets://src/FileManager.js");
+      await navigator(context).push(FileManagerPanel);
     },
   },
 ];

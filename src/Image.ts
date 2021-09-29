@@ -27,7 +27,7 @@ function label(str: string) {
 }
 
 @Entry
-class ImageDemo extends Panel {
+export class ImageDemo extends Panel {
   build(rootView: Group): void {
     let imageView: Image;
     scroller(
@@ -42,19 +42,17 @@ class ImageDemo extends Panel {
             textAlignment: gravity().center(),
             height: 50,
           }),
-          label("Gif"),
+          label("Gif "),
           image({
-            imageUrl: "https://misc.aotu.io/ONE-SUNDAY/world-cup_2014_42.gif",
+            imageUrl:
+              "https://www.w3.org/People/mimasa/test/imgformat/img/w3c_home_animation.gif",
             scaleType: ScaleType.ScaleToFill,
-            loadCallback: function (ret) {
-              log("this");
-              log("loadCallback", ret);
-            },
+            imageScale: 3,
           }),
           label("APNG"),
           image({
-            imageUrl: "https://misc.aotu.io/ONE-SUNDAY/world_cup_2014_42.png",
-            loadCallback: (ret) => {},
+            imageUrl:
+              "https://upload.wikimedia.org/wikipedia/commons/1/14/Animated_PNG_example_bouncing_beach_ball.png",
           }),
           label("Animated WebP"),
           image({

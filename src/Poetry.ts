@@ -13,6 +13,7 @@ import {
   Stack,
   navbar,
   navigator,
+  BridgeContext,
 } from "doric";
 export const colors = [
   "#70a1ff",
@@ -26,7 +27,9 @@ export const colors = [
   "#686de0",
   "#30336b",
 ].map((e) => Color.parse(e));
-function lineText(config: Partial<Text>): [Stack, () => Promise<unknown>] {
+function lineText(
+  config: Partial<Text>
+): [Stack, (context: BridgeContext) => Promise<unknown>] {
   let tv1: Text;
   let sTv1: Text;
   return [
@@ -48,7 +51,7 @@ function lineText(config: Partial<Text>): [Stack, () => Promise<unknown>] {
         truncateAt: TruncateAt.Clip,
       })),
     ]),
-    async () => {
+    async (context: BridgeContext) => {
       const width = await sTv1.getWidth(context);
       return animate(context)({
         animations: () => {
@@ -76,9 +79,9 @@ Only my plague thus far I count my gain,
 That she that makes me sin awards me pain.`;
 
 @Entry
-class Poetry extends Panel {
+export class Poetry extends Panel {
   onCreate() {
-    navbar(context).setHidden(true);
+    navbar(this.context).setHidden(true);
   }
   build(root: Group) {
     const poemLines = poem.split("\n").map((e) => {
@@ -108,7 +111,7 @@ class Poetry extends Panel {
     this.addOnRenderFinishedCallback(async () => {
       const animates = poemLines.map((e) => e[1]);
       for (let i = 0; i < animates.length; i++) {
-        await animates[i]();
+        await animates[i](this.context);
       }
     });
   }

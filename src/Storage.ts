@@ -12,7 +12,6 @@ import {
   modal,
   Text,
   log,
-  loge,
 } from "doric";
 
 export const colors = [
@@ -37,11 +36,11 @@ export function label(str: string) {
 const storedKey = "StoredKey";
 const zone = "StorageDemo";
 @Entry
-class StorageDemo extends Panel {
+export class StorageDemo extends Panel {
   stored!: Text;
 
   update() {
-    storage(context)
+    storage(this.context)
       .getItem(storedKey, zone)
       .then((e) => {
         this.stored.text = e || "";
@@ -79,17 +78,17 @@ class StorageDemo extends Panel {
             textColor: Color.WHITE,
             layoutConfig: layoutConfig().just(),
             onClick: () => {
-              storage(context)
+              storage(this.context)
                 .getItem(storedKey, zone)
                 .then((e) => {
-                  modal(context)
+                  modal(this.context)
                     .prompt({
                       text: e,
                       title: "Please input text to store",
                       defaultText: "Default Value",
                     })
                     .then((text) => {
-                      storage(context)
+                      storage(this.context)
                         .setItem(storedKey, text, zone)
                         .then(() => {
                           this.update();
@@ -106,7 +105,7 @@ class StorageDemo extends Panel {
             textColor: Color.WHITE,
             layoutConfig: layoutConfig().just(),
             onClick: () => {
-              storage(context)
+              storage(this.context)
                 .remove(storedKey, zone)
                 .then((e) => {
                   this.update();
@@ -121,7 +120,7 @@ class StorageDemo extends Panel {
             textColor: Color.WHITE,
             layoutConfig: layoutConfig().just(),
             onClick: () => {
-              storage(context)
+              storage(this.context)
                 .clear(zone)
                 .then((e) => {
                   this.update();

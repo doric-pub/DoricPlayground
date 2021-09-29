@@ -21,7 +21,6 @@ class CounterView extends ViewHolder {
       (this.number = text({
         textSize: 40,
       })),
-
       (this.counter = text({
         text: "Click To Count",
         textSize: 20,
@@ -50,7 +49,7 @@ class CounterVM extends ViewModel<CountModel, CounterView> {
 }
 
 @Entry
-class MyPage extends VMPanel<CountModel, CounterView> {
+export class Counter extends VMPanel<CountModel, CounterView> {
   getViewHolderClass() {
     return CounterView;
   }

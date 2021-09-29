@@ -32,7 +32,7 @@ function label(str: string) {
 }
 
 @Entry
-class ModalDemo extends Panel {
+export class ModalDemo extends Panel {
   build(rootView: Group): void {
     scroller(
       vlayout(
@@ -55,7 +55,7 @@ class ModalDemo extends Panel {
             textColor: Color.WHITE,
             layoutConfig: layoutConfig().just(),
             onClick: () => {
-              modal(context).toast("This is a toast.");
+              modal(this.context).toast("This is a toast.");
             },
           }),
           label("toast on top"),
@@ -67,7 +67,7 @@ class ModalDemo extends Panel {
             textColor: Color.WHITE,
             layoutConfig: layoutConfig().just(),
             onClick: () => {
-              modal(context).toast("This is a toast.", Gravity.Top);
+              modal(this.context).toast("This is a toast.", Gravity.Top);
             },
           }),
 
@@ -80,7 +80,7 @@ class ModalDemo extends Panel {
             textColor: Color.WHITE,
             layoutConfig: layoutConfig().just(),
             onClick: () => {
-              modal(context).toast("This is a toast.", Gravity.Center);
+              modal(this.context).toast("This is a toast.", Gravity.Center);
             },
           }),
           text({
@@ -100,14 +100,14 @@ class ModalDemo extends Panel {
             textColor: Color.WHITE,
             layoutConfig: layoutConfig().just(),
             onClick: () => {
-              modal(context)
+              modal(this.context)
                 .alert({
                   msg: "This is alert.",
                   title: "Alert title",
                   okLabel: "OkLabel",
                 })
                 .then((e) => {
-                  modal(context).toast("Clicked OK.");
+                  modal(this.context).toast("Clicked OK.");
                 });
             },
           }),
@@ -128,7 +128,7 @@ class ModalDemo extends Panel {
             textColor: Color.WHITE,
             layoutConfig: layoutConfig().just(),
             onClick: () => {
-              modal(context)
+              modal(this.context)
                 .confirm({
                   msg: "This is Confirm.",
                   title: "Confirm title",
@@ -137,10 +137,10 @@ class ModalDemo extends Panel {
                 })
                 .then(
                   () => {
-                    modal(context).toast("Clicked OK.");
+                    modal(this.context).toast("Clicked OK.");
                   },
                   () => {
-                    modal(context).toast("Clicked Cancel.");
+                    modal(this.context).toast("Clicked Cancel.");
                   }
                 );
             },
@@ -162,7 +162,7 @@ class ModalDemo extends Panel {
             textColor: Color.WHITE,
             layoutConfig: layoutConfig().just(),
             onClick: () => {
-              modal(context)
+              modal(this.context)
                 .prompt({
                   msg: "This is Prompt.",
                   title: "Prompt title",
@@ -171,10 +171,10 @@ class ModalDemo extends Panel {
                 })
                 .then(
                   (e) => {
-                    modal(context).toast(`Clicked OK.Input:${e}`);
+                    modal(this.context).toast(`Clicked OK.Input:${e}`);
                   },
                   (e) => {
-                    modal(context).toast(`Clicked Cancel.Input:${e}`);
+                    modal(this.context).toast(`Clicked Cancel.Input:${e}`);
                   }
                 );
             },

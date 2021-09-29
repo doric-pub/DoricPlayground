@@ -1,4 +1,5 @@
 import {
+  BridgeContext,
   Color,
   Gravity,
   gravity,
@@ -207,7 +208,7 @@ class DuadVM extends ViewModel<DuadModel, DuadView> {
     return res;
   }
 
-  private checkWon(s: DuadModel) {
+  private checkWon(s: DuadModel, context: BridgeContext) {
     let won: boolean = true;
     for (let i = 0; i < 6; i++) {
       for (let j = 0; j < 5; j++) {
@@ -257,7 +258,7 @@ class DuadVM extends ViewModel<DuadModel, DuadView> {
               this.covering = false;
             });
           } else {
-            this.checkWon(state);
+            this.checkWon(state, this.context);
           }
           state.firstSelect = [];
         }
@@ -271,7 +272,7 @@ class DuadVM extends ViewModel<DuadModel, DuadView> {
 }
 
 @Entry
-class DuadPanel extends VMPanel<DuadModel, DuadView> {
+export class DuadPanel extends VMPanel<DuadModel, DuadView> {
   getViewHolderClass() {
     return DuadView;
   }

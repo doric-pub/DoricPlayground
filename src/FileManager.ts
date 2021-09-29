@@ -46,18 +46,18 @@ class FMVH extends ViewHolder {
 
 class FMVM extends ViewModel<Model, FMVH> {
   async loadFile(root: string) {
-    const files = await fs(context).readDir(root);
+    const files = await fs(this.context).readDir(root);
     const ret: FileInfo[] = [];
     for (let file of files) {
       try {
-        const isDir = await fs(context).isDirectory(file);
+        const isDir = await fs(this.context).isDirectory(file);
         ret.push({
           path: file,
           name: file.substr(file.lastIndexOf("/") + 1),
           dir: isDir,
         });
       } catch (error) {
-        modal(context).alert(`${error}`);
+        modal(this.context).alert(`${error}`);
       }
     }
     this.updateState((state) => {
@@ -72,7 +72,7 @@ class FMVM extends ViewModel<Model, FMVH> {
       if (state.root) {
         root = state.root;
       } else {
-        const documentPath = await fs(context).getDocumentsDir();
+        const documentPath = await fs(this.context).getDocumentsDir();
         root = documentPath;
       }
       await this.loadFile(root);
@@ -112,18 +112,18 @@ class FMVM extends ViewModel<Model, FMVH> {
           },
           onClick: async () => {
             if ("Import from local" === e.name) {
-              const path = await fs(context).choose({
+              const path = await fs(this.context).choose({
                 uniformTypeIdentifiers: [
                   "public.source-code",
                   "public.executable",
                 ],
                 mimeType: "application/javascript",
               });
-              const content = await fs(context).readFile(path);
+              const content = await fs(this.context).readFile(path);
               const decodedPath = decodeURIComponent(path);
               const dstPath =
                 state.root + decodedPath.substr(decodedPath.lastIndexOf("/"));
-              await fs(context).writeFile(dstPath, content);
+              await fs(this.context).writeFile(dstPath, content);
               await this.loadFile(state.root || "");
               return;
             }
@@ -134,9 +134,9 @@ class FMVM extends ViewModel<Model, FMVH> {
               await this.loadFile(e.path);
             } else {
               if (e.path.indexOf(".js") >= 0) {
-                navigator(context).push(e.path);
+                navigator(this.context).push(e.path);
               } else {
-                modal(context).alert(`Donot support open:${e.path}`);
+                modal(this.context).alert(`Donot support open:${e.path}`);
               }
             }
           },

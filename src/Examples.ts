@@ -20,6 +20,16 @@ import {
 import icon_gobang from "./assets/gobang.png";
 import icon_snake from "./assets/snake.png";
 import icon_duad from "./assets/duad.png";
+import { HelloDoric } from "./HelloDoric";
+import { Poetry } from "./Poetry";
+import { Counter } from "./Counter";
+import { ImageDemo } from "./Image";
+import { StorageDemo } from "./Storage";
+import { ModalDemo } from "./Modal";
+import { PopoverDemo } from "./Popover";
+import { Gobang } from "./Gobang";
+import { SnakePanel } from "./Snake";
+import { DuadPanel } from "./DuadGame";
 const colors = [
   "#70a1ff",
   "#7bed9f",
@@ -35,69 +45,64 @@ const colors = [
 const examples = [
   {
     name: "Hello,Doric",
-    url: "assets://src/HelloDoric.js",
+    panel: HelloDoric,
     alias: "HelloDoric.js",
   },
   {
     name: "诗",
-    url: "assets://src/Poetry.js",
+    panel: Poetry,
     alias: "Poetry.js",
   },
   {
     name: "计数器",
-    url: "assets://src/Counter.js",
+    panel: Counter,
     alias: "Counter.js",
   },
   {
     name: "图片",
-    url: "assets://src/Image.js",
+    panel: ImageDemo,
     alias: "Image.js",
   },
   {
     name: "存储",
-    url: "assets://src/Storage.js",
+    panel: StorageDemo,
     alias: "Storage.js",
   },
   {
     name: "Modal",
-    url: "assets://src/Modal.js",
+    panel: ModalDemo,
     alias: "Modal.js",
   },
   {
     name: "Popover",
-    url: "assets://src/Popover.js",
+    panel: PopoverDemo,
     alias: "Popover.js",
-  },
-  {
-    name: "Draggable",
-    url: "assets://src/Draggable.js",
-    alias: "Draggable.js",
   },
 ];
 const files = [
   {
     name: "五子棋",
-    url: "assets://src/Gobang.js",
+    panel: Gobang,
     alias: "Gobang.js",
     icon: icon_gobang,
   },
   {
     name: "贪吃蛇",
-    url: "assets://src/Snake.js",
+    panel: SnakePanel,
     alias: "Snake.js",
     icon: icon_snake,
   },
   {
     name: "消消乐",
-    url: "assets://src/DuadGame.js",
+    panel: DuadPanel,
     alias: "DuadGame.js",
     icon: icon_duad,
   },
 ];
 @Entry
-class Examples extends Panel {
+export class Examples extends Panel {
   onShow() {
-    navbar(context).setTitle("Doric示例");
+    navbar(this.context).setTitle("Doric示例");
   }
   build(rootView: Group) {
     scroller(
@@ -171,7 +176,7 @@ class Examples extends Panel {
               {
                 layoutConfig: layoutConfig().fit().configWidth(LayoutSpec.MOST),
                 onClick: () => {
-                  navigator(context).push(e.url, {
+                  navigator(this.context).push(e.panel, {
                     alias: e.alias,
                   });
                 },
@@ -248,7 +253,7 @@ class Examples extends Panel {
               {
                 layoutConfig: layoutConfig().fit().configWidth(LayoutSpec.MOST),
                 onClick: () => {
-                  navigator(context).push(e.url, {
+                  navigator(this.context).push(e.panel, {
                     alias: e.alias,
                   });
                 },

@@ -43,7 +43,7 @@ function label(str: string) {
 }
 
 @Entry
-class PopoverDemo extends Panel {
+export class PopoverDemo extends Panel {
   build(rootView: Group): void {
     scroller(
       vlayout(
@@ -57,7 +57,7 @@ class PopoverDemo extends Panel {
             textColor: Color.WHITE,
             layoutConfig: layoutConfig().just(),
             onClick: () => {
-              popover(context).show(
+              popover(this.context).show(
                 text({
                   width: 200,
                   height: 50,
@@ -72,9 +72,9 @@ class PopoverDemo extends Panel {
                   v.onClick = () => {
                     v.backgroundColor = colors[++idx % colors.length];
                   };
-                  modal(context).toast("Dismissed after 3 seconds");
+                  modal(this.context).toast("Dismissed after 3 seconds");
                   setTimeout(() => {
-                    popover(context).dismiss();
+                    popover(this.context).dismiss();
                   }, 3000);
                 })
               );

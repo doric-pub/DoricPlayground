@@ -25,6 +25,7 @@ import {
   View,
   image,
   Image,
+  BridgeContext,
 } from "doric";
 
 const colors = {
@@ -132,7 +133,7 @@ class SnakeModel {
         break;
     }
   }
-  step() {
+  step(context: BridgeContext) {
     if (this.state !== State.run) {
       return;
     }
@@ -370,7 +371,7 @@ class SnakeVM extends ViewModel<SnakeModel, SnakeView> {
     }
     this.updateState((it) => it.reset());
     this.timerId = setInterval(() => {
-      this.updateState((it) => it.step());
+      this.updateState((it) => it.step(this.context));
       if (this.getState().state === State.fail) {
         this.stop();
       }
@@ -390,7 +391,7 @@ class SnakeVM extends ViewModel<SnakeModel, SnakeView> {
     }
     this.updateState((it) => (it.state = State.run));
     this.timerId = setInterval(() => {
-      this.updateState((it) => it.step());
+      this.updateState((it) => it.step(this.context));
       if (this.getState().state === State.fail) {
         this.stop();
       }
@@ -442,7 +443,7 @@ class SnakeVM extends ViewModel<SnakeModel, SnakeView> {
       height: state.height * 10,
     });
 
-    storage(context)
+    storage(this.context)
       .getItem(hignScoreKey)
       .then((r) => {
         this.updateState((s) => {
@@ -461,7 +462,7 @@ class SnakeVM extends ViewModel<SnakeModel, SnakeView> {
     }
 
     if (state.state === State.fail) {
-      popover(context).show(
+      popover(this.context).show(
         vlayout([
           text({
             text: "游戏结束",
@@ -482,7 +483,7 @@ class SnakeVM extends ViewModel<SnakeModel, SnakeView> {
                 color: Color.BLACK,
               },
               onClick: () => {
-                popover(context).dismiss();
+                popover(this.context).dismiss();
                 this.start();
               },
             }),
@@ -500,8 +501,8 @@ class SnakeVM extends ViewModel<SnakeModel, SnakeView> {
                 color: Color.BLACK,
               },
               onClick: () => {
-                popover(context).dismiss();
-                navigator(context).pop();
+                popover(this.context).dismiss();
+                navigator(this.context).pop();
               },
             }),
           ]).apply({
@@ -531,7 +532,7 @@ class SnakeVM extends ViewModel<SnakeModel, SnakeView> {
   }
 }
 @Entry
-class SnakePanel extends VMPanel<SnakeModel, SnakeView> {
+export class SnakePanel extends VMPanel<SnakeModel, SnakeView> {
   getViewModelClass() {
     return SnakeVM;
   }
@@ -542,6 +543,6 @@ class SnakePanel extends VMPanel<SnakeModel, SnakeView> {
     return SnakeView;
   }
   onShow() {
-    navbar(context).setTitle("贪吃蛇");
+    navbar(this.context).setTitle("贪吃蛇");
   }
 }
