@@ -16,6 +16,12 @@ import {
   Image,
   Text,
   ScaleType,
+  jsx,
+  VLayout,
+  layoutConfig,
+  Stack,
+  HLayout,
+  createRef,
 } from "doric";
 import {
   BarcodeFormat,
@@ -78,129 +84,95 @@ class DoricPlayground extends Panel {
     navbar(context).setTitle("Doric Playground");
   }
   build(rootView: Group) {
-    let logo: Image;
-    let intro: Text;
-    let entries: View;
-    vlayout(
-      [
-        stack(
-          [
-            (logo = image({
-              imageBase64: icon_doric,
-              layoutConfig: {
-                widthSpec: LayoutSpec.JUST,
-                heightSpec: LayoutSpec.JUST,
-                alignment: Gravity.Center,
-              },
-              width: 0,
-              height: 0,
-              scaleType: ScaleType.ScaleAspectFit,
-            })),
-          ],
-          {
-            layoutConfig: {
-              widthSpec: LayoutSpec.JUST,
-              heightSpec: LayoutSpec.JUST,
-              alignment: Gravity.Center,
-            },
-            width: 200,
-            height: 200,
-          }
-        ),
-        (intro = text({
-          layoutConfig: {
-            widthSpec: LayoutSpec.MOST,
-            heightSpec: LayoutSpec.FIT,
-            alignment: Gravity.Center,
-          },
-          padding: {
-            left: 15,
-            right: 15,
-          },
-          text: `Doric - 应用快速开发框架`,
-          textSize: 20,
-          fontStyle: "italic",
-          textColor: Color.GRAY,
-          maxLines: 0,
-          alpha: 0,
-        })),
-        (entries = vlayout(
-          [
-            ...new Array(Math.round(entryData.length / 2))
-              .fill(0)
-              .map((_, index) => {
-                return hlayout(
-                  [
-                    text({
-                      text: entryData[index * 2].title,
-                      textSize: 20,
-                      textColor: Color.WHITE,
-                      layoutConfig: {
-                        widthSpec: LayoutSpec.JUST,
-                        heightSpec: LayoutSpec.MOST,
-                        weight: 1,
-                      },
-                      backgroundColor: colors[0],
-                      onClick: () => {
-                        entryData[index * 2]?.onClick();
-                      },
-                    }),
-                    text({
-                      text: entryData[index * 2 + 1]?.title || "",
-                      textSize: 20,
-                      textColor: Color.WHITE,
-                      layoutConfig: {
-                        widthSpec: LayoutSpec.JUST,
-                        heightSpec: LayoutSpec.MOST,
-                        weight: 1,
-                      },
-                      backgroundColor: colors[0],
-                      onClick: () => {
-                        entryData[index * 2 + 1]?.onClick();
-                      },
-                      alpha: !!entryData[index * 2 + 1] ? 1 : 0,
-                    }),
-                  ],
-                  {
-                    layoutConfig: {
-                      widthSpec: LayoutSpec.MOST,
-                      heightSpec: LayoutSpec.JUST,
-                    },
-                    height: 50,
-                    space: 10,
-                  }
-                );
-              }),
-          ],
-          {
-            layoutConfig: {
-              widthSpec: LayoutSpec.MOST,
-              heightSpec: LayoutSpec.FIT,
-              margin: { top: 30, left: 10, right: 10 },
-            },
-            space: 10,
-            alpha: 1,
-          }
-        )),
-      ],
-      {
-        layoutConfig: {
-          widthSpec: LayoutSpec.MOST,
-          heightSpec: LayoutSpec.MOST,
-          margin: { top: 30 },
-        },
-      }
-    ).in(rootView);
+    const logo = createRef<Image>();
+    const intro = createRef<Text>();
+    const entries = createRef<VLayout>();
+
+    <VLayout
+      parent={rootView}
+      layoutConfig={layoutConfig().mostWidth().fitHeight()}
+    >
+      <Stack
+        layoutConfig={layoutConfig().just().configAlignment(Gravity.CenterX)}
+        width={200}
+        height={200}
+      >
+        <Image
+          ref={logo}
+          imageBase64={icon_doric}
+          layoutConfig={layoutConfig().just().configAlignment(Gravity.Center)}
+          scaleType={ScaleType.ScaleAspectFit}
+        />
+      </Stack>
+      <Text
+        ref={intro}
+        layoutConfig={layoutConfig()
+          .mostWidth()
+          .fitHeight()
+          .configAlignment(Gravity.Center)}
+        padding={{ left: 15, right: 15 }}
+        textSize={20}
+        fontStyle="italic"
+        textColor={Color.GRAY}
+        maxLines={0}
+        alpha={0}
+      >
+        Doric - 应用快速开发框架
+      </Text>
+      <VLayout
+        layoutConfig={layoutConfig()
+          .mostWidth()
+          .fitHeight()
+          .configMargin({ top: 30, left: 10, right: 10 })}
+        space={10}
+        alpha={1}
+        ref={entries}
+      >
+        {...new Array(Math.round(entryData.length / 2))
+          .fill(0)
+          .map((_, index) => (
+            <HLayout
+              layoutConfig={layoutConfig().mostWidth().justHeight()}
+              height={50}
+              space={10}
+            >
+              <Text
+                textSize={20}
+                textColor={Color.WHITE}
+                backgroundColor={colors[0]}
+                layoutConfig={layoutConfig()
+                  .justWidth()
+                  .mostHeight()
+                  .configWeight(1)}
+              >
+                {entryData[index * 2].title}
+              </Text>
+              <Text
+                textSize={20}
+                textColor={Color.WHITE}
+                backgroundColor={colors[0]}
+                layoutConfig={layoutConfig()
+                  .justWidth()
+                  .mostHeight()
+                  .configWeight(1)}
+                alpha={!!entryData[index * 2 + 1] ? 1 : 0}
+              >
+                {entryData[index * 2 + 1]?.title || ""}
+              </Text>
+            </HLayout>
+          ))}
+      </VLayout>
+    </VLayout>;
 
     this.addOnRenderFinishedCallback(async () => {
       await animate(context)({
         animations: () => {
-          logo.width = logo.height = 200;
-          intro.alpha = 1;
+          logo.current.width = logo.current.height = 200;
+          intro.current.alpha = 1;
         },
         duration: 2000,
       });
-      entries.alpha = 1;
+      entries.current.alpha = 1;
     });
   }
 }
