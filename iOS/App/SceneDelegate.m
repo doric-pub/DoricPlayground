@@ -5,6 +5,7 @@
 #import <DoricBarcodeScanner/DoricBarcodeScannerLibrary.h>
 #import <DoricImagePicker/DoricImagePickerLibrary.h>
 #import <DoricDevkit/DoricDev.h>
+#import <DoricWebView/DoricWebViewLibrary.h>
 
 @interface SceneDelegate ()
 @end
@@ -18,6 +19,7 @@
     [Doric registerLibrary:[DoricSQLiteLibrary new]];
     [Doric registerLibrary:[DoricBarcodeScannerLibrary new]];
     [Doric registerLibrary:[DoricImagePickerLibrary new]];
+    [Doric registerLibrary:[DoricWebViewLibrary new]];
     DoricViewController *doricViewController = [[DoricViewController alloc] initWithSource:[NSString stringWithFormat:@"assets://src/%@.js", bundleName]
                                                                                      alias:bundleName
                                                                                      extra:@""];

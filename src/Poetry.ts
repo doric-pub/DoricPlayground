@@ -12,6 +12,7 @@ import {
   TruncateAt,
   Stack,
   navbar,
+  navigator,
 } from "doric";
 export const colors = [
   "#70a1ff",
@@ -93,6 +94,16 @@ class Poetry extends Panel {
       backgroundColor: colors[0],
       space: 10,
       gravity: Gravity.Center,
+    }).in(root);
+
+    text({
+      text: "Back",
+      top: 50,
+      left: 20,
+      textColor: Color.WHITE,
+      onClick: () => {
+        navigator(this.context).popSelf();
+      },
     }).in(root);
     this.addOnRenderFinishedCallback(async () => {
       const animates = poemLines.map((e) => e[1]);

@@ -7,6 +7,7 @@ import pub.doric.library.DoricBarcodeScannerLibrary;
 import pub.doric.library.DoricImagePickerLibrary;
 import pub.doric.library.fs.DoricFsLibrary;
 import pub.doric.library.sqlite.DoricSQLiteLibrary;
+import pub.doric.library.webview.DoricWebViewLibrary;
 
 /**
  * @Description: pub.doric.example
@@ -22,5 +23,6 @@ public class MainApplication extends Application {
         Doric.registerLibrary(new DoricSQLiteLibrary());
         Doric.registerLibrary(new DoricBarcodeScannerLibrary());
         Doric.registerLibrary(new DoricImagePickerLibrary());
+        Doric.registerLibrary(new DoricWebViewLibrary());
     }
 }
