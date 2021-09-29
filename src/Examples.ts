@@ -20,16 +20,16 @@ import {
 import icon_gobang from "./assets/gobang.png";
 import icon_snake from "./assets/snake.png";
 import icon_duad from "./assets/duad.png";
-import { HelloDoric } from "./HelloDoric";
-import { Poetry } from "./Poetry";
-import { Counter } from "./Counter";
-import { ImageDemo } from "./Image";
-import { StorageDemo } from "./Storage";
-import { ModalDemo } from "./Modal";
-import { PopoverDemo } from "./Popover";
-import { Gobang } from "./Gobang";
-import { SnakePanel } from "./Snake";
-import { DuadPanel } from "./DuadGame";
+import { HelloDoric } from "./examples/HelloDoric";
+import { Poetry } from "./examples/Poetry";
+import { Counter } from "./examples/Counter";
+import { ImageDemo } from "./examples/Image";
+import { StorageDemo } from "./examples/Storage";
+import { ModalDemo } from "./examples/Modal";
+import { PopoverDemo } from "./examples/Popover";
+import { Gobang } from "./examples/Gobang";
+import { SnakePanel } from "./examples/Snake";
+import { DuadPanel } from "./examples/DuadGame";
 const colors = [
   "#70a1ff",
   "#7bed9f",
