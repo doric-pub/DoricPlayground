@@ -107,7 +107,7 @@ class DebugVM extends ViewModel<DebugState, DebugVH> {
 class DebugPanel extends VMPanel<DebugState, DebugVH> {
   onShow() {
     navbar(context).setTitle("Doric Dev");
-    context.callNative("qrcode", "isDebug").then((ret: boolean) => {
+    context.callNative("devkit", "isDebug").then((ret: boolean) => {
       this.getViewModel()?.updateState((state) => (state.debug = ret));
     });
   }

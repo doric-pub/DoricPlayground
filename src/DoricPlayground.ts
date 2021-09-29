@@ -65,18 +65,6 @@ const entryData = [
       await navigator(context).push("assets://src/FileManager.js");
     },
   },
-  {
-    title: "官网链接",
-    onClick: async () => {
-      await navigator(context).openUrl("https://doric.pub");
-    },
-  },
-  {
-    title: "应用更新",
-    onClick: async () => {
-      await navigator(context).openUrl("https://www.pgyer.com/0Pfu");
-    },
-  },
 ];
 
 @Entry
@@ -124,7 +112,7 @@ class DoricPlayground extends Panel {
             left: 15,
             right: 15,
           },
-          text: `Doric是一个跨平台的应用开发框架.\n使用Typescript语言构建的应用可直接在Android、iOS或Web端无差别呈现.`,
+          text: `Doric - 应用快速开发框架`,
           textSize: 20,
           fontStyle: "italic",
           textColor: Color.GRAY,

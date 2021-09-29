@@ -378,7 +378,7 @@
 				CODE_SIGN_ENTITLEMENTS = DoricPlayground.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = PJ9KDRWSPD;
 				GCC_INPUT_FILETYPE = sourcecode.cpp.objcpp;
 				INFOPLIST_FILE = "$(SRCROOT)/App/Info.plist";
@@ -403,7 +403,7 @@
 				CODE_SIGN_ENTITLEMENTS = DoricPlayground.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = PJ9KDRWSPD;
 				GCC_INPUT_FILETYPE = sourcecode.cpp.objcpp;
 				INFOPLIST_FILE = "$(SRCROOT)/App/Info.plist";
