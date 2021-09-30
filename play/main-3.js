@@ -757,7 +757,7 @@ async function main() {
         }
 
 
-        const codeRes = await fetch(example.url || `${window.CONFIG.siteRoot}/src/${example.name}`);
+        const codeRes = await fetch(example.url || `${window.CONFIG.siteRoot}/src/examples/${example.name}`);
         let code = await codeRes.text();
 
         // Handle removing the compiler settings stuff

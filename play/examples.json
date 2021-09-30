@@ -1,41 +1,37 @@
 {
-    "examples": [
-        {
-            "title": "HelloDoric",
-            "name": "HelloDoric.ts"
-        },
-        {
-            "title": "Counter",
-            "name": "Counter.ts"
-        },
-        {
-            "title": "Gobang",
-            "name": "Gobang.ts"
-        },
-        {
-            "title": "Image",
-            "name": "Image.ts"
-        },
-        {
-            "title": "Modal",
-            "name": "Modal.ts"
-        },
-        {
-            "title": "Storage",
-            "name": "Storage.ts"
-        },
-        {
-            "title": "Popover",
-            "name": "Popover.ts"
-        },
-        {
-            "title": "Layouts",
-            "name": "LayoutDemo.ts",
-            "url": "https://raw.githubusercontent.com/doric-pub/Doric/master/doric-demo/src/LayoutDemo.ts"
-        },
-        {
-            "title": "Draggable",
-            "name": "Draggable.ts"
-        }
-    ]
+  "examples": [
+    {
+      "title": "HelloDoric",
+      "name": "HelloDoric.ts"
+    },
+    {
+      "title": "Counter",
+      "name": "Counter.ts"
+    },
+    {
+      "title": "Gobang",
+      "name": "Gobang.ts"
+    },
+    {
+      "title": "Image",
+      "name": "Image.ts"
+    },
+    {
+      "title": "Modal",
+      "name": "Modal.ts"
+    },
+    {
+      "title": "Storage",
+      "name": "Storage.ts"
+    },
+    {
+      "title": "Popover",
+      "name": "Popover.ts"
+    },
+    {
+      "title": "Layouts",
+      "name": "LayoutDemo.ts",
+      "url": "https://raw.githubusercontent.com/doric-pub/Doric/master/doric-demo/src/LayoutDemo.ts"
+    }
+  ]
 }

@@ -1,16 +1,8 @@
 import {
   Panel,
   Group,
-  vlayout,
-  text,
   Color,
-  navbar,
   navigator,
-  LayoutSpec,
-  hlayout,
-  image,
-  View,
-  stack,
   Gravity,
   animate,
   Image,
@@ -20,8 +12,18 @@ import {
   VLayout,
   layoutConfig,
   Stack,
-  HLayout,
   createRef,
+  ViewHolder,
+  ViewModel,
+  VMPanel,
+  FlexLayout,
+  Wrap,
+  FlexTypedValue,
+  FlexDirection,
+  Justify,
+  GestureContainer,
+  modal,
+  Scroller,
 } from "doric";
 import {
   BarcodeFormat,
@@ -32,6 +34,7 @@ import icon_doric from "./assets/doric.png";
 import { DebugPanel } from "./Debug";
 import { Examples } from "./Examples";
 import { FileManagerPanel } from "./FileManager";
+import { getShortcuts, removeShortcut, Shortcut } from "./ShortcutManager";
 
 export const colors = [
   "#70a1ff",
@@ -78,93 +81,92 @@ const entryData = [
   },
 ];
 
-@Entry
-class DoricPlayground extends Panel {
-  onShow() {
-    navbar(context).setTitle("Doric Playground");
-  }
-  build(rootView: Group) {
+interface HomeModel {
+  shortcuts: Shortcut[];
+}
+
+class HomeVH extends ViewHolder {
+  shortcutArea = createRef<FlexLayout>();
+  build(root: Group) {
     const logo = createRef<Image>();
     const intro = createRef<Text>();
-    const entries = createRef<VLayout>();
-
-    <VLayout
-      parent={rootView}
-      layoutConfig={layoutConfig().mostWidth().fitHeight()}
-    >
-      <Stack
-        layoutConfig={layoutConfig().just().configAlignment(Gravity.CenterX)}
-        width={200}
-        height={200}
-      >
-        <Image
-          ref={logo}
-          imageBase64={icon_doric}
-          layoutConfig={layoutConfig().just().configAlignment(Gravity.Center)}
-          scaleType={ScaleType.ScaleAspectFit}
-        />
-      </Stack>
-      <Text
-        ref={intro}
-        layoutConfig={layoutConfig()
-          .mostWidth()
-          .fitHeight()
-          .configAlignment(Gravity.Center)}
-        padding={{ left: 15, right: 15 }}
-        textSize={20}
-        fontStyle="italic"
-        textColor={Color.GRAY}
-        maxLines={0}
-        alpha={0}
-      >
-        Doric - 应用快速开发框架
-      </Text>
-      <VLayout
-        layoutConfig={layoutConfig()
-          .mostWidth()
-          .fitHeight()
-          .configMargin({ top: 30, left: 10, right: 10 })}
-        space={10}
-        alpha={1}
-        ref={entries}
-      >
-        {...new Array(Math.round(entryData.length / 2))
-          .fill(0)
-          .map((_, index) => (
-            <HLayout
-              layoutConfig={layoutConfig().mostWidth().justHeight()}
-              height={50}
-              space={10}
+    <Scroller parent={root} layoutConfig={layoutConfig().most()}>
+      <VLayout layoutConfig={layoutConfig().mostWidth().fitHeight()}>
+        <Stack
+          layoutConfig={layoutConfig().just().configAlignment(Gravity.CenterX)}
+          width={200}
+          height={200}
+        >
+          <Image
+            ref={logo}
+            imageBase64={icon_doric}
+            layoutConfig={layoutConfig().just().configAlignment(Gravity.Center)}
+            scaleType={ScaleType.ScaleAspectFit}
+          />
+        </Stack>
+        <Text
+          ref={intro}
+          layoutConfig={layoutConfig()
+            .mostWidth()
+            .fitHeight()
+            .configAlignment(Gravity.Center)}
+          padding={{ left: 15, right: 15 }}
+          textSize={20}
+          fontStyle="italic"
+          textColor={Color.GRAY}
+          maxLines={0}
+          alpha={0}
+        >
+          Doric - 应用快速开发框架
+        </Text>
+        <FlexLayout
+          layoutConfig={layoutConfig().mostWidth().fitHeight()}
+          flexConfig={{
+            width: Environment.screenWidth,
+            flexDirection: FlexDirection.ROW,
+            flexWrap: Wrap.WRAP,
+            justifyContent: Justify.SPACE_BETWEEN,
+            padding: 10,
+          }}
+        >
+          {entryData.map((e) => (
+            <Text
+              flexConfig={{
+                width: FlexTypedValue.percent(48),
+                height: 50,
+                marginVertical: 5,
+              }}
+              textSize={20}
+              textColor={Color.WHITE}
+              backgroundColor={colors[0]}
+              onClick={() => {
+                e.onClick();
+              }}
             >
-              <Text
-                textSize={20}
-                textColor={Color.WHITE}
-                backgroundColor={colors[0]}
-                layoutConfig={layoutConfig()
-                  .justWidth()
-                  .mostHeight()
-                  .configWeight(1)}
-              >
-                {entryData[index * 2].title}
-              </Text>
-              <Text
-                textSize={20}
-                textColor={Color.WHITE}
-                backgroundColor={colors[0]}
-                layoutConfig={layoutConfig()
-                  .justWidth()
-                  .mostHeight()
-                  .configWeight(1)}
-                alpha={!!entryData[index * 2 + 1] ? 1 : 0}
-              >
-                {entryData[index * 2 + 1]?.title || ""}
-              </Text>
-            </HLayout>
+              {e.title}
+            </Text>
           ))}
+        </FlexLayout>
+        <Stack
+          layoutConfig={layoutConfig().mostWidth().justHeight()}
+          height={1}
+          backgroundColor={Color.parse("#eeeeee")}
+        />
+        <FlexLayout
+          ref={this.shortcutArea}
+          layoutConfig={layoutConfig().mostWidth().fitHeight()}
+          flexConfig={{
+            width: Environment.screenWidth,
+            flexDirection: FlexDirection.ROW,
+            flexWrap: Wrap.WRAP,
+            justifyContent: Justify.SPACE_BETWEEN,
+            padding: 10,
+          }}
+        />
       </VLayout>
-    </VLayout>;
+    </Scroller>;
 
-    this.addOnRenderFinishedCallback(async () => {
+    (context.entity as Panel).addOnRenderFinishedCallback(async () => {
       await animate(context)({
         animations: () => {
           logo.current.width = logo.current.height = 200;
@@ -172,7 +174,78 @@ class DoricPlayground extends Panel {
         },
         duration: 2000,
       });
-      entries.current.alpha = 1;
     });
+  }
+}
+
+class HomeVM extends ViewModel<HomeModel, HomeVH> {
+  async refresh() {
+    const shortcuts = await getShortcuts(this.context);
+    this.updateState((state) => {
+      state.shortcuts = shortcuts;
+    });
+  }
+  async initData() {
+    // for (let i = 0; i < 100; i++) {
+    //   await addShortcut(this.context, { title: `${i}`, filePath: `${i}` });
+    // }
+    await this.refresh();
+  }
+  onAttached(state: HomeModel, vh: HomeVH) {
+    this.initData();
+  }
+  onBind(state: HomeModel, vh: HomeVH) {
+    vh.shortcutArea.current.also((it) => {
+      it.removeAllChildren();
+      state.shortcuts
+        .map((e) => (
+          <GestureContainer
+            flexConfig={{
+              width: FlexTypedValue.percent(48),
+              height: 50,
+              marginVertical: 5,
+            }}
+            backgroundColor={colors[0]}
+            onClick={() => {
+              navigator(this.context).push(e.filePath);
+            }}
+            onLongPress={() => {
+              modal(this.context)
+                .confirm({
+                  title: "",
+                  msg: "删除该快捷方式么?",
+                })
+                .then(async () => {
+                  await removeShortcut(this.context, e);
+                  await this.refresh();
+                });
+            }}
+          >
+            <Text
+              layoutConfig={layoutConfig().most()}
+              textSize={20}
+              textColor={Color.WHITE}
+            >
+              {e.title}
+            </Text>
+          </GestureContainer>
+        ))
+        .forEach((e) => it.addChild(e));
+    });
+  }
+}
+
+@Entry
+class DoricPlayground extends VMPanel<HomeModel, HomeVH> {
+  getViewModelClass() {
+    return HomeVM;
+  }
+  getState() {
+    return {
+      shortcuts: [],
+    };
+  }
+  getViewHolderClass() {
+    return HomeVH;
   }
 }

@@ -10,7 +10,7 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "doric": "^0.9.4",
+    "doric": "^0.9.5",
     "doric-barcodescanner": "^0.1.10",
     "doric-cli": "^0.9.4",
     "doric-fs": "^0.2.5",
