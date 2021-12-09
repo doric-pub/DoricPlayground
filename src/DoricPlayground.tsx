@@ -21,6 +21,7 @@ import {
   Base64Resource,
   GestureContainer,
   modal,
+  notification,
 } from "doric";
 
 import {
@@ -126,6 +127,13 @@ class HomeVM extends ViewModel<HomeModel, HomeVH> {
   }
   onAttached(state: HomeModel, vh: HomeVH) {
     this.initData();
+    notification(this.context).subscribe({
+      biz: "Shortcut",
+      name: "Add",
+      callback: () => {
+        this.refresh();
+      },
+    });
   }
   onBind(state: HomeModel, vh: HomeVH) {
     vh.flowLayoutRef.apply({
@@ -209,12 +217,12 @@ class HomeVM extends ViewModel<HomeModel, HomeVH> {
               layoutConfig={layoutConfig().mostWidth().justHeight()}
               backgroundColor={colors[idx % colors.length]}
               height={100}
-              onClick={() => {
-                navigator(this.context).push(shortcut.filePath);
-              }}
             >
               <GestureContainer
                 layoutConfig={layoutConfig().most()}
+                onClick={() => {
+                  navigator(this.context).push(shortcut.filePath);
+                }}
                 onLongPress={() => {
                   modal(this.context)
                     .confirm({

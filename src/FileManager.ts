@@ -14,8 +14,11 @@ import {
   Color,
   modal,
   navigator,
+  gestureContainer,
+  notification,
 } from "doric";
 import { fs } from "doric-fs";
+import { addShortcut } from "./ShortcutManager";
 type FileInfo = {
   path: string;
   name: string;
@@ -94,53 +97,79 @@ class FMVM extends ViewModel<Model, FMVH> {
       },
     ].forEach((e) => {
       vh.container.addChild(
-        text({
-          text: e.name,
-          textSize: 20,
-          layoutConfig: {
-            widthSpec: LayoutSpec.MOST,
-            heightSpec: LayoutSpec.FIT,
-          },
-          maxLines: 0,
-          textColor: e.dir ? Color.BLUE : Color.BLACK,
-          textAlignment: Gravity.Left,
-          padding: {
-            left: 15,
-            right: 15,
-            top: 10,
-            bottom: 10,
-          },
-          onClick: async () => {
-            if ("Import from local" === e.name) {
-              const path = await fs(this.context).choose({
-                uniformTypeIdentifiers: [
-                  "public.source-code",
-                  "public.executable",
-                ],
-                mimeType: "application/javascript",
-              });
-              const content = await fs(this.context).readFile(path);
-              const decodedPath = decodeURIComponent(path);
-              const dstPath =
-                state.root + decodedPath.substr(decodedPath.lastIndexOf("/"));
-              await fs(this.context).writeFile(dstPath, content);
-              await this.loadFile(state.root || "");
-              return;
-            }
-            if (!e.path) {
-              return;
-            }
-            if (e.dir) {
-              await this.loadFile(e.path);
-            } else {
-              if (e.path.indexOf(".js") >= 0) {
-                navigator(this.context).push(e.path);
-              } else {
-                modal(this.context).alert(`Donot support open:${e.path}`);
+        gestureContainer(
+          [
+            text({
+              text: e.name,
+              textSize: 20,
+              layoutConfig: {
+                widthSpec: LayoutSpec.MOST,
+                heightSpec: LayoutSpec.FIT,
+              },
+              maxLines: 0,
+              textColor: e.dir ? Color.BLUE : Color.BLACK,
+              textAlignment: Gravity.Left,
+              padding: {
+                left: 15,
+                right: 15,
+                top: 10,
+                bottom: 10,
+              },
+            }),
+          ],
+          {
+            onClick: async () => {
+              if ("Import from local" === e.name) {
+                const path = await fs(this.context).choose({
+                  uniformTypeIdentifiers: [
+                    "public.source-code",
+                    "public.executable",
+                  ],
+                  mimeType: "application/javascript",
+                });
+                const content = await fs(this.context).readFile(path);
+                const decodedPath = decodeURIComponent(path);
+                const dstPath =
+                  state.root + decodedPath.substr(decodedPath.lastIndexOf("/"));
+                await fs(this.context).writeFile(dstPath, content);
+                await this.loadFile(state.root || "");
+                return;
               }
-            }
-          },
-        })
+              if (!e.path) {
+                return;
+              }
+              if (e.dir) {
+                await this.loadFile(e.path);
+              } else {
+                if (e.path.indexOf(".js") >= 0) {
+                  navigator(this.context).push(e.path);
+                } else {
+                  modal(this.context).alert(`Donot support open:${e.path}`);
+                }
+              }
+            },
+            onLongPress: async () => {
+              if (!e.dir && e.path && e.path?.indexOf(".js") >= 0) {
+                await modal(this.context).confirm({
+                  title: "添加快捷方式到首页吗?",
+                  msg: "",
+                });
+                const title = await modal(this.context).prompt({
+                  title: "请输入快捷标题",
+                  defaultText: e.path.replace(".js", ""),
+                });
+                await addShortcut(this.context, {
+                  title: title,
+                  filePath: e.path,
+                });
+                notification(this.context).publish({
+                  biz: "Shortcut",
+                  name: "Add",
+                });
+              }
+            },
+          }
+        )
       );
     });
   }

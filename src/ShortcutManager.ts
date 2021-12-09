@@ -19,7 +19,6 @@ export async function getShortcuts(context: BridgeContext) {
 }
 
 export async function addShortcut(context: BridgeContext, shortcut: Shortcut) {
-  loge("addShortcut", shortcut);
   const shortcuts = await getShortcuts(context);
   if (!!!shortcuts.find((e) => e.filePath === shortcut.filePath)) {
     shortcuts.push(shortcut);
@@ -28,7 +27,6 @@ export async function addShortcut(context: BridgeContext, shortcut: Shortcut) {
       JSON.stringify(shortcuts),
       "DoricPlayground"
     );
-    loge("addedShortcut", shortcut);
   }
 }
 
@@ -43,6 +41,5 @@ export async function removeShortcut(
       JSON.stringify(shortcuts.filter((e) => e.filePath !== shortcut.filePath)),
       "DoricPlayground"
     );
-    loge("removed", shortcut);
   }
 }
