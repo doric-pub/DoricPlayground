@@ -1,10 +1,8 @@
 import {
-  Panel,
   Group,
   Color,
   navigator,
   Gravity,
-  animate,
   Image,
   Text,
   ScaleType,
@@ -16,17 +14,12 @@ import {
   ViewHolder,
   ViewModel,
   VMPanel,
-  FlexLayout,
-  Wrap,
-  FlexTypedValue,
-  FlexDirection,
-  Justify,
-  GestureContainer,
-  modal,
-  Scroller,
   HLayout,
   AssetsResource,
+  FlowLayout,
+  FlowLayoutItem,
 } from "doric";
+
 import {
   BarcodeFormat,
   barcodeScanner,
@@ -37,6 +30,7 @@ import { Examples } from "./Examples";
 import { FileManagerPanel } from "./FileManager";
 import { getShortcuts, removeShortcut, Shortcut } from "./ShortcutManager";
 import packageJson from "../package.json";
+
 export const colors = [
   "#70a1ff",
   "#7bed9f",
@@ -52,19 +46,22 @@ export const colors = [
 
 const entryData = [
   {
-    title: "开始调试",
+    title: "开始开发",
+    icon: new AssetsResource("icon_Dev.png"),
     onClick: () => {
       navigator(context).push(DebugPanel, { alias: "__dev__" });
     },
   },
   {
     title: "查看示例",
+    icon: new AssetsResource("icon_Dev.png"),
     onClick: () => {
       navigator(context).push(Examples);
     },
   },
   {
     title: "扫码跳转",
+    icon: new AssetsResource("icon_Dev.png"),
     onClick: async () => {
       const ret = await barcodeScanner(context).scan({
         restrictFormat: [BarcodeFormat.QR],
@@ -76,6 +73,7 @@ const entryData = [
   },
   {
     title: "本地文件",
+    icon: new AssetsResource("icon_Dev.png"),
     onClick: async () => {
       await navigator(context).push(FileManagerPanel);
     },
@@ -87,95 +85,17 @@ interface HomeModel {
 }
 
 class HomeVH extends ViewHolder {
-  shortcutArea = createRef<FlexLayout>();
+  flowLayoutRef = createRef<FlowLayout>();
   build(root: Group) {
-    const logo = createRef<Image>();
-    const intro = createRef<HLayout>();
-    <Scroller parent={root} layoutConfig={layoutConfig().most()}>
-      <VLayout layoutConfig={layoutConfig().mostWidth().fitHeight()}>
-        <Stack
-          layoutConfig={layoutConfig().just().configAlignment(Gravity.CenterX)}
-          width={200}
-          height={200}
-        >
-          <Image
-            ref={logo}
-            image={new AssetsResource("doric.png")}
-            layoutConfig={layoutConfig().just().configAlignment(Gravity.Center)}
-            scaleType={ScaleType.ScaleAspectFit}
-          />
-        </Stack>
-        <HLayout
-          ref={intro}
-          layoutConfig={layoutConfig().mostWidth().fitHeight()}
-          gravity={Gravity.Bottom.centerX()}
-          space={5}
-          alpha={0}
-        >
-          <Text textSize={20} fontStyle="italic" textColor={Color.GRAY}>
-            Doric - 应用快速开发框架
-          </Text>
-          <Text textSize={14} fontStyle="italic" textColor={Color.GRAY}>
-            {`${packageJson.dependencies.doric.replace("^", "")}`}
-          </Text>
-        </HLayout>
-
-        <FlexLayout
-          layoutConfig={layoutConfig().mostWidth().fitHeight()}
-          flexConfig={{
-            width: Environment.screenWidth,
-            flexDirection: FlexDirection.ROW,
-            flexWrap: Wrap.WRAP,
-            justifyContent: Justify.SPACE_BETWEEN,
-            padding: 10,
-          }}
-        >
-          {entryData.map((e) => (
-            <Text
-              flexConfig={{
-                width: FlexTypedValue.percent(48),
-                height: 50,
-                marginVertical: 5,
-              }}
-              textSize={20}
-              textColor={Color.WHITE}
-              backgroundColor={colors[0]}
-              onClick={() => {
-                e.onClick();
-              }}
-            >
-              {e.title}
-            </Text>
-          ))}
-        </FlexLayout>
-        <Stack
-          layoutConfig={layoutConfig().mostWidth().justHeight()}
-          height={1}
-          backgroundColor={Color.parse("#eeeeee")}
-        />
-        <FlexLayout
-          ref={this.shortcutArea}
-          layoutConfig={layoutConfig().mostWidth().fitHeight()}
-          flexConfig={{
-            width: Environment.screenWidth,
-            flexDirection: FlexDirection.ROW,
-            flexWrap: Wrap.WRAP,
-            justifyContent: Justify.SPACE_BETWEEN,
-            padding: 10,
-          }}
-        />
-      </VLayout>
-    </Scroller>;
-
-    (context.entity as Panel).addOnRenderFinishedCallback(async () => {
-      await animate(context)({
-        animations: () => {
-          logo.current.width = logo.current.height = 200;
-          intro.current.alpha = 1;
-        },
-        duration: 2000,
-      });
-    });
+    <FlowLayout
+      ref={this.flowLayoutRef}
+      parent={root}
+      itemCount={2}
+      rowSpace={10}
+      columnSpace={10}
+      columnCount={2}
+      layoutConfig={layoutConfig().most().configMargin({ left: 10, right: 10 })}
+    />;
   }
 }
 
@@ -187,51 +107,88 @@ class HomeVM extends ViewModel<HomeModel, HomeVH> {
     });
   }
   async initData() {
-    // for (let i = 0; i < 100; i++) {
-    //   await addShortcut(this.context, { title: `${i}`, filePath: `${i}` });
-    // }
     await this.refresh();
   }
   onAttached(state: HomeModel, vh: HomeVH) {
     this.initData();
+    vh.flowLayoutRef.apply({
+      renderItem: (idx) => {
+        if (idx === 0) {
+          return (
+            <FlowLayoutItem
+              layoutConfig={layoutConfig().mostWidth().fitHeight()}
+              identifier="firstHeader"
+              fullSpan={true}
+            >
+              <VLayout
+                layoutConfig={layoutConfig().mostWidth().fitHeight()}
+                gravity={Gravity.Center}
+              >
+                <Image
+                  layoutConfig={layoutConfig().just()}
+                  width={200}
+                  height={200}
+                  scaleType={ScaleType.ScaleAspectFit}
+                  image={new AssetsResource("doric.png")}
+                />
+                <Stack layoutConfig={layoutConfig().mostWidth().fitHeight()}>
+                  <Text
+                    layoutConfig={layoutConfig()
+                      .fit()
+                      .configAlignment(Gravity.Center)}
+                    textSize={20}
+                    textColor={Color.GRAY}
+                  >
+                    Doric-应用快速开发框架
+                  </Text>
+                  <Text
+                    layoutConfig={layoutConfig()
+                      .fit()
+                      .configAlignment(Gravity.Bottom.right())
+                      .configMargin({ right: 30 })}
+                    textSize={14}
+                    fontStyle="italic"
+                    textColor={Color.GRAY}
+                  >
+                    {`v${packageJson.dependencies.doric.replace("^", "")}`}
+                  </Text>
+                </Stack>
+              </VLayout>
+            </FlowLayoutItem>
+          ) as FlowLayoutItem;
+        } else {
+          const data = entryData[idx - 1];
+          return (
+            <FlowLayoutItem
+              layoutConfig={layoutConfig().mostWidth().justHeight()}
+              backgroundColor={colors[idx % colors.length]}
+              height={100}
+              onClick={data.onClick}
+            >
+              <HLayout
+                layoutConfig={layoutConfig().most()}
+                gravity={Gravity.Center}
+                space={20}
+              >
+                <Image
+                  layoutConfig={layoutConfig().just()}
+                  width={50}
+                  height={50}
+                  image={data.icon}
+                />
+                <Text textSize={20} textColor={Color.WHITE}>
+                  {data.title}
+                </Text>
+              </HLayout>
+            </FlowLayoutItem>
+          ) as FlowLayoutItem;
+        }
+      },
+    });
   }
   onBind(state: HomeModel, vh: HomeVH) {
-    vh.shortcutArea.current.also((it) => {
-      it.removeAllChildren();
-      state.shortcuts
-        .map((e) => (
-          <GestureContainer
-            flexConfig={{
-              width: FlexTypedValue.percent(48),
-              height: 50,
-              marginVertical: 5,
-            }}
-            backgroundColor={colors[0]}
-            onClick={() => {
-              navigator(this.context).push(e.filePath);
-            }}
-            onLongPress={() => {
-              modal(this.context)
-                .confirm({
-                  title: "",
-                  msg: "删除该快捷方式么?",
-                })
-                .then(async () => {
-                  await removeShortcut(this.context, e);
-                  await this.refresh();
-                });
-            }}
-          >
-            <Text
-              layoutConfig={layoutConfig().most()}
-              textSize={20}
-              textColor={Color.WHITE}
-            >
-              {e.title}
-            </Text>
-          </GestureContainer>
-        ))
-        .forEach((e) => it.addChild(e));
+    vh.flowLayoutRef.apply({
+      itemCount: entryData.length + 1,
     });
   }
 }
