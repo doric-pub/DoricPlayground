@@ -38,7 +38,7 @@ import { FileManagerPanel } from "./FileManager";
 import { getShortcuts, removeShortcut, Shortcut } from "./ShortcutManager";
 
 import packageJson from "../package.json";
-
+import { MainWidget } from "doric-cookbook";
 export const colors = [
   "#70a1ff",
   "#7bed9f",
@@ -61,10 +61,10 @@ const entryData = [
     },
   },
   {
-    title: "查看示例",
-    icon: new AssetsResource("icon_example.png"),
-    onClick: () => {
-      navigator(context).push(Examples);
+    title: "开发手册",
+    icon: new AssetsResource("icon_app.png"),
+    onClick: async () => {
+      await navigator(context).push(MainWidget);
     },
   },
   {
@@ -84,6 +84,13 @@ const entryData = [
     icon: new AssetsResource("icon_file.png"),
     onClick: async () => {
       await navigator(context).push(FileManagerPanel);
+    },
+  },
+  {
+    title: "查看示例",
+    icon: new AssetsResource("icon_example.png"),
+    onClick: () => {
+      navigator(context).push(Examples);
     },
   },
 ];
@@ -133,6 +140,7 @@ class HomeVM extends ViewModel<HomeModel, HomeVH> {
             >
               <VLayout
                 layoutConfig={layoutConfig().mostWidth().fitHeight()}
+                padding={{ bottom: 20 }}
                 gravity={Gravity.Center}
               >
                 <Image
@@ -211,7 +219,7 @@ class HomeVM extends ViewModel<HomeModel, HomeVH> {
                   modal(this.context)
                     .confirm({
                       title: "",
-                      msg: "删除该快捷方式么?",
+                      msg: "确定删除该快捷方式么?",
                     })
                     .then(async () => {
                       await removeShortcut(this.context, shortcut);

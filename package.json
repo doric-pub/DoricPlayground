@@ -13,13 +13,14 @@
     "doric": "^0.9.26",
     "doric-barcodescanner": "^0.1.11",
     "doric-cli": "^0.9.26",
+    "doric-cookbook": "^0.1.2",
     "doric-fs": "^0.2.5",
     "doric-imagepicker": "^0.1.2",
     "doric-sqlite": "^0.2.3",
     "doric-webview": "^0.1.4",
     "reflect-metadata": "^0.1.13",
-    "tslib": "^1.10.0",
     "rollup": "^2.24.0",
+    "tslib": "^1.10.0",
     "typescript": "^4.2.2"
   },
   "devDependencies": {
