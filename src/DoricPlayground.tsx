@@ -24,6 +24,7 @@ import {
   GestureContainer,
   modal,
   Scroller,
+  HLayout,
 } from "doric";
 import {
   BarcodeFormat,
@@ -35,7 +36,7 @@ import { DebugPanel } from "./Debug";
 import { Examples } from "./Examples";
 import { FileManagerPanel } from "./FileManager";
 import { getShortcuts, removeShortcut, Shortcut } from "./ShortcutManager";
-
+import packageJson from "../package.json";
 export const colors = [
   "#70a1ff",
   "#7bed9f",
@@ -89,7 +90,7 @@ class HomeVH extends ViewHolder {
   shortcutArea = createRef<FlexLayout>();
   build(root: Group) {
     const logo = createRef<Image>();
-    const intro = createRef<Text>();
+    const intro = createRef<HLayout>();
     <Scroller parent={root} layoutConfig={layoutConfig().most()}>
       <VLayout layoutConfig={layoutConfig().mostWidth().fitHeight()}>
         <Stack
@@ -104,21 +105,21 @@ class HomeVH extends ViewHolder {
             scaleType={ScaleType.ScaleAspectFit}
           />
         </Stack>
-        <Text
+        <HLayout
           ref={intro}
-          layoutConfig={layoutConfig()
-            .mostWidth()
-            .fitHeight()
-            .configAlignment(Gravity.Center)}
-          padding={{ left: 15, right: 15 }}
-          textSize={20}
-          fontStyle="italic"
-          textColor={Color.GRAY}
-          maxLines={0}
+          layoutConfig={layoutConfig().mostWidth().fitHeight()}
+          gravity={Gravity.Bottom.centerX()}
+          space={5}
           alpha={0}
         >
-          Doric - 应用快速开发框架
-        </Text>
+          <Text textSize={20} fontStyle="italic" textColor={Color.GRAY}>
+            Doric - 应用快速开发框架
+          </Text>
+          <Text textSize={14} fontStyle="italic" textColor={Color.GRAY}>
+            {`${packageJson.dependencies.doric.replace("^", "")}`}
+          </Text>
+        </HLayout>
+
         <FlexLayout
           layoutConfig={layoutConfig().mostWidth().fitHeight()}
           flexConfig={{
