@@ -43,5 +43,6 @@ export async function removeShortcut(
       JSON.stringify(shortcuts.filter((e) => e.filePath !== shortcut.filePath)),
       "DoricPlayground"
     );
+    loge("removed", shortcut);
   }
 }

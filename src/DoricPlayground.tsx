@@ -18,6 +18,9 @@ import {
   AssetsResource,
   FlowLayout,
   FlowLayoutItem,
+  Base64Resource,
+  GestureContainer,
+  modal,
 } from "doric";
 
 import {
@@ -25,10 +28,15 @@ import {
   barcodeScanner,
   ScanResult,
 } from "doric-barcodescanner";
+
 import { DebugPanel } from "./Debug";
+
 import { Examples } from "./Examples";
+
 import { FileManagerPanel } from "./FileManager";
+
 import { getShortcuts, removeShortcut, Shortcut } from "./ShortcutManager";
+
 import packageJson from "../package.json";
 
 export const colors = [
@@ -47,21 +55,21 @@ export const colors = [
 const entryData = [
   {
     title: "开始开发",
-    icon: new AssetsResource("icon_Dev.png"),
+    icon: new AssetsResource("icon_dev.png"),
     onClick: () => {
       navigator(context).push(DebugPanel, { alias: "__dev__" });
     },
   },
   {
     title: "查看示例",
-    icon: new AssetsResource("icon_Dev.png"),
+    icon: new AssetsResource("icon_example.png"),
     onClick: () => {
       navigator(context).push(Examples);
     },
   },
   {
     title: "扫码跳转",
-    icon: new AssetsResource("icon_Dev.png"),
+    icon: new AssetsResource("icon_scan.png"),
     onClick: async () => {
       const ret = await barcodeScanner(context).scan({
         restrictFormat: [BarcodeFormat.QR],
@@ -73,7 +81,7 @@ const entryData = [
   },
   {
     title: "本地文件",
-    icon: new AssetsResource("icon_Dev.png"),
+    icon: new AssetsResource("icon_file.png"),
     onClick: async () => {
       await navigator(context).push(FileManagerPanel);
     },
@@ -111,7 +119,10 @@ class HomeVM extends ViewModel<HomeModel, HomeVH> {
   }
   onAttached(state: HomeModel, vh: HomeVH) {
     this.initData();
+  }
+  onBind(state: HomeModel, vh: HomeVH) {
     vh.flowLayoutRef.apply({
+      itemCount: entryData.length + state.shortcuts.length + 1,
       renderItem: (idx) => {
         if (idx === 0) {
           return (
@@ -156,7 +167,7 @@ class HomeVM extends ViewModel<HomeModel, HomeVH> {
               </VLayout>
             </FlowLayoutItem>
           ) as FlowLayoutItem;
-        } else {
+        } else if (idx - 1 < entryData.length) {
           const data = entryData[idx - 1];
           return (
             <FlowLayoutItem
@@ -167,8 +178,9 @@ class HomeVM extends ViewModel<HomeModel, HomeVH> {
             >
               <HLayout
                 layoutConfig={layoutConfig().most()}
-                gravity={Gravity.Center}
-                space={20}
+                gravity={Gravity.CenterY}
+                padding={{ left: 20 }}
+                space={10}
               >
                 <Image
                   layoutConfig={layoutConfig().just()}
@@ -182,13 +194,56 @@ class HomeVM extends ViewModel<HomeModel, HomeVH> {
               </HLayout>
             </FlowLayoutItem>
           ) as FlowLayoutItem;
+        } else {
+          const shortcut = state.shortcuts[idx - 1 - entryData.length];
+          return (
+            <FlowLayoutItem
+              layoutConfig={layoutConfig().mostWidth().justHeight()}
+              backgroundColor={colors[idx % colors.length]}
+              height={100}
+              onClick={() => {
+                navigator(this.context).push(shortcut.filePath);
+              }}
+            >
+              <GestureContainer
+                layoutConfig={layoutConfig().most()}
+                onLongPress={() => {
+                  modal(this.context)
+                    .confirm({
+                      title: "",
+                      msg: "删除该快捷方式么?",
+                    })
+                    .then(async () => {
+                      await removeShortcut(this.context, shortcut);
+                      await this.refresh();
+                    });
+                }}
+              >
+                <HLayout
+                  layoutConfig={layoutConfig().most()}
+                  gravity={Gravity.CenterY}
+                  padding={{ left: 20 }}
+                  space={10}
+                >
+                  <Image
+                    layoutConfig={layoutConfig().just()}
+                    width={50}
+                    height={50}
+                    image={
+                      shortcut.icon
+                        ? new Base64Resource(shortcut.icon)
+                        : new AssetsResource("icon_app.png")
+                    }
+                  />
+                  <Text textSize={20} textColor={Color.WHITE}>
+                    {shortcut.title}
+                  </Text>
+                </HLayout>
+              </GestureContainer>
+            </FlowLayoutItem>
+          ) as FlowLayoutItem;
         }
       },
-    });
-  }
-  onBind(state: HomeModel, vh: HomeVH) {
-    vh.flowLayoutRef.apply({
-      itemCount: entryData.length + 1,
     });
   }
 }
