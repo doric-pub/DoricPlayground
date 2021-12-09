@@ -25,13 +25,13 @@ import {
   modal,
   Scroller,
   HLayout,
+  AssetsResource,
 } from "doric";
 import {
   BarcodeFormat,
   barcodeScanner,
   ScanResult,
 } from "doric-barcodescanner";
-import icon_doric from "./assets/doric.png";
 import { DebugPanel } from "./Debug";
 import { Examples } from "./Examples";
 import { FileManagerPanel } from "./FileManager";
@@ -100,7 +100,7 @@ class HomeVH extends ViewHolder {
         >
           <Image
             ref={logo}
-            imageBase64={icon_doric}
+            image={new AssetsResource("doric.png")}
             layoutConfig={layoutConfig().just().configAlignment(Gravity.Center)}
             scaleType={ScaleType.ScaleAspectFit}
           />

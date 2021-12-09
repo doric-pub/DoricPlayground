@@ -12,14 +12,10 @@ import {
   hlayout,
   gravity,
   image,
-  View,
   ScaleType,
   stack,
-  log,
+  AssetsResource,
 } from "doric";
-import icon_gobang from "./assets/gobang.png";
-import icon_snake from "./assets/snake.png";
-import icon_duad from "./assets/duad.png";
 import { HelloDoric } from "./examples/HelloDoric";
 import { Poetry } from "./examples/Poetry";
 import { Counter } from "./examples/Counter";
@@ -84,19 +80,19 @@ const files = [
     name: "五子棋",
     panel: Gobang,
     alias: "Gobang.js",
-    icon: icon_gobang,
+    icon: new AssetsResource("gobang.png"),
   },
   {
     name: "贪吃蛇",
     panel: SnakePanel,
     alias: "Snake.js",
-    icon: icon_snake,
+    icon: new AssetsResource("snake.png"),
   },
   {
     name: "消消乐",
     panel: DuadPanel,
     alias: "DuadGame.js",
-    icon: icon_duad,
+    icon: new AssetsResource("duad.png"),
   },
 ];
 @Entry
@@ -213,7 +209,7 @@ export class Examples extends Panel {
                 hlayout(
                   [
                     image({
-                      imageBase64: e.icon,
+                      image: e.icon,
                       layoutConfig: layoutConfig().just(),
                       width: 50,
                       height: 50,

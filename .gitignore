@@ -4,3 +4,4 @@ package-lock.json
 .DS_Store
 bundle/
 /Pods/
+pnpm-lock.yaml

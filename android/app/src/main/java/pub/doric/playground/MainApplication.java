@@ -3,6 +3,7 @@ package pub.doric.playground;
 import android.app.Application;
 
 import pub.doric.Doric;
+import pub.doric.devkit.DoricDev;
 import pub.doric.library.DoricBarcodeScannerLibrary;
 import pub.doric.library.DoricImagePickerLibrary;
 import pub.doric.library.fs.DoricFsLibrary;
@@ -19,6 +20,7 @@ public class MainApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Doric.init(this);
+        DoricDev.getInstance();
         Doric.registerLibrary(new DoricFsLibrary());
         Doric.registerLibrary(new DoricSQLiteLibrary());
         Doric.registerLibrary(new DoricBarcodeScannerLibrary());

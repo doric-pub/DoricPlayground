@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		DD51F3034A412A17B27EBE22 /* libPods-DoricPlayground.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F90A7D5AD016B402F68BBBD /* libPods-DoricPlayground.a */; };
+		E2306CED2761B119007C50FD /* assets in Resources */ = {isa = PBXBuildFile; fileRef = E2306CEC2761B119007C50FD /* assets */; };
 		E29D950B24F7712D00E99ABB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E29D950A24F7712D00E99ABB /* AVFoundation.framework */; };
 		E2B059BF23C452BB007555C7 /* src in Resources */ = {isa = PBXBuildFile; fileRef = E2B059BE23C452BB007555C7 /* src */; };
 		E2F64CEF2399359C0006BD9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E2F64CEE2399359C0006BD9A /* AppDelegate.m */; };
@@ -23,6 +24,7 @@
 		5D47A9D4EA2836D57373FDF6 /* Pods-Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example.release.xcconfig"; path = "Target Support Files/Pods-Example/Pods-Example.release.xcconfig"; sourceTree = "<group>"; };
 		7D55FE6FD030F9B3A19967E8 /* Pods-DoricPlayground.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoricPlayground.release.xcconfig"; path = "Target Support Files/Pods-DoricPlayground/Pods-DoricPlayground.release.xcconfig"; sourceTree = "<group>"; };
 		ABC61FE81BF8C9CC93E70D4E /* Pods-DoricPlayground.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoricPlayground.debug.xcconfig"; path = "Target Support Files/Pods-DoricPlayground/Pods-DoricPlayground.debug.xcconfig"; sourceTree = "<group>"; };
+		E2306CEC2761B119007C50FD /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../assets; sourceTree = "<group>"; };
 		E29D950824F7711900E99ABB /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		E29D950A24F7712D00E99ABB /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		E2ACF07324FD124E0035C607 /* DoricPlayground.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DoricPlayground.entitlements; sourceTree = "<group>"; };
@@ -65,6 +67,7 @@
 		E2F64CE12399359C0006BD9A = {
 			isa = PBXGroup;
 			children = (
+				E2306CEC2761B119007C50FD /* assets */,
 				E2ACF07324FD124E0035C607 /* DoricPlayground.entitlements */,
 				E2B059BE23C452BB007555C7 /* src */,
 				E2F64CEC2399359C0006BD9A /* App */,
@@ -167,6 +170,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E2306CED2761B119007C50FD /* assets in Resources */,
 				E2B059BF23C452BB007555C7 /* src in Resources */,
 				E2F64CFD2399359E0006BD9A /* LaunchScreen.storyboard in Resources */,
 				E2F64CFA2399359E0006BD9A /* Assets.xcassets in Resources */,
