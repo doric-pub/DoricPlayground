@@ -24,6 +24,7 @@ import {
   notification,
   network,
   uniqueId,
+  loge,
 } from "doric";
 
 import {
@@ -261,15 +262,12 @@ class HomeVM extends ViewModel<HomeModel, HomeVH> {
             >
               <GestureContainer
                 layoutConfig={layoutConfig().most()}
-                onClick={() => {
+                onSingleTap={() => {
                   navigator(this.context).push(shortcut.filePath);
                 }}
                 onLongPress={() => {
                   modal(this.context)
-                    .confirm({
-                      title: "",
-                      msg: "确定删除该快捷方式么?",
-                    })
+                    .confirm("确定删除该快捷方式么?")
                     .then(async () => {
                       await removeShortcut(this.context, shortcut);
                       await this.refresh();
