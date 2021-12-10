@@ -119,7 +119,7 @@ class FMVM extends ViewModel<Model, FMVH> {
             }),
           ],
           {
-            onClick: async () => {
+            onSingleTap: async () => {
               if ("Import from local" === e.name) {
                 const path = await fs(this.context).choose({
                   uniformTypeIdentifiers: [
