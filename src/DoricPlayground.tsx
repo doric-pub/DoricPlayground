@@ -22,6 +22,8 @@ import {
   GestureContainer,
   modal,
   notification,
+  network,
+  uniqueId,
 } from "doric";
 
 import {
@@ -36,10 +38,16 @@ import { Examples } from "./Examples";
 
 import { FileManagerPanel } from "./FileManager";
 
-import { getShortcuts, removeShortcut, Shortcut } from "./ShortcutManager";
+import {
+  addShortcut,
+  getShortcuts,
+  removeShortcut,
+  Shortcut,
+} from "./ShortcutManager";
 
 import packageJson from "../package.json";
 import { MainWidget } from "doric-cookbook";
+import { fs } from "doric-fs";
 export const colors = [
   "#70a1ff",
   "#7bed9f",
@@ -76,7 +84,33 @@ const entryData = [
         restrictFormat: [BarcodeFormat.QR],
       });
       if (ret.result === ScanResult.SUCCESS) {
-        await navigator(context).push(ret.formatNote);
+        if (
+          ret.rawContent.startsWith("http") &&
+          ret.rawContent.endsWith(".js")
+        ) {
+          try {
+            const res = await network(context).get(ret.rawContent);
+            const dir = await fs(context).getDocumentsDir();
+            const name = uniqueId("Bundle");
+            const path = `${dir}/${name}`;
+            await fs(context).writeFile(path, res.data);
+            try {
+              await modal(context).confirm("添加快捷方式到首页吗?");
+              const title = await modal(context).prompt({
+                title: "请输入快捷标题",
+              });
+              await addShortcut(context, {
+                title: title,
+                filePath: path,
+              });
+            } catch (e) {}
+            await navigator(context).push(path);
+          } catch (e) {
+            modal(context).alert(`下载失败: url=${ret.rawContent},error=${e}`);
+          }
+        } else {
+          await navigator(context).push(ret.rawContent);
+        }
       }
     },
   },
@@ -130,6 +164,13 @@ class HomeVM extends ViewModel<HomeModel, HomeVH> {
     notification(this.context).subscribe({
       biz: "Shortcut",
       name: "Add",
+      callback: () => {
+        this.refresh();
+      },
+    });
+    notification(this.context).subscribe({
+      biz: "Shortcut",
+      name: "Remove",
       callback: () => {
         this.refresh();
       },

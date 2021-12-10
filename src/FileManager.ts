@@ -16,6 +16,7 @@ import {
   navigator,
   gestureContainer,
   notification,
+  popover,
 } from "doric";
 import { fs } from "doric-fs";
 import { addShortcut } from "./ShortcutManager";
@@ -149,23 +150,74 @@ class FMVM extends ViewModel<Model, FMVH> {
               }
             },
             onLongPress: async () => {
-              if (!e.dir && e.path && e.path?.indexOf(".js") >= 0) {
-                await modal(this.context).confirm({
-                  title: "添加快捷方式到首页吗?",
-                  msg: "",
-                });
-                const title = await modal(this.context).prompt({
-                  title: "请输入快捷标题",
-                  defaultText: e.path.replace(".js", ""),
-                });
-                await addShortcut(this.context, {
-                  title: title,
-                  filePath: e.path,
-                });
-                notification(this.context).publish({
-                  biz: "Shortcut",
-                  name: "Add",
-                });
+              if (!!!e.path) {
+                return;
+              }
+              if (!!!e.dir && e.path?.indexOf(".js") >= 0) {
+                popover(this.context).show(
+                  vlayout(
+                    [
+                      text({
+                        text: "删除文件",
+                        layoutConfig: layoutConfig().mostWidth().justHeight(),
+                        height: 50,
+                        textSize: 18,
+                        onClick: async () => {
+                          popover(this.context).dismiss();
+                          if (!!!e.path) {
+                            return;
+                          }
+                          await modal(this.context).confirm(
+                            e.dir ? "确定删除该文件夹么" : "确定删除该文件么"
+                          );
+                          await fs(this.context).delete(e.path);
+                          await this.loadFile(state.root || "");
+                        },
+                        backgroundColor: Color.parse("#95a5a6"),
+                        textColor: Color.WHITE,
+                      }),
+                      text({
+                        text: "添加快捷方式",
+                        layoutConfig: layoutConfig().mostWidth().justHeight(),
+                        height: 50,
+                        textSize: 18,
+                        backgroundColor: Color.parse("#2c3e50"),
+                        textColor: Color.WHITE,
+                        onClick: async () => {
+                          popover(this.context).dismiss();
+                          if (!!!e.path) {
+                            return;
+                          }
+                          await modal(this.context).confirm(
+                            "添加快捷方式到首页吗?"
+                          );
+                          const title = await modal(this.context).prompt({
+                            title: "请输入快捷标题",
+                            defaultText: e.path.replace(".js", ""),
+                          });
+                          await addShortcut(this.context, {
+                            title: title,
+                            filePath: e.path,
+                          });
+                        },
+                      }),
+                    ],
+                    {
+                      layoutConfig: layoutConfig().most(),
+                      gravity: Gravity.Center,
+                      onClick: () => {
+                        popover(this.context).dismiss();
+                      },
+                      backgroundColor: Color.BLACK.alpha(0.2),
+                    }
+                  )
+                );
+              } else {
+                await modal(this.context).confirm(
+                  e.dir ? "确定删除该文件夹么" : "确定删除该文件么"
+                );
+                await fs(this.context).delete(e.path);
+                await this.loadFile(state.root || "");
               }
             },
           }

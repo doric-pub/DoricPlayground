@@ -1,4 +1,4 @@
-import { BridgeContext, loge, storage } from "doric";
+import { BridgeContext, loge, notification, storage } from "doric";
 
 export interface Shortcut {
   filePath: string;
@@ -27,6 +27,10 @@ export async function addShortcut(context: BridgeContext, shortcut: Shortcut) {
       JSON.stringify(shortcuts),
       "DoricPlayground"
     );
+    notification(context).publish({
+      biz: "Shortcut",
+      name: "Add",
+    });
   }
 }
 
@@ -41,5 +45,9 @@ export async function removeShortcut(
       JSON.stringify(shortcuts.filter((e) => e.filePath !== shortcut.filePath)),
       "DoricPlayground"
     );
+    notification(context).publish({
+      biz: "Shortcut",
+      name: "Remove",
+    });
   }
 }
