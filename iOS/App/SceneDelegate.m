@@ -6,6 +6,8 @@
 #import <DoricImagePicker/DoricImagePickerLibrary.h>
 #import <DoricDevkit/DoricDev.h>
 #import <DoricWebView/DoricWebViewLibrary.h>
+#import <DoricThree/DoricThreeLibrary.h>
+#import <Dangle/DangleLibrary.h>
 
 @interface SceneDelegate ()
 @end
@@ -20,6 +22,8 @@
     [Doric registerLibrary:[DoricBarcodeScannerLibrary new]];
     [Doric registerLibrary:[DoricImagePickerLibrary new]];
     [Doric registerLibrary:[DoricWebViewLibrary new]];
+    [Doric registerLibrary:[DangleLibrary new]];
+    [Doric registerLibrary:[DoricThreeLibrary new]];
     DoricViewController *doricViewController = [[DoricViewController alloc] initWithSource:[NSString stringWithFormat:@"assets://src/%@.js", bundleName]
                                                                                      alias:bundleName
                                                                                      extra:@""];

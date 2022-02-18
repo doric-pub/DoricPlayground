@@ -3,11 +3,13 @@ package pub.doric.playground;
 import android.app.Application;
 
 import pub.doric.Doric;
+import pub.doric.dangle.library.DangleLibrary;
 import pub.doric.devkit.DoricDev;
 import pub.doric.library.DoricBarcodeScannerLibrary;
 import pub.doric.library.DoricImagePickerLibrary;
 import pub.doric.library.fs.DoricFsLibrary;
 import pub.doric.library.sqlite.DoricSQLiteLibrary;
+import pub.doric.library.three.DoricThreeLibrary;
 import pub.doric.library.webview.DoricWebViewLibrary;
 
 /**
@@ -26,5 +28,7 @@ public class MainApplication extends Application {
         Doric.registerLibrary(new DoricBarcodeScannerLibrary());
         Doric.registerLibrary(new DoricImagePickerLibrary());
         Doric.registerLibrary(new DoricWebViewLibrary());
+        Doric.registerLibrary(new DangleLibrary());
+        Doric.registerLibrary(new DoricThreeLibrary());
     }
 }

@@ -49,6 +49,7 @@ import {
 import packageJson from "../package.json";
 import { MainWidget } from "doric-cookbook";
 import { fs } from "doric-fs";
+import { LittlestTokyo } from "./LittlestTokyo";
 export const colors = [
   "#70a1ff",
   "#7bed9f",
@@ -127,6 +128,13 @@ const entryData = [
     icon: new AssetsResource("icon_example.png"),
     onClick: () => {
       navigator(context).push(Examples);
+    },
+  },
+  {
+    title: "3D模型",
+    icon: new AssetsResource("icon_app.png"),
+    onClick: () => {
+      navigator(context).push(LittlestTokyo);
     },
   },
 ];

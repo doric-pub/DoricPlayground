@@ -26,6 +26,7 @@ import { PopoverDemo } from "./examples/Popover";
 import { Gobang } from "./examples/Gobang";
 import { SnakePanel } from "./examples/Snake";
 import { DuadPanel } from "./examples/DuadGame";
+import { LittlestTokyo } from "./LittlestTokyo";
 const colors = [
   "#70a1ff",
   "#7bed9f",
@@ -43,6 +44,11 @@ const examples = [
     name: "Hello,Doric",
     panel: HelloDoric,
     alias: "HelloDoric.js",
+  },
+  {
+    name: "LittlestTokyo",
+    panel: LittlestTokyo,
+    alias: "LittlestTokyo.js",
   },
   {
     name: "诗",

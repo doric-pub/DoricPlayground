@@ -6,6 +6,9 @@ if (nodeModuleDir.isDirectory()) {
     nodeModuleDir.listFiles().each {
         if (new File(it.getAbsolutePath() + File.separator + "__doric_library__").exists()) {
             println("Find doric plugin library ${it.name} in ${it}")
+            if ("dangle" == it.name) {
+                return
+            }
             include ":${it.name}"
             project(":${it.name}").projectDir = file(it.getAbsolutePath() + File.separator + "android")
         }
