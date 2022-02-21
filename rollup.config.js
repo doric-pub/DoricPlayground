@@ -97,6 +97,9 @@ export default allFiles
       external: [
         "reflect-metadata",
         "doric",
+        "dangle",
+        "three",
+        "doric-three",
         "doric-webview",
         "doric-fs",
         "doric-sqlite",
