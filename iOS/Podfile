@@ -18,7 +18,7 @@ target 'DoricPlayground' do
   pod 'SDWebImage'
   pod 'SDWebImageWebPCoder'
   pod 'PINCache'
-  pod 'Dangle'
+  pod 'Dangle', '0.1.8'
   dir_node_modules = File.join(__dir__,"../node_modules")
   Dir.foreach(dir_node_modules) do |file|
     if File.exist?(File.join(dir_node_modules, file, "__doric_library__"))
