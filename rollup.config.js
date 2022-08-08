@@ -89,8 +89,8 @@ export default allFiles
         sourcemap: true,
       },
       plugins: [
-        resolve({ mainFields: ["jsnext"] }),
         commonjs(),
+        resolve({ mainFields: ["jsnext:main"] }),
         json(),
         image(),
       ],

@@ -13,7 +13,7 @@ import pub.doric.library.three.DoricThreeLibrary;
 import pub.doric.library.webview.DoricWebViewLibrary;
 
 /**
- * @Description: pub.doric.example
+ * @Description: pub.doric.playground
  * @Author: pengfei.zhou
  * @CreateDate: 2019-12-05
  */

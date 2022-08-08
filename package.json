@@ -10,15 +10,16 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "doric": "^0.10.17",
-    "doric-barcodescanner": "^0.1.13",
-    "doric-cli": "^0.10.17",
+    "doric": "^0.10.29",
+    "doric-barcodescanner": "^0.1.16",
+    "doric-cli": "^0.10.29",
     "doric-cookbook": "^0.1.5",
-    "doric-fs": "^0.2.6",
+    "doric-fs": "^0.2.8",
     "doric-imagepicker": "^0.1.3",
-    "doric-sqlite": "^0.2.4",
+    "doric-sqlite": "^0.2.6",
     "doric-three": "^0.1.3",
     "doric-webview": "^0.1.5",
+    "mobx": "^6.6.1",
     "reflect-metadata": "^0.1.13",
     "rollup": "^2.67.3",
     "tslib": "^1.14.1",
@@ -29,6 +30,7 @@
     "@rollup/plugin-image": "^2.1.1",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^7.1.3",
-    "@types/three": "^0.137.0"
+    "@types/three": "^0.137.0",
+    "rollup-plugin-node-resolve": "^5.2.0"
   }
 }
