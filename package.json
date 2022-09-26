@@ -10,9 +10,9 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "doric": "^0.10.29",
+    "doric": "^0.10.39",
     "doric-barcodescanner": "^0.1.16",
-    "doric-cli": "^0.10.29",
+    "doric-cli": "^0.10.39",
     "doric-cookbook": "^0.1.5",
     "doric-fs": "^0.2.8",
     "doric-imagepicker": "^0.1.3",
