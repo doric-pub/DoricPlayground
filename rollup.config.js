@@ -105,6 +105,8 @@ export default allFiles
         "doric-sqlite",
         "doric-barcodescanner",
         "doric-imagepicker",
+        "mobx",
+        "mobx-doric",
       ],
       onwarn: function (warning) {
         if (warning.code === "THIS_IS_UNDEFINED") {

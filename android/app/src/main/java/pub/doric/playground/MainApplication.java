@@ -7,6 +7,7 @@ import pub.doric.dangle.library.DangleLibrary;
 import pub.doric.devkit.DoricDev;
 import pub.doric.library.DoricBarcodeScannerLibrary;
 import pub.doric.library.DoricImagePickerLibrary;
+import pub.doric.library.DoricMobxLibrary;
 import pub.doric.library.fs.DoricFsLibrary;
 import pub.doric.library.sqlite.DoricSQLiteLibrary;
 import pub.doric.library.three.DoricThreeLibrary;
@@ -30,5 +31,6 @@ public class MainApplication extends Application {
         Doric.registerLibrary(new DoricWebViewLibrary());
         Doric.registerLibrary(new DangleLibrary());
         Doric.registerLibrary(new DoricThreeLibrary());
+        Doric.registerLibrary(new DoricMobxLibrary());
     }
 }
