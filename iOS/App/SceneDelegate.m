@@ -9,6 +9,7 @@
 #import <DoricThree/DoricThreeLibrary.h>
 #import <Dangle/DangleLibrary.h>
 #import <mobx-doric/DoricMobxLibrary.h>
+#import <DoricPlatformAPI/DoricPlatformAPILibrary.h>
 
 @interface SceneDelegate ()
 @end
@@ -26,6 +27,7 @@
     [Doric registerLibrary:[DangleLibrary new]];
     [Doric registerLibrary:[DoricThreeLibrary new]];
     [Doric registerLibrary:[DoricMobxLibrary new]];
+    [Doric registerLibrary:[DoricPlatformAPILibrary new]];
     DoricViewController *doricViewController = [[DoricViewController alloc] initWithSource:[NSString stringWithFormat:@"assets://src/%@.js", bundleName]
                                                                                      alias:bundleName
                                                                                      extra:@""];
